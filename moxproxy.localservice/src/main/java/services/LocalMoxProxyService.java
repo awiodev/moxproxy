@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class LocalMoxProxyService extends MoxProxyService implements IMoxProxyLocalService {
 
-
     private IProxyServer proxyServer;
 
     @Autowired

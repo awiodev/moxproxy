@@ -13,6 +13,7 @@
         <module>moxproxy.client</module>
         <module>moxproxy.server</module>
         <module>moxproxy.service</module>
+        <module>moxproxy.localservice</module>
     </modules>
 
     <properties>
@@ -20,6 +21,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <guice.version>4.0</guice.version>
         <little.proxy.version>1.1.2</little.proxy.version>
+        <junit.version>5.2.0</junit.version>
     </properties>
 
     <parent>
@@ -33,11 +35,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-<!--        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>${guice.version}</version>
-        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
