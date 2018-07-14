@@ -12,6 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>moxproxy.abstractions</artifactId>
+    <version>${parent.version}</version>
     <packaging>jar</packaging>
 
 

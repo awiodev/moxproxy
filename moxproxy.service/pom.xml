@@ -10,8 +10,8 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>moxproxy.service</artifactId>
+    <version>${parent.version}</version>
 
     <dependencies>
         <dependency>
@@ -20,9 +20,14 @@
             <version>${parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.moxproxy</groupId>
+            <artifactId>moxproxy.server</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.littleshoot</groupId>
             <artifactId>littleproxy</artifactId>
-            <version>1.1.2</version>
+            <version>${little.proxy.version}</version>
         </dependency>
     </dependencies>
 
