@@ -24,6 +24,7 @@
             <artifactId>littleproxy</artifactId>
             <version>${little.proxy.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>

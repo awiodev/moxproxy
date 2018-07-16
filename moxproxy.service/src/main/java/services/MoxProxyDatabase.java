@@ -1,5 +1,7 @@
 package services;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import dto.MoxProxyProcessedTrafficEntry;
 import interfaces.IMoxProxyDatabase;
 import interfaces.IProxyServiceConfiguration;
@@ -9,10 +11,13 @@ import java.util.Date;
 
 public class MoxProxyDatabase implements IMoxProxyDatabase {
 
+    private final static String DB_NAME = "MOX_PROXY";
     private final static String RULES_COLLECTION_NAME = "RULES";
     private final static String TRAFFIC_COLLECTION_NAME = "TRAFFIC";
 
     private IProxyServiceConfiguration configuration;
+
+    private MongoDatabase database;
 
     public MoxProxyDatabase(IProxyServiceConfiguration configuration){
         this.configuration = configuration;
@@ -20,12 +25,15 @@ public class MoxProxyDatabase implements IMoxProxyDatabase {
 
     @Override
     public void initDatabase() {
-
+        var mongoClient = new MongoClient("localhost", configuration.getMongoDbPort());
+        database = mongoClient.getDatabase(DB_NAME);
+        database.createCollection(RULES_COLLECTION_NAME);
+        database.createCollection(TRAFFIC_COLLECTION_NAME);
     }
 
     @Override
     public void stopDatabase() {
-
+        database.drop();
     }
 
     @Override
