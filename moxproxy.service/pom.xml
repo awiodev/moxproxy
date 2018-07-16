@@ -24,6 +24,11 @@
             <artifactId>littleproxy</artifactId>
             <version>${little.proxy.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.8.0</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface IProxyServer {
+public interface IProxyServer extends IMoxProxyService {
 
     void startServer();
 

@@ -5,6 +5,10 @@ import interfaces.IMoxProxyService;
 
 public class MoxProxyService implements IMoxProxyService {
 
+    public MoxProxyService(){
+
+    }
+
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getSessionNetworkTraffic(String sessionId) {
         return null;
@@ -26,7 +30,7 @@ public class MoxProxyService implements IMoxProxyService {
     }
 
     @Override
-    public void cancelRule(String actionId) {
+    public void cancelRule(String ruleId) {
 
     }
 

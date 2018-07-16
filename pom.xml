@@ -11,9 +11,7 @@
     <modules>
         <module>moxproxy.abstractions</module>
         <module>moxproxy.client</module>
-        <module>moxproxy.server</module>
         <module>moxproxy.service</module>
-        <module>moxproxy.localservice</module>
     </modules>
 
     <properties>
