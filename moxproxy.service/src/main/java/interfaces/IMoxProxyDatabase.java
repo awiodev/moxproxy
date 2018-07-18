@@ -33,5 +33,7 @@ public interface IMoxProxyDatabase {
 
     Iterable<MoxProxyRule> findRulesBySessionId(String sessionId);
 
+    Iterable<MoxProxyRule> getAllRules();
+
     MoxProxyRule findRuleByById(String id);
 }

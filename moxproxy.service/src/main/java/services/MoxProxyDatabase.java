@@ -85,6 +85,11 @@ public class MoxProxyDatabase implements IMoxProxyDatabase {
     }
 
     @Override
+    public Iterable<MoxProxyRule> getAllRules() {
+        return rulesDatabase.values();
+    }
+
+    @Override
     public MoxProxyRule findRuleByById(String ruleId) {
         return rulesDatabase.get(ruleId);
     }
