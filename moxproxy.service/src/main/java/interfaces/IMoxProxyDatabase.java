@@ -31,7 +31,7 @@ public interface IMoxProxyDatabase {
 
     Iterable<MoxProxyProcessedTrafficEntry> getProcessedTraffic(String sessionId);
 
-    MoxProxyRule findRuleBySessionId(String sessionId);
+    Iterable<MoxProxyRule> findRulesBySessionId(String sessionId);
 
     MoxProxyRule findRuleByById(String id);
 }

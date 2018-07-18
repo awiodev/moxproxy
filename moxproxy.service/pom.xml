@@ -11,25 +11,32 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>moxproxy.service</artifactId>
-    <version>${parent.version}</version>
+    <version>${project.parent.version}</version>
 
     <dependencies>
         <dependency>
             <groupId>com.moxproxy</groupId>
             <artifactId>moxproxy.abstractions</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.littleshoot</groupId>
             <artifactId>littleproxy</artifactId>
             <version>${little.proxy.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver -->
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>3.8.0</version>
-        </dependency>
     </dependencies>
+
+<!--    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <properties>
+                        <includeTags>junit5</includeTags>
+                    </properties>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>-->
 
 </project>

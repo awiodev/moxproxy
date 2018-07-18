@@ -3,6 +3,7 @@ package rules;
 import dto.MoxProxyHttpObject;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class MoxProxyRule {
 
@@ -13,7 +14,12 @@ public class MoxProxyRule {
     Date date;
 
     public MoxProxyRule(){
+        id = UUID.randomUUID().toString();
         date = new Date();
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public String getSessionId() {
@@ -26,10 +32,6 @@ public class MoxProxyRule {
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public MoxProxyHtmlObjectType getHtmlObjectType() {

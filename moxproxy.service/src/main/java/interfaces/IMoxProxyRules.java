@@ -4,7 +4,7 @@ import rules.MoxProxyRule;
 
 public interface IMoxProxyRules {
 
-    MoxProxyRule getRuleBySessionId(String sessionId);
+    Iterable<MoxProxyRule> getRulesBySessionId(String sessionId);
 
     MoxProxyRule getRuleById(String ruleId);
 

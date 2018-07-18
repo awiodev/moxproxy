@@ -16,8 +16,8 @@ public class MoxProxyRules implements IMoxProxyRules {
     }
 
     @Override
-    public MoxProxyRule getRuleBySessionId(String sessionId) {
-        return database.findRuleBySessionId(sessionId);
+    public Iterable<MoxProxyRule> getRulesBySessionId(String sessionId) {
+        return database.findRulesBySessionId(sessionId);
     }
 
     @Override
