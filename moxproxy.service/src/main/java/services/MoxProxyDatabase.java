@@ -17,7 +17,7 @@ public class MoxProxyDatabase implements IMoxProxyDatabase {
     private ConcurrentMap<String, MoxProxyProcessedTrafficEntry> processedTrafficDatabase;
 
     @Override
-    public void initDatabase() {
+    public void startDatabase() {
         rulesDatabase = new ConcurrentHashMap();
         processedTrafficDatabase = new ConcurrentHashMap();
     }
@@ -35,6 +35,7 @@ public class MoxProxyDatabase implements IMoxProxyDatabase {
 
     @Override
     public void cleanProcessedTraffic(Date olderThan) {
+
         processedTrafficDatabase.entrySet().removeIf(p -> p.getValue().getTimestamp().before(olderThan));
     }
 

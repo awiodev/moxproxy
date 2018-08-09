@@ -1,5 +1,6 @@
 package database;
 
+import dto.MoxProxyProcessedTrafficEntry;
 import interfaces.IMoxProxyDatabase;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.AfterEach;
@@ -12,18 +13,22 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import rules.MoxProxyRule;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @Import(DatabaseTestConfiguration.class)
 public class DatabaseTest {
 
+    private static final String UNKNOWN = "UNKNOWN";
+
     @Autowired
     IMoxProxyDatabase database;
 
     @BeforeEach
     void beforeEachSeatup(){
-        database.initDatabase();
+        database.startDatabase();
     }
 
     @AfterEach
@@ -32,7 +37,89 @@ public class DatabaseTest {
     }
 
     @Test
-    void givenRule_whenFindById_thenRuleFound(){
+    void givenTrafficEntries_whenAddAndFind_thenEntriesFound(){
+        MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
+        database.addProcessedRequest(entry1);
+        database.addProcessedRequest(entry2);
+        database.addProcessedRequest(entry3);
+
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic());
+        Assertions.assertEquals(3, found.size());
+    }
+
+    @Test
+    void givenTrafficEntries_whenCleanBySessionId_thenEntriesCleared(){
+        MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
+        entry3.setSessionId(UNKNOWN);
+        database.addProcessedRequest(entry1);
+        database.addProcessedRequest(entry2);
+        database.addProcessedRequest(entry3);
+
+        database.cleanProcessedTraffic(entry1.getSessionId());
+
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic());
+        Assertions.assertEquals(1, found.size());
+        MoxProxyProcessedTrafficEntry first = found.get(0);
+        Assertions.assertEquals(entry3, first);
+    }
+
+    @Test
+    void givenTrafficEntries_whenCleanByDate_thenEntriesCleared(){
+        MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
+        database.addProcessedRequest(entry1);
+        database.addProcessedRequest(entry2);
+        database.addProcessedRequest(entry3);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MINUTE, 1);
+
+        Date newDate = cal.getTime();
+
+        database.cleanProcessedTraffic(newDate);
+
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic());
+        Assertions.assertEquals(0, found.size());
+    }
+
+    @Test
+    void givenTrafficEntries_whenFindBySessionId_thenEntriesFound(){
+        MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
+        entry3.setSessionId(UNKNOWN);
+        database.addProcessedRequest(entry1);
+        database.addProcessedRequest(entry2);
+        database.addProcessedRequest(entry3);
+
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic(entry1.getSessionId()));
+        Assertions.assertEquals(2, found.size());
+    }
+
+    @Test
+    void givenTrafficEntries_whenCleanAll_thenEntriesCleared(){
+        MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
+        entry3.setSessionId(UNKNOWN);
+        database.addProcessedRequest(entry1);
+        database.addProcessedRequest(entry2);
+        database.addProcessedRequest(entry3);
+
+        database.cleanAllProcessedTraffic();
+
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic(entry1.getSessionId()));
+        Assertions.assertEquals(0, found.size());
+    }
+
+    @Test
+    void givenRule_whenAddAndFindById_thenRuleFound(){
         MoxProxyRule rule = createDefaultRule();
         database.addRule(rule);
 
@@ -51,11 +138,11 @@ public class DatabaseTest {
     }
 
     @Test
-    void givenRules_whenFindBySessionId_ThenRulesFound(){
+    void givenRules_whenAddAndFindBySessionId_ThenRulesFound(){
         MoxProxyRule rule1 = createDefaultRule();
         MoxProxyRule rule2 = createDefaultRule();
         MoxProxyRule rule3 = createDefaultRule();
-        rule3.setSessionId("unknown");
+        rule3.setSessionId(UNKNOWN);
 
         database.addRule(rule1);
         database.addRule(rule2);
@@ -70,7 +157,7 @@ public class DatabaseTest {
         MoxProxyRule rule1 = createDefaultRule();
         MoxProxyRule rule2 = createDefaultRule();
         MoxProxyRule rule3 = createDefaultRule();
-        rule3.setSessionId("unknown");
+        rule3.setSessionId(UNKNOWN);
 
         database.addRule(rule1);
         database.addRule(rule2);
@@ -82,11 +169,27 @@ public class DatabaseTest {
     }
 
     @Test
+    void givenRules_whenCleanByOtherSessionId_ThenRuleFound(){
+        MoxProxyRule rule1 = createDefaultRule();
+        MoxProxyRule rule2 = createDefaultRule();
+        MoxProxyRule rule3 = createDefaultRule();
+        rule3.setSessionId(UNKNOWN);
+
+        database.addRule(rule1);
+        database.addRule(rule2);
+        database.addRule(rule3);
+
+        database.cleanRules(rule1.getSessionId());
+        List found = Lists.newArrayList(database.findRulesBySessionId(rule3.getSessionId()));
+        Assertions.assertEquals(1, found.size());
+    }
+
+    @Test
     void givenRules_whenAllClean_ThenRulesNotFound(){
         MoxProxyRule rule1 = createDefaultRule();
         MoxProxyRule rule2 = createDefaultRule();
         MoxProxyRule rule3 = createDefaultRule();
-        rule3.setSessionId("unknown");
+        rule3.setSessionId(UNKNOWN);
 
         database.addRule(rule1);
         database.addRule(rule2);
@@ -97,10 +200,16 @@ public class DatabaseTest {
         Assertions.assertTrue(found.isEmpty());
     }
 
+    private MoxProxyProcessedTrafficEntry createDefaultTrafficEntry(){
+        var trafficEntry = new MoxProxyProcessedTrafficEntry();
+        trafficEntry.setSessionId("123");
+        return trafficEntry;
+    }
+
     private MoxProxyRule createDefaultRule(){
-        String sessionId = "456";
         var rule = new MoxProxyRule();
-        rule.setSessionId(sessionId);
+        rule.setSessionId("456");
         return rule;
     }
+
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 
 public interface IMoxProxyDatabase {
 
-    void initDatabase();
+    void startDatabase();
 
     void stopDatabase();
 

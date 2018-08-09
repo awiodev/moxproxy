@@ -34,7 +34,7 @@ public final class MoxProxyServer extends MoxProxyService implements IProxyServe
     }
 
     private void startDatabase(){
-        database.initDatabase();
+        database.startDatabase();
     }
 
     private void startProxyServer(){
