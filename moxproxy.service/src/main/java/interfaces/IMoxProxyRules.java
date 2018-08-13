@@ -1,6 +1,6 @@
 package interfaces;
 
-import rules.MoxProxyRule;
+import dto.MoxProxyRule;
 
 public interface IMoxProxyRules {
 

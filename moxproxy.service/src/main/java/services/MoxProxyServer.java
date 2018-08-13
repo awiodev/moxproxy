@@ -15,17 +15,17 @@ import org.springframework.stereotype.Service;
 @Service
 public final class MoxProxyServer extends MoxProxyService implements IProxyServer {
 
-    private IProxyServiceConfiguration configuration;
-    private IMoxProxyDatabase database;
     private HttpProxyServer proxyServer;
+
+    @Autowired
+    private IProxyServiceConfiguration configuration;
+
+    @Autowired
     private HttpFilters httpFilters;
 
     @Autowired
-    public MoxProxyServer(IProxyServiceConfiguration configuration, HttpFilters httpFilters, IMoxProxyDatabase database){
-        this.configuration = configuration;
-        this.httpFilters = httpFilters;
-        this.database = database;
-    }
+    private IMoxProxyDatabase database;
+
 
     @Override
     public void startServer() {

@@ -1,7 +1,7 @@
 package interfaces;
 
 import dto.MoxProxyProcessedTrafficEntry;
-import rules.MoxProxyRule;
+import dto.MoxProxyRule;
 
 import java.util.Date;
 

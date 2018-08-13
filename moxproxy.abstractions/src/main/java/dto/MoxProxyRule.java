@@ -1,17 +1,15 @@
-package rules;
-
-import dto.MoxProxyHttpObject;
+package dto;
 
 import java.util.Date;
 import java.util.UUID;
 
 public class MoxProxyRule {
 
-    String sessionId;
-    String id;
-    MoxProxyHtmlObjectType htmlObjectType;
-    MoxProxyHttpObject moxProxyHttpObject;
-    Date date;
+    private String sessionId;
+    private String id;
+    private MoxProxyDirection direction;
+    private MoxProxyHttpObject moxProxyHttpObject;
+    private Date date;
 
     public MoxProxyRule(){
         id = UUID.randomUUID().toString();
@@ -34,12 +32,12 @@ public class MoxProxyRule {
         return id;
     }
 
-    public MoxProxyHtmlObjectType getHtmlObjectType() {
-        return htmlObjectType;
+    public MoxProxyDirection getHttpDirection() {
+        return direction;
     }
 
-    public void setHtmlObjectType(MoxProxyHtmlObjectType htmlObjectType) {
-        this.htmlObjectType = htmlObjectType;
+    public void setHttpDirection(MoxProxyDirection htmlObjectType) {
+        this.direction = htmlObjectType;
     }
 
     public MoxProxyHttpObject getMoxProxyHttpObject() {

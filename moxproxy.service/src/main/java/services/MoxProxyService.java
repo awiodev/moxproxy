@@ -1,6 +1,7 @@
 package services;
 
 import dto.MoxProxyProcessedTrafficEntry;
+import dto.MoxProxyRule;
 import interfaces.IMoxProxyService;
 
 public class MoxProxyService implements IMoxProxyService {
@@ -41,5 +42,10 @@ public class MoxProxyService implements IMoxProxyService {
     @Override
     public void clearAllSessionEntries() {
 
+    }
+
+    @Override
+    public String createRule(MoxProxyRule moxProxyRule) {
+        return null;
     }
 }

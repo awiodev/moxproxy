@@ -3,7 +3,7 @@ package services;
 import dto.MoxProxyProcessedTrafficEntry;
 import interfaces.IMoxProxyDatabase;
 import org.springframework.stereotype.Service;
-import rules.MoxProxyRule;
+import dto.MoxProxyRule;
 
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;

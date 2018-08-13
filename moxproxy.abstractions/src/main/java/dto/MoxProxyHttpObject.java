@@ -2,11 +2,11 @@ package dto;
 
 public class MoxProxyHttpObject {
 
-    String method;
-    String path;
-    String body;
-    Iterable<MoxProxyHeader> headers;
-    int statusCode;
+    private String method;
+    private String path;
+    private String body;
+    private Iterable<MoxProxyHeader> headers;
+    private int statusCode;
 
     public String getMethod() {
         return method;

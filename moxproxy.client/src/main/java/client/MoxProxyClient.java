@@ -1,6 +1,7 @@
 package client;
 
 import dto.MoxProxyProcessedTrafficEntry;
+import dto.MoxProxyRule;
 import interfaces.IMoxProxyService;
 
 public class MoxProxyClient implements IMoxProxyService {
@@ -26,7 +27,7 @@ public class MoxProxyClient implements IMoxProxyService {
     }
 
     @Override
-    public void cancelRule(String actionId) {
+    public void cancelRule(String ruleId) {
 
     }
 
@@ -38,5 +39,10 @@ public class MoxProxyClient implements IMoxProxyService {
     @Override
     public void clearAllSessionEntries() {
 
+    }
+
+    @Override
+    public String createRule(MoxProxyRule moxProxyRule) {
+        return null;
     }
 }

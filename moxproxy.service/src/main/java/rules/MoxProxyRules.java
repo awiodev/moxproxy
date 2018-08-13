@@ -1,5 +1,6 @@
 package rules;
 
+import dto.MoxProxyRule;
 import interfaces.IMoxProxyDatabase;
 import interfaces.IMoxProxyRules;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class MoxProxyRules implements IMoxProxyRules {
 
-    private IMoxProxyDatabase database;
 
     @Autowired
-    public MoxProxyRules(IMoxProxyDatabase database){
-        this.database = database;
-    }
+    private IMoxProxyDatabase database;
+
 
     @Override
     public Iterable<MoxProxyRule> getRulesBySessionId(String sessionId) {

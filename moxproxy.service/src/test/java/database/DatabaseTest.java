@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import rules.MoxProxyRule;
+import dto.MoxProxyRule;
 
 import java.util.Calendar;
 import java.util.Date;

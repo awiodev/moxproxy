@@ -1,6 +1,7 @@
 package interfaces;
 
 import dto.MoxProxyProcessedTrafficEntry;
+import dto.MoxProxyRule;
 
 public interface IMoxProxyService {
 
@@ -12,9 +13,11 @@ public interface IMoxProxyService {
 
     String modifyEntry(MoxProxyProcessedTrafficEntry moxProxyRequest);
 
-    void cancelRule(String actionId);
+    void cancelRule(String ruleId);
 
     void clearSessionEntries(String sessionId);
 
     void clearAllSessionEntries();
+
+    String createRule(MoxProxyRule moxProxyRule);
 }
