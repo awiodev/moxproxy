@@ -4,7 +4,7 @@ import dto.MoxProxyDirection;
 import dto.MoxProxyHttpObject;
 import dto.MoxProxyRule;
 
-public class MoxProxyRuleBuilder extends BaseBuilder<MoxProxyRule> {
+public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRule> {
 
     private String sessionId;
 
@@ -26,7 +26,7 @@ public class MoxProxyRuleBuilder extends BaseBuilder<MoxProxyRule> {
         return this;
     }
 
-    public MoxProxyHttpObjectBuilder withHtmlObject(){
+    public MoxProxyHttpObjectBuilder withHttpObject(){
         return httpObjectBuilder;
     }
 

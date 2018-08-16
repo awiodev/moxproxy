@@ -3,18 +3,17 @@ package builders;
 import dto.MoxProxyHeader;
 import dto.MoxProxyHttpObject;
 
-import java.util.List;
-
-public class MoxProxyHttpObjectBuilder extends ChildBuilder<MoxProxyRuleBuilder, MoxProxyHttpObject> {
+public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, MoxProxyHttpObject> {
 
     private String method;
     private String path;
     private String body;
-    private List<MoxProxyHeader> headers;
+    private MoxProxyHeadersCollectionBuilder headersCollectionBuilder;
     private int statusCode;
 
     MoxProxyHttpObjectBuilder(MoxProxyRuleBuilder moxProxyRuleBuilder) {
         super(moxProxyRuleBuilder);
+        headersCollectionBuilder = new MoxProxyHeadersCollectionBuilder(this);
     }
 
     public MoxProxyHttpObjectBuilder withMethod(String method){
@@ -32,14 +31,24 @@ public class MoxProxyHttpObjectBuilder extends ChildBuilder<MoxProxyRuleBuilder,
         return this;
     }
 
+    public MoxProxyHttpObjectBuilder withBody(String body){
+        this.body = body;
+        return this;
+    }
+
+    public MoxProxyHeadersCollectionBuilder havingHeaders(){
+        return headersCollectionBuilder;
+    }
+
     @Override
     public MoxProxyHttpObject build() {
+        Iterable<MoxProxyHeader> headers = headersCollectionBuilder.build();
         var httpObject = new MoxProxyHttpObject();
         httpObject.setMethod(method);
         httpObject.setPath(path);
         httpObject.setStatusCode(statusCode);
         httpObject.setBody(body);
-        //TODO collection build
+        httpObject.setHeaders(headers);
         return httpObject;
     }
 }
