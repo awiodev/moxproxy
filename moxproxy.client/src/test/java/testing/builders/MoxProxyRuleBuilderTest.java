@@ -12,13 +12,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 class MoxProxyRuleBuilderTest {
 
+    private static final String DEFAULT_SESSION_ID = "1234";
+
     @Test
     void givenChildBuilder_whenBackToParent_thenParentReturned(){
-        String sessionId = "1234";
 
         var builder = new MoxProxyRuleBuilder();
         builder.withDirection(MoxProxyDirection.REQUEST)
-                .withSessionId(sessionId);
+                .withSessionId(DEFAULT_SESSION_ID);
 
         MoxProxyHttpObjectBuilder childBuilder = builder.withHttpObject();
         MoxProxyRuleBuilder actual = childBuilder.backToParent();
@@ -28,7 +29,6 @@ class MoxProxyRuleBuilderTest {
 
     @Test
     void givenBuilder_whenBuild_thenAllBuilt(){
-        String sessionId = "1234";
         String method = "POST";
         String path = "test/path";
         String body = "{something:\"some value\"}";
@@ -38,7 +38,7 @@ class MoxProxyRuleBuilderTest {
         var builder = new MoxProxyRuleBuilder();
         MoxProxyRule actual = builder
                 .withDirection(MoxProxyDirection.REQUEST)
-                .withSessionId(sessionId)
+                .withSessionId(DEFAULT_SESSION_ID)
                 .withHttpObject()
                     .withMethod(method)
                     .withPath(path)
@@ -53,7 +53,7 @@ class MoxProxyRuleBuilderTest {
                     .backToParent()
                 .build();
 
-        Assertions.assertEquals(sessionId, actual.getSessionId());
+        Assertions.assertEquals(DEFAULT_SESSION_ID, actual.getSessionId());
         Assertions.assertEquals(MoxProxyDirection.REQUEST, actual.getHttpDirection());
         Assertions.assertEquals(method, actual.getMoxProxyHttpObject().getMethod());
         Assertions.assertEquals(path, actual.getMoxProxyHttpObject().getPath());
