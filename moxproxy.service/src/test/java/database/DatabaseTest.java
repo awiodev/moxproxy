@@ -1,7 +1,8 @@
 package database;
 
-import dto.MoxProxyProcessedTrafficEntry;
-import interfaces.IMoxProxyDatabase;
+import moxproxy.dto.MoxProxyProcessedTrafficEntry;
+import moxproxy.dto.MoxProxyRule;
+import moxproxy.interfaces.IMoxProxyDatabase;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import dto.MoxProxyRule;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -19,15 +19,15 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @Import(DatabaseTestConfiguration.class)
-public class DatabaseTest {
+class DatabaseTest {
 
     private static final String UNKNOWN = "UNKNOWN";
 
     @Autowired
-    IMoxProxyDatabase database;
+    private IMoxProxyDatabase database;
 
     @BeforeEach
-    void beforeEachSeatup(){
+    void beforeEachSetup(){
         database.startDatabase();
     }
 
@@ -134,7 +134,7 @@ public class DatabaseTest {
 
         database.cleanRule(rule.getId());
         MoxProxyRule found = database.findRuleByById(rule.getId());
-        Assertions.assertEquals(null, found);
+        Assertions.assertNull(found);
     }
 
     @Test

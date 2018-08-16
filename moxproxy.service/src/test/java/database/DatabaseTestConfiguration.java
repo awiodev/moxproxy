@@ -1,12 +1,12 @@
 package database;
 
-import interfaces.IMoxProxyDatabase;
+import moxproxy.interfaces.IMoxProxyDatabase;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import services.MoxProxyDatabase;
+import moxproxy.services.MoxProxyDatabase;
 
 @TestConfiguration
-public class DatabaseTestConfiguration {
+class DatabaseTestConfiguration {
 
     @Bean
     IMoxProxyDatabase moxProxyDatabase(){

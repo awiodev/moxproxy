@@ -1,9 +1,9 @@
 package testing.builders;
 
-import builders.MoxProxyHttpObjectBuilder;
-import builders.MoxProxyRuleBuilder;
-import dto.MoxProxyDirection;
-import dto.MoxProxyRule;
+import moxproxy.builders.MoxProxyHttpObjectBuilder;
+import moxproxy.builders.MoxProxyRuleBuilder;
+import moxproxy.enums.MoxProxyDirection;
+import moxproxy.dto.MoxProxyRule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
