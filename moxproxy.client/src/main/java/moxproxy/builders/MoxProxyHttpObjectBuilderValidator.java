@@ -4,8 +4,8 @@ class MoxProxyHttpObjectBuilderValidator extends BaseBuilderValidator<MoxProxyHt
 
     @Override
     public void performValidation(MoxProxyHttpObjectBuilder builder) {
-        String className = builder.getClass().getCanonicalName();
-        notNull(builder.getMethod(), className, "Method");
-        notNull(builder.getPath(), className, "Path");
+        String className = getClassName(builder);
+        notNull(builder.getMethod(), className, "METHOD");
+        notNull(builder.getPath(), className, "PATH");
     }
 }

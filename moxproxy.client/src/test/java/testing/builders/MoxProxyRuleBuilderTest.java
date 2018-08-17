@@ -2,17 +2,20 @@ package testing.builders;
 
 import moxproxy.builders.MoxProxyHttpObjectBuilder;
 import moxproxy.builders.MoxProxyRuleBuilder;
+import moxproxy.dto.MoxProxyRule;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
-import moxproxy.dto.MoxProxyRule;
 import moxproxy.exceptions.BuilderValidationException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 class MoxProxyRuleBuilderTest {
@@ -29,7 +32,7 @@ class MoxProxyRuleBuilderTest {
         MoxProxyHttpObjectBuilder childBuilder = builder.withHttpObject();
         MoxProxyRuleBuilder actual = childBuilder.backToParent();
 
-        Assertions.assertEquals(builder, actual);
+        assertEquals(builder, actual);
     }
 
     @Test
@@ -59,23 +62,24 @@ class MoxProxyRuleBuilderTest {
                 .backToParent()
             .build();
 
-        Assertions.assertNotNull(actual.getId());
-        Assertions.assertNotNull(actual.getDate());
-        Assertions.assertEquals(DEFAULT_SESSION_ID, actual.getSessionId());
-        Assertions.assertEquals(MoxProxyDirection.REQUEST, actual.getHttpDirection());
-        Assertions.assertEquals(MoxProxyAction.RESPOND, actual.getAction());
-        Assertions.assertEquals(method, actual.getMoxProxyHttpObject().getMethod());
-        Assertions.assertEquals(path, actual.getMoxProxyHttpObject().getPath());
-        Assertions.assertEquals(statusCode, actual.getMoxProxyHttpObject().getStatusCode());
-        Assertions.assertEquals(body, actual.getMoxProxyHttpObject().getBody());
-        Assertions.assertEquals(headerName, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getName());
-        Assertions.assertEquals(headerValue, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getValue());
+        assertNotNull(actual.getId());
+        assertNotNull(actual.getDate());
+        assertEquals(DEFAULT_SESSION_ID, actual.getSessionId());
+        assertEquals(MoxProxyDirection.REQUEST, actual.getHttpDirection());
+        assertEquals(MoxProxyAction.RESPOND, actual.getAction());
+        assertEquals(method, actual.getMoxProxyHttpObject().getMethod());
+        assertEquals(path, actual.getMoxProxyHttpObject().getPath());
+        assertEquals(statusCode, actual.getMoxProxyHttpObject().getStatusCode());
+        assertEquals(body, actual.getMoxProxyHttpObject().getBody());
+        assertEquals(headerName, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getName());
+        assertEquals(headerValue, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getValue());
     }
 
     @DisplayName("Should throw validation exception")
     @ParameterizedTest(name = "{1}")
     @ArgumentsSource(InvalidBuildersProvider.class)
-    void givenBuilder_WhenBuild_thenValidationException(MoxProxyRuleBuilder builder, String reason){
-        Assertions.assertThrows(BuilderValidationException.class, builder::build);
+    void givenBuilder_WhenBuild_thenValidationException(MoxProxyRuleBuilder builder, String reason, String expectedMessage){
+        BuilderValidationException exception = assertThrows(BuilderValidationException.class, builder::build, reason);
+        assertThat(exception.getMessage(), matchesPattern(expectedMessage));
     }
 }

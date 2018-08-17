@@ -10,9 +10,8 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     }
 
     private void validateBasics(MoxProxyRuleBuilder builder) throws BuilderValidationException {
-        String className = builder.getClass().getCanonicalName();
-        notNull(builder.getDirection(), className, "Direction");
-        notNull(builder.getAction(), className, "Action");
-        notNull(builder.getHttpObjectBuilder(), className, "HttpObject");
+        String className = getClassName(builder);
+        notNull(builder.getDirection(), className, "DIRECTION");
+        notNull(builder.getAction(), className, "ACTION");
     }
 }

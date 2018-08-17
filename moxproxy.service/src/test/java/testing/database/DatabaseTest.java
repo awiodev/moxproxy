@@ -5,7 +5,6 @@ import moxproxy.dto.MoxProxyRule;
 import moxproxy.interfaces.IMoxProxyDatabase;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @Import(DatabaseTestConfiguration.class)
@@ -46,7 +47,7 @@ class DatabaseTest {
         database.addProcessedRequest(entry3);
 
         List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic());
-        Assertions.assertEquals(3, found.size());
+        assertEquals(3, found.size());
     }
 
     @Test
@@ -62,9 +63,9 @@ class DatabaseTest {
         database.cleanProcessedTraffic(entry1.getSessionId());
 
         List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic());
-        Assertions.assertEquals(1, found.size());
+        assertEquals(1, found.size());
         MoxProxyProcessedTrafficEntry first = found.get(0);
-        Assertions.assertEquals(entry3, first);
+        assertEquals(entry3, first);
     }
 
     @Test
@@ -85,7 +86,7 @@ class DatabaseTest {
         database.cleanProcessedTraffic(newDate);
 
         List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic());
-        Assertions.assertEquals(0, found.size());
+        assertEquals(0, found.size());
     }
 
     @Test
@@ -99,7 +100,7 @@ class DatabaseTest {
         database.addProcessedRequest(entry3);
 
         List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic(entry1.getSessionId()));
-        Assertions.assertEquals(2, found.size());
+        assertEquals(2, found.size());
     }
 
     @Test
@@ -115,7 +116,7 @@ class DatabaseTest {
         database.cleanAllProcessedTraffic();
 
         List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic(entry1.getSessionId()));
-        Assertions.assertEquals(0, found.size());
+        assertEquals(0, found.size());
     }
 
     @Test
@@ -124,7 +125,7 @@ class DatabaseTest {
         database.addRule(rule);
 
         MoxProxyRule found = database.findRuleByById(rule.getId());
-        Assertions.assertEquals(rule, found);
+        assertEquals(rule, found);
     }
 
     @Test
@@ -134,7 +135,7 @@ class DatabaseTest {
 
         database.cleanRule(rule.getId());
         MoxProxyRule found = database.findRuleByById(rule.getId());
-        Assertions.assertNull(found);
+        assertNull(found);
     }
 
     @Test
@@ -149,7 +150,7 @@ class DatabaseTest {
         database.addRule(rule3);
 
         List found = Lists.newArrayList(database.findRulesBySessionId(rule1.getSessionId()));
-        Assertions.assertEquals(2, found.size());
+        assertEquals(2, found.size());
     }
 
     @Test
@@ -165,7 +166,7 @@ class DatabaseTest {
 
         database.cleanRules(rule1.getSessionId());
         List found = Lists.newArrayList(database.findRulesBySessionId(rule1.getSessionId()));
-        Assertions.assertTrue(found.isEmpty());
+        assertTrue(found.isEmpty());
     }
 
     @Test
@@ -181,7 +182,7 @@ class DatabaseTest {
 
         database.cleanRules(rule1.getSessionId());
         List found = Lists.newArrayList(database.findRulesBySessionId(rule3.getSessionId()));
-        Assertions.assertEquals(1, found.size());
+        assertEquals(1, found.size());
     }
 
     @Test
@@ -197,7 +198,7 @@ class DatabaseTest {
 
         database.cleanAllRules();
         List found = Lists.newArrayList(database.getAllRules());
-        Assertions.assertTrue(found.isEmpty());
+        assertTrue(found.isEmpty());
     }
 
     private MoxProxyProcessedTrafficEntry createDefaultTrafficEntry(){
