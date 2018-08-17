@@ -2,8 +2,9 @@ package moxproxy.builders;
 
 import moxproxy.dto.MoxProxyHeader;
 import moxproxy.dto.MoxProxyHttpObject;
+import moxproxy.validators.MoxProxyHttpObjectBuilderValidator;
 
-public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, MoxProxyHttpObject> {
+public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, MoxProxyHttpObjectBuilder, MoxProxyHttpObject, MoxProxyHttpObjectBuilderValidator> {
 
     private String method;
     private String path;
@@ -12,7 +13,7 @@ public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, 
     private int statusCode;
 
     MoxProxyHttpObjectBuilder(MoxProxyRuleBuilder moxProxyRuleBuilder) {
-        super(moxProxyRuleBuilder);
+        super(moxProxyRuleBuilder, new MoxProxyHttpObjectBuilderValidator());
         headersCollectionBuilder = new MoxProxyHeadersCollectionBuilder(this);
     }
 
@@ -40,8 +41,9 @@ public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, 
         return headersCollectionBuilder;
     }
 
+
     @Override
-    public MoxProxyHttpObject build() {
+    MoxProxyHttpObject performBuild() {
         Iterable<MoxProxyHeader> headers = headersCollectionBuilder.build();
         var httpObject = new MoxProxyHttpObject();
         httpObject.setMethod(method);
@@ -51,4 +53,10 @@ public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, 
         httpObject.setHeaders(headers);
         return httpObject;
     }
+
+    @Override
+    MoxProxyHttpObjectBuilder getCurrentBuilder() {
+        return this;
+    }
+
 }

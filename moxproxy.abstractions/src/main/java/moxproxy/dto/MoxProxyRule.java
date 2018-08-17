@@ -1,5 +1,6 @@
 package moxproxy.dto;
 
+import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ public class MoxProxyRule {
     private String id;
     private MoxProxyDirection direction;
     private MoxProxyHttpObject moxProxyHttpObject;
+    private MoxProxyAction moxProxyAction;
     private Date date;
 
     public MoxProxyRule(){
@@ -48,5 +50,13 @@ public class MoxProxyRule {
 
     public void setMoxProxyHttpObject(MoxProxyHttpObject moxProxyHttpObject) {
         this.moxProxyHttpObject = moxProxyHttpObject;
+    }
+
+    public MoxProxyAction getAction() {
+        return moxProxyAction;
+    }
+
+    public void setAction(MoxProxyAction moxProxyAction) {
+        this.moxProxyAction = moxProxyAction;
     }
 }

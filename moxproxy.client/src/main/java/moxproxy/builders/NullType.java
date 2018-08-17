@@ -6,4 +6,9 @@ public class NullType implements IBuilder {
     public IBuilder backToParent() {
         return null;
     }
+
+    @Override
+    public Object build() {
+        return null;
+    }
 }

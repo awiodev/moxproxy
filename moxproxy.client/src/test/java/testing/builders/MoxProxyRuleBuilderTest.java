@@ -2,6 +2,7 @@ package testing.builders;
 
 import moxproxy.builders.MoxProxyHttpObjectBuilder;
 import moxproxy.builders.MoxProxyRuleBuilder;
+import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.dto.MoxProxyRule;
 import org.junit.jupiter.api.Assertions;
@@ -39,6 +40,7 @@ class MoxProxyRuleBuilderTest {
         MoxProxyRule actual = builder
                 .withDirection(MoxProxyDirection.REQUEST)
                 .withSessionId(DEFAULT_SESSION_ID)
+                .withAction(MoxProxyAction.RESPOND)
                 .withHttpObject()
                     .withMethod(method)
                     .withPath(path)
@@ -57,6 +59,7 @@ class MoxProxyRuleBuilderTest {
         Assertions.assertNotNull(actual.getDate());
         Assertions.assertEquals(DEFAULT_SESSION_ID, actual.getSessionId());
         Assertions.assertEquals(MoxProxyDirection.REQUEST, actual.getHttpDirection());
+        Assertions.assertEquals(MoxProxyAction.RESPOND, actual.getAction());
         Assertions.assertEquals(method, actual.getMoxProxyHttpObject().getMethod());
         Assertions.assertEquals(path, actual.getMoxProxyHttpObject().getPath());
         Assertions.assertEquals(statusCode, actual.getMoxProxyHttpObject().getStatusCode());

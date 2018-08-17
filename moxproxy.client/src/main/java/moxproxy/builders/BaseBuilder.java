@@ -1,18 +1,15 @@
 package moxproxy.builders;
 
-public abstract class BaseBuilder<Parent extends IBuilder, Model> implements IBuilder<Parent> {
+import moxproxy.validators.IBuilderValidator;
+
+public abstract class BaseBuilder<Parent extends IBuilder, Builder extends IBuilder, Model, Validator extends IBuilderValidator> implements IBuilder<Parent, Model> {
 
     private Parent parent;
+    private Validator validator;
 
-    BaseBuilder(Parent parent){
+    BaseBuilder(Parent parent, Validator validator){
         this.parent = parent;
-    }
-
-    /*
-        For builders without patent
-     */
-    BaseBuilder(){
-        this(null);
+        this.validator = validator;
     }
 
     @Override
@@ -20,5 +17,14 @@ public abstract class BaseBuilder<Parent extends IBuilder, Model> implements IBu
         return parent;
     }
 
-    public abstract Model build();
+    @Override
+    public Model build(){
+        Builder builder = getCurrentBuilder();
+        validator.performValidation(builder);
+        return performBuild();
+    }
+
+    abstract Model performBuild();
+
+    abstract Builder getCurrentBuilder();
 }

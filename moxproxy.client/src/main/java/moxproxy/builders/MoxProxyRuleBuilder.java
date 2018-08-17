@@ -1,18 +1,23 @@
 package moxproxy.builders;
 
+import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.dto.MoxProxyHttpObject;
 import moxproxy.dto.MoxProxyRule;
+import moxproxy.validators.MoxProxyRuleBuilderValidator;
 
-public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRule> {
+public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuilder, MoxProxyRule, MoxProxyRuleBuilderValidator> {
 
     private String sessionId;
 
     private MoxProxyDirection direction;
 
+    private MoxProxyAction action;
+
     private MoxProxyHttpObjectBuilder httpObjectBuilder;
 
     public MoxProxyRuleBuilder(){
+        super(null, new MoxProxyRuleBuilderValidator());
         httpObjectBuilder = new MoxProxyHttpObjectBuilder(this);
     }
 
@@ -30,15 +35,24 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRule> {
         return httpObjectBuilder;
     }
 
+    public MoxProxyRuleBuilder withAction(MoxProxyAction action){
+        this.action = action;
+        return this;
+    }
+
     @Override
-    public MoxProxyRule build() {
-
+    MoxProxyRule performBuild() {
         MoxProxyHttpObject child = httpObjectBuilder.build();
-
         var rule = new MoxProxyRule();
+        rule.setAction(action);
         rule.setSessionId(sessionId);
         rule.setHttpDirection(direction);
         rule.setMoxProxyHttpObject(child);
         return rule;
+    }
+
+    @Override
+    MoxProxyRuleBuilder getCurrentBuilder() {
+        return this;
     }
 }
