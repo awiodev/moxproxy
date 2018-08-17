@@ -53,6 +53,8 @@ class MoxProxyRuleBuilderTest {
                     .backToParent()
                 .build();
 
+        Assertions.assertNotNull(actual.getId());
+        Assertions.assertNotNull(actual.getDate());
         Assertions.assertEquals(DEFAULT_SESSION_ID, actual.getSessionId());
         Assertions.assertEquals(MoxProxyDirection.REQUEST, actual.getHttpDirection());
         Assertions.assertEquals(method, actual.getMoxProxyHttpObject().getMethod());
