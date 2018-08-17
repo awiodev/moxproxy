@@ -1,9 +1,11 @@
 package moxproxy.builders;
 
 
-public interface IBuilder<ParentBuilder extends IBuilder, Model> {
+import moxproxy.exceptions.BuilderValidationException;
+
+interface IBuilder<ParentBuilder extends IBuilder, Model> {
 
     ParentBuilder backToParent();
 
-    Model build();
+    Model build() throws BuilderValidationException;
 }

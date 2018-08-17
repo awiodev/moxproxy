@@ -5,9 +5,13 @@ import moxproxy.builders.MoxProxyRuleBuilder;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.dto.MoxProxyRule;
+import moxproxy.exceptions.BuilderValidationException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -29,7 +33,7 @@ class MoxProxyRuleBuilderTest {
     }
 
     @Test
-    void givenBuilder_whenBuild_thenAllBuilt(){
+    void givenBuilder_whenBuild_thenAllBuilt() throws BuilderValidationException {
         String method = "POST";
         String path = "test/path";
         String body = "{something:\"some value\"}";
@@ -66,5 +70,12 @@ class MoxProxyRuleBuilderTest {
         Assertions.assertEquals(body, actual.getMoxProxyHttpObject().getBody());
         Assertions.assertEquals(headerName, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getName());
         Assertions.assertEquals(headerValue, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getValue());
+    }
+
+    @DisplayName("Should throw validation exception")
+    @ParameterizedTest(name = "{1}")
+    @ArgumentsSource(InvalidBuildersProvider.class)
+    void givenBuilder_WhenBuild_thenValidationException(MoxProxyRuleBuilder builder, String reason){
+        Assertions.assertThrows(BuilderValidationException.class, builder::build);
     }
 }

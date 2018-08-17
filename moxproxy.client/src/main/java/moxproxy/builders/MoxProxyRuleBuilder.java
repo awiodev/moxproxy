@@ -4,7 +4,6 @@ import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.dto.MoxProxyHttpObject;
 import moxproxy.dto.MoxProxyRule;
-import moxproxy.validators.MoxProxyRuleBuilderValidator;
 
 public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuilder, MoxProxyRule, MoxProxyRuleBuilderValidator> {
 
@@ -38,6 +37,22 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
     public MoxProxyRuleBuilder withAction(MoxProxyAction action){
         this.action = action;
         return this;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public MoxProxyDirection getDirection() {
+        return direction;
+    }
+
+    public MoxProxyAction getAction() {
+        return action;
+    }
+
+    public MoxProxyHttpObjectBuilder getHttpObjectBuilder() {
+        return httpObjectBuilder;
     }
 
     @Override

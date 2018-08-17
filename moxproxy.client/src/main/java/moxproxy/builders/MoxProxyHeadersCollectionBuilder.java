@@ -1,7 +1,7 @@
 package moxproxy.builders;
 
 import moxproxy.dto.MoxProxyHeader;
-import moxproxy.validators.MoxProxyHeadersCollectionBuilderValidator;
+import moxproxy.exceptions.BuilderValidationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class MoxProxyHeadersCollectionBuilder extends CollectionBuilder<MoxProxy
 
 
     @Override
-    Iterable<MoxProxyHeader> performBuild() {
+    Iterable<MoxProxyHeader> performBuild() throws BuilderValidationException {
         List<MoxProxyHeaderBuilder> childBuilders = getItems();
         List<MoxProxyHeader> headers = new ArrayList<>();
 

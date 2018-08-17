@@ -1,6 +1,6 @@
 package moxproxy.builders;
 
-import moxproxy.validators.IBuilderValidator;
+import moxproxy.exceptions.BuilderValidationException;
 
 public abstract class BaseBuilder<Parent extends IBuilder, Builder extends IBuilder, Model, Validator extends IBuilderValidator> implements IBuilder<Parent, Model> {
 
@@ -18,13 +18,13 @@ public abstract class BaseBuilder<Parent extends IBuilder, Builder extends IBuil
     }
 
     @Override
-    public Model build(){
+    public Model build() throws BuilderValidationException {
         Builder builder = getCurrentBuilder();
         validator.performValidation(builder);
         return performBuild();
     }
 
-    abstract Model performBuild();
+    abstract Model performBuild() throws BuilderValidationException;
 
     abstract Builder getCurrentBuilder();
 }

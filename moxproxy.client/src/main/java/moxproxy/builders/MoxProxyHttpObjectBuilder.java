@@ -2,7 +2,6 @@ package moxproxy.builders;
 
 import moxproxy.dto.MoxProxyHeader;
 import moxproxy.dto.MoxProxyHttpObject;
-import moxproxy.validators.MoxProxyHttpObjectBuilderValidator;
 
 public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, MoxProxyHttpObjectBuilder, MoxProxyHttpObject, MoxProxyHttpObjectBuilderValidator> {
 
@@ -41,6 +40,25 @@ public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, 
         return headersCollectionBuilder;
     }
 
+    String getMethod() {
+        return method;
+    }
+
+    String getPath() {
+        return path;
+    }
+
+    String getBody() {
+        return body;
+    }
+
+    MoxProxyHeadersCollectionBuilder getHeadersCollectionBuilder() {
+        return headersCollectionBuilder;
+    }
+
+    int getStatusCode() {
+        return statusCode;
+    }
 
     @Override
     MoxProxyHttpObject performBuild() {

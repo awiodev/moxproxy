@@ -1,7 +1,6 @@
 package moxproxy.builders;
 
 import moxproxy.dto.MoxProxyHeader;
-import moxproxy.validators.MoxProxyHeaderBuilderValidator;
 
 public class MoxProxyHeaderBuilder extends BaseBuilder<MoxProxyHeadersCollectionBuilder, MoxProxyHeaderBuilder, MoxProxyHeader, MoxProxyHeaderBuilderValidator> {
 
@@ -21,6 +20,14 @@ public class MoxProxyHeaderBuilder extends BaseBuilder<MoxProxyHeadersCollection
     public MoxProxyHeaderBuilder withValue(String value){
         this.value = value;
         return this;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    String getValue() {
+        return value;
     }
 
     @Override

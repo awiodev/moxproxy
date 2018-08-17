@@ -1,7 +1,5 @@
 package moxproxy.builders;
 
-import moxproxy.validators.IBuilderValidator;
-
 import java.util.ArrayList;
 import java.util.List;
 
