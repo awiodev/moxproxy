@@ -42,22 +42,22 @@ class MoxProxyRuleBuilderTest {
         int statusCode = 500;
         var builder = new MoxProxyRuleBuilder();
         MoxProxyRule actual = builder
-                .withDirection(MoxProxyDirection.REQUEST)
-                .withSessionId(DEFAULT_SESSION_ID)
-                .withAction(MoxProxyAction.RESPOND)
-                .withHttpObject()
-                    .withMethod(method)
-                    .withPath(path)
-                    .withStatusCode(statusCode)
-                    .withBody(body)
-                    .havingHeaders()
-                        .addChildItem()
-                            .withName(headerName)
-                            .withValue(headerValue)
-                            .backToParent()
+            .withDirection(MoxProxyDirection.REQUEST)
+            .withSessionId(DEFAULT_SESSION_ID)
+            .withAction(MoxProxyAction.RESPOND)
+            .withHttpObject()
+                .withMethod(method)
+                .withPath(path)
+                .withStatusCode(statusCode)
+                .withBody(body)
+                .havingHeaders()
+                    .addChildItem()
+                        .withName(headerName)
+                        .withValue(headerValue)
                         .backToParent()
                     .backToParent()
-                .build();
+                .backToParent()
+            .build();
 
         Assertions.assertNotNull(actual.getId());
         Assertions.assertNotNull(actual.getDate());
