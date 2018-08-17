@@ -43,6 +43,7 @@ public class MoxProxyClient implements IMoxProxyService {
 
     @Override
     public String createRule(MoxProxyRule moxProxyRule) {
-        return null;
+        //TODO Rule creation
+        return moxProxyRule.getId();
     }
 }

@@ -1,4 +1,4 @@
-package database;
+package testing.database;
 
 import moxproxy.interfaces.IMoxProxyDatabase;
 import org.springframework.boot.test.context.TestConfiguration;

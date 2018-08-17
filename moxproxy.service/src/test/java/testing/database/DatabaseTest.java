@@ -1,4 +1,4 @@
-package database;
+package testing.database;
 
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
