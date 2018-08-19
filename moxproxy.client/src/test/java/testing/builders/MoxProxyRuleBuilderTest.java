@@ -80,6 +80,6 @@ class MoxProxyRuleBuilderTest {
     @ArgumentsSource(InvalidBuildersProvider.class)
     void givenBuilder_WhenBuild_thenValidationException(MoxProxyRuleBuilder builder, String reason, String expectedMessage){
         BuilderValidationException exception = assertThrows(BuilderValidationException.class, builder::build, reason);
-        assertThat(exception.getMessage(), matchesPattern(expectedMessage));
+        assertThat(exception.getMessage().trim(), matchesPattern(expectedMessage));
     }
 }

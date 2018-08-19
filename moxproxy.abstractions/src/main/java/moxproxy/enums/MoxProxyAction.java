@@ -1,10 +1,9 @@
 package moxproxy.enums;
 
 public enum MoxProxyAction {
-    ADD_HEADER,
-    MODIFY_HEADER,
+    SET_HEADER,
     DELETE_HEADER,
     RESPOND,
-    MODIFY_BODY,
+    SET_BODY,
     DELETE_BODY
 }
