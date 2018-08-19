@@ -1,6 +1,7 @@
 package moxproxy.builders;
 
 import moxproxy.enums.MoxProxyAction;
+import moxproxy.enums.MoxProxyDirection;
 import moxproxy.exceptions.BuilderValidationException;
 
 import java.util.List;
@@ -26,6 +27,7 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
         validateHeaderNameForAction(builder, MoxProxyAction.SET_HEADER);
         validateHeaderNameForAction(builder, MoxProxyAction.DELETE_HEADER);
         validateRespondAction(builder);
+        validateRequestStatusCode(builder);
     }
 
     private void validateBodyActions(MoxProxyRuleBuilder builder){
@@ -59,6 +61,14 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
             MoxProxyHttpObjectBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
             int statusCode = httpObjectBuilder.getStatusCode();
             notValue(statusCode, 0, getClassName(httpObjectBuilder), "STATUS_CODE", "Status code cannot be 0 when using action: " + action.name());
+        }
+    }
+
+    private void validateRequestStatusCode(MoxProxyRuleBuilder builder){
+        if(builder.getDirection() == MoxProxyDirection.REQUEST){
+            MoxProxyHttpObjectBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
+            int statusCode = httpObjectBuilder.getStatusCode();
+            shouldBeDifferentThanValue(statusCode, 0, getClassName(httpObjectBuilder), "STATUS_CODE", "Status code cannot be different than 0 when using direction: " + MoxProxyDirection.REQUEST);
         }
     }
 }

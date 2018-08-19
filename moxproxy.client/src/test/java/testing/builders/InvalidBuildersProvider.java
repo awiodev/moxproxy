@@ -31,7 +31,9 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 Arguments.of(createWithEmptyHttpObjectHeaderName(MoxProxyAction.SET_HEADER), "HttpObject header name is required for " + MoxProxyAction.SET_HEADER,
                         "Object field: HEADER_NAME member of: .* cannot be null. Header name cannot be null when using action: SET_HEADER"),
                 Arguments.of(createBasicActionWithoutHeaders(MoxProxyAction.RESPOND), "HttpObject status code is required for " + MoxProxyAction.RESPOND,
-                        "Object field: STATUS_CODE member of: .* cannot be 0. Status code cannot be 0 when using action: RESPOND")
+                        "Object field: STATUS_CODE member of: .* cannot be 0. Status code cannot be 0 when using action: RESPOND"),
+                Arguments.of(createRequestDirectionWithStatusCode(MoxProxyAction.DELETE_BODY), "HttpObject status code should be 0 for direction: " + MoxProxyDirection.REQUEST,
+                        "Object field: STATUS_CODE member of: .* should be different than 0. Status code cannot be different than 0 when using direction: REQUEST")
         );
     }
 
@@ -66,10 +68,21 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
     private MoxProxyRuleBuilder createBasicActionWithoutHeaders(MoxProxyAction action){
         return createDefault()
                 .withAction(action)
+                .withDirection(MoxProxyDirection.RESPONSE)
+                .withHttpObject()
+                    .withMethod(defaultMethod)
+                    .withPath(defaultPath)
+                    .backToParent();
+    }
+
+    private MoxProxyRuleBuilder createRequestDirectionWithStatusCode(MoxProxyAction action){
+        return createDefault()
+                .withAction(action)
                 .withDirection(MoxProxyDirection.REQUEST)
                 .withHttpObject()
                     .withMethod(defaultMethod)
                     .withPath(defaultPath)
+                    .withStatusCode(200)
                     .backToParent();
     }
 
