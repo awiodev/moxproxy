@@ -13,13 +13,17 @@ abstract class BaseBuilderValidator<Builder extends IBuilder> implements IBuilde
         }
     }
 
-    String getClassName(IBuilder builder){
-        return builder.getClass().getCanonicalName();
+    void notEmpty(Iterator collection, String objectClass, String field){
+        notEmpty(collection, objectClass, field, "");
     }
 
-    void notEmpty(Iterator collection, String objectClass, String field){
-        if(Iterators.size(collection) == 1){
-            throw new BuilderValidationException("Object field: " + field + " member of: " + objectClass + " cannot be empty");
+    void notEmpty(Iterator collection, String objectClass, String field, String errorDescription){
+        if(Iterators.size(collection) == 0){
+            throw new BuilderValidationException("Object field: " + field + " member of: " + objectClass + " cannot be empty." + errorDescription);
         }
+    }
+
+    String getClassName(IBuilder builder) {
+        return builder.getClass().getCanonicalName();
     }
 }

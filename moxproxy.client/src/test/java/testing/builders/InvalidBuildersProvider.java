@@ -11,6 +11,11 @@ import java.util.stream.Stream;
 
 public class InvalidBuildersProvider implements ArgumentsProvider {
 
+    private static final String defaultMethod = "GET";
+    private static final String defaultPath = "some/path";
+    private static final String defaultValue = "someValue";
+    private static final String defaultName = "someName";
+
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
         return Stream.of(
@@ -18,7 +23,13 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 Arguments.of(createWithoutDirection(), "Direction is required parameter", "Object field: DIRECTION member of: .* cannot be null"),
                 Arguments.of(createWithEmptyHttpObjectPath(), "HttpObject method is required parameter", "Object field: METHOD member of: .* cannot be null"),
                 Arguments.of(createWithEmptyHttpObjectHeaderName(), "HttpObject Header name is required", "Object field: NAME member of: .* cannot be null"),
-                Arguments.of(createWithEmptyHttpObjectHeaderValue(), "HttpObject Header value is required", "Object field: VALUE member of: .* cannot be null")
+                Arguments.of(createWithEmptyHttpObjectHeaderValue(), "HttpObject Header value is required", "Object field: VALUE member of: .* cannot be null"),
+                Arguments.of(createBasicActionWithoutHeaders(MoxProxyAction.ADD_HEADER), "HttpObject Headers are required for " + MoxProxyAction.ADD_HEADER + " action",
+                        "Object field: HEADERS member of: .* cannot be empty. Required when ADD_HEADER action is selected"),
+                Arguments.of(createBasicActionWithoutHeaders(MoxProxyAction.MODIFY_HEADER), "HttpObject Headers are required for " + MoxProxyAction.ADD_HEADER + " action",
+                        "Object field: HEADERS member of: .* cannot be empty. Required when MODIFY_HEADER action is selected"),
+                Arguments.of(createBasicActionWithoutHeaders(MoxProxyAction.DELETE_HEADER), "HttpObject Headers are required for " + MoxProxyAction.ADD_HEADER + " action",
+                        "Object field: HEADERS member of: .* cannot be empty. Required when DELETE_HEADER action is selected")
         );
     }
 
@@ -41,10 +52,10 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 .withAction(MoxProxyAction.MODIFY_BODY)
                 .withDirection(MoxProxyDirection.REQUEST)
                 .withHttpObject()
-                .withMethod("GET")
-                .withPath("some/path")
+                .withMethod(defaultMethod)
+                .withPath(defaultPath)
                 .havingHeaders()
-                    .addChildItem().withValue("someval")
+                    .addChildItem().withValue(defaultValue)
                         .backToParent()
                     .backToParent()
                 .backToParent();
@@ -55,13 +66,24 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 .withAction(MoxProxyAction.MODIFY_BODY)
                 .withDirection(MoxProxyDirection.REQUEST)
                 .withHttpObject()
-                .withMethod("GET")
-                .withPath("some/path")
-                .havingHeaders()
-                    .addChildItem().withName("somename")
+                    .withMethod(defaultMethod)
+                    .withPath(defaultPath)
+                    .havingHeaders()
+                        .addChildItem()
+                        .withName(defaultName)
                         .backToParent()
                     .backToParent()
                 .backToParent();
+    }
+
+    private MoxProxyRuleBuilder createBasicActionWithoutHeaders(MoxProxyAction action){
+        return createDefault()
+                .withAction(action)
+                .withDirection(MoxProxyDirection.REQUEST)
+                .withHttpObject()
+                    .withMethod(defaultMethod)
+                    .withPath(defaultPath)
+                    .backToParent();
     }
 
     private MoxProxyRuleBuilder createDefault(){
