@@ -33,7 +33,7 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 Arguments.of(createBasicActionWithoutHeaders(MoxProxyAction.RESPOND), "HttpObject status code is required for " + MoxProxyAction.RESPOND,
                         "Object field: STATUS_CODE member of: .* cannot be 0. Status code cannot be 0 when using action: RESPOND"),
                 Arguments.of(createRequestDirectionWithStatusCode(MoxProxyAction.DELETE_BODY), "HttpObject status code should be 0 for direction: " + MoxProxyDirection.REQUEST,
-                        "Object field: STATUS_CODE member of: .* should be different than 0. Status code cannot be different than 0 when using direction: REQUEST")
+                        "Object field: STATUS_CODE member of: .* should be equal to 0. Status code cannot be different than 0 when using direction: REQUEST")
         );
     }
 

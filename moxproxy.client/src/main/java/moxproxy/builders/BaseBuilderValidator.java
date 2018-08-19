@@ -14,8 +14,14 @@ abstract class BaseBuilderValidator<Builder extends IBuilder> implements IBuilde
     }
 
     void shouldBeDifferentThanValue(int actual, int notExpected, String objectClass, String field, String errorDescription) throws BuilderValidationException {
-        if(actual != notExpected){
+        if(actual == notExpected){
             throw new BuilderValidationException("Object field: " + field + " member of: " + objectClass + " should be different than " + notExpected + ". " + errorDescription);
+        }
+    }
+
+    void shouldBeTheSameAs(int actual, int notExpected, String objectClass, String field, String errorDescription) throws BuilderValidationException {
+        if(actual != notExpected){
+            throw new BuilderValidationException("Object field: " + field + " member of: " + objectClass + " should be equal to " + notExpected + ". " + errorDescription);
         }
     }
 

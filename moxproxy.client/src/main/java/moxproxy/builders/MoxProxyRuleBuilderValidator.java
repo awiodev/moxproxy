@@ -65,10 +65,10 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     }
 
     private void validateRequestStatusCode(MoxProxyRuleBuilder builder){
-        if(builder.getDirection() == MoxProxyDirection.REQUEST){
+        if(builder.getDirection() == MoxProxyDirection.REQUEST && builder.getAction() != MoxProxyAction.RESPOND){
             MoxProxyHttpObjectBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
             int statusCode = httpObjectBuilder.getStatusCode();
-            shouldBeDifferentThanValue(statusCode, 0, getClassName(httpObjectBuilder), "STATUS_CODE", "Status code cannot be different than 0 when using direction: " + MoxProxyDirection.REQUEST);
+            shouldBeTheSameAs(statusCode, 0, getClassName(httpObjectBuilder), "STATUS_CODE", "Status code cannot be different than 0 when using direction: " + MoxProxyDirection.REQUEST);
         }
     }
 }

@@ -45,7 +45,7 @@ class MoxProxyRuleBuilderTest {
         int statusCode = 500;
         var builder = new MoxProxyRuleBuilder();
         MoxProxyRule actual = builder
-            .withDirection(MoxProxyDirection.REQUEST)
+            .withDirection(MoxProxyDirection.RESPONSE)
             .withSessionId(DEFAULT_SESSION_ID)
             .withAction(MoxProxyAction.RESPOND)
             .withHttpObject()
@@ -65,7 +65,7 @@ class MoxProxyRuleBuilderTest {
         assertNotNull(actual.getId());
         assertNotNull(actual.getDate());
         assertEquals(DEFAULT_SESSION_ID, actual.getSessionId());
-        assertEquals(MoxProxyDirection.REQUEST, actual.getHttpDirection());
+        assertEquals(MoxProxyDirection.RESPONSE, actual.getHttpDirection());
         assertEquals(MoxProxyAction.RESPOND, actual.getAction());
         assertEquals(method, actual.getMoxProxyHttpObject().getMethod());
         assertEquals(path, actual.getMoxProxyHttpObject().getPath());
