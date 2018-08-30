@@ -9,10 +9,6 @@ public interface IMoxProxyService {
 
     Iterable<MoxProxyProcessedTrafficEntry> getAllNetworkTraffic();
 
-    String replaceEntry(MoxProxyProcessedTrafficEntry moxProxyRequest);
-
-    String modifyEntry(MoxProxyProcessedTrafficEntry moxProxyRequest);
-
     void cancelRule(String ruleId);
 
     void clearSessionEntries(String sessionId);

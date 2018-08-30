@@ -2,50 +2,45 @@ package moxproxy.services;
 
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
+import moxproxy.interfaces.IMoxProxyDatabase;
 import moxproxy.interfaces.IMoxProxyService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class MoxProxyService implements IMoxProxyService {
 
-    public MoxProxyService(){
-
-    }
+    @Autowired
+    IMoxProxyDatabase database;
 
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getSessionNetworkTraffic(String sessionId) {
-        return null;
+        return database.getProcessedTraffic(sessionId);
     }
 
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getAllNetworkTraffic() {
-        return null;
-    }
-
-    @Override
-    public String replaceEntry(MoxProxyProcessedTrafficEntry moxProxyRequest) {
-        return null;
-    }
-
-    @Override
-    public String modifyEntry(MoxProxyProcessedTrafficEntry moxProxyRequest) {
-        return null;
+        return database.getProcessedTraffic();
     }
 
     @Override
     public void cancelRule(String ruleId) {
-
+        database.cleanRule(ruleId);
     }
 
     @Override
     public void clearSessionEntries(String sessionId) {
+        database.cleanProcessedTraffic(sessionId);
+        database.cleanRules(sessionId);
     }
 
     @Override
     public void clearAllSessionEntries() {
-
+        database.cleanAllProcessedTraffic();
+        database.cleanAllRules();
     }
 
     @Override
     public String createRule(MoxProxyRule moxProxyRule) {
-        return null;
+        database.addRule(moxProxyRule);
+        return moxProxyRule.getId();
     }
 }
