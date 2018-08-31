@@ -2,6 +2,6 @@ package moxproxy.interfaces;
 
 public interface IMoxProxyServiceConfiguration {
 
-    int getProxyHost();
+    String getProxyHost();
     int getProxyPort();
 }

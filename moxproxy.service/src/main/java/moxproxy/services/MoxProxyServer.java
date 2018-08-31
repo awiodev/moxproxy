@@ -3,6 +3,7 @@ package moxproxy.services;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
 import moxproxy.filters.MoxProxyFiltersAdapter;
+import moxproxy.interfaces.IMoxProxyDatabase;
 import moxproxy.interfaces.IMoxProxyServer;
 import moxproxy.interfaces.IMoxProxyServiceConfiguration;
 import org.littleshoot.proxy.HttpFilters;
@@ -13,12 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public final class MoxProxyServer extends MoxProxyService implements IMoxProxyServer {
+public final class MoxProxyServer implements IMoxProxyServer {
 
     private HttpProxyServer proxyServer;
 
     @Autowired
     private IMoxProxyServiceConfiguration configuration;
+
+    @Autowired
+    private IMoxProxyDatabase database;
 
     @Override
     public void startServer() {
@@ -49,7 +53,6 @@ public final class MoxProxyServer extends MoxProxyService implements IMoxProxySe
 
             @Override
             public HttpFilters filterRequest(HttpRequest httpRequest, ChannelHandlerContext channelHandlerContext) {
-
                 return new MoxProxyFiltersAdapter(httpRequest, channelHandlerContext);
             }
 
