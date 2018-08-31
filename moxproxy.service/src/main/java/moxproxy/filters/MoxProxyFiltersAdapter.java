@@ -1,19 +1,20 @@
 package moxproxy.filters;
 
-import moxproxy.interfaces.IMoxProxyDatabase;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import moxproxy.interfaces.IMoxProxyRules;
 import org.littleshoot.proxy.HttpFiltersAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class MoxProxFiltersAdapter extends HttpFiltersAdapter {
+public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
 
-    private IMoxProxyDatabase moxProxyDatabase;
+    @Autowired
+    private IMoxProxyRules rules;
 
-    public MoxProxFiltersAdapter(HttpRequest originalRequest, ChannelHandlerContext ctx, IMoxProxyDatabase moxProxyDatabase) {
+    public MoxProxyFiltersAdapter(HttpRequest originalRequest, ChannelHandlerContext ctx) {
         super(originalRequest, ctx);
-        this.moxProxyDatabase = moxProxyDatabase;
     }
 
     @Override

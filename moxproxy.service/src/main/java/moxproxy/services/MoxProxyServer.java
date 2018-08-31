@@ -1,31 +1,24 @@
 package moxproxy.services;
 
-import moxproxy.interfaces.IMoxProxyDatabase;
-import moxproxy.interfaces.IProxyServer;
-import moxproxy.interfaces.IProxyServiceConfiguration;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
+import moxproxy.filters.MoxProxyFiltersAdapter;
+import moxproxy.interfaces.IMoxProxyServer;
+import moxproxy.interfaces.IMoxProxyServiceConfiguration;
 import org.littleshoot.proxy.HttpFilters;
-import org.littleshoot.proxy.HttpFiltersSourceAdapter;
+import org.littleshoot.proxy.HttpFiltersSource;
 import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public final class MoxProxyServer extends MoxProxyService implements IProxyServer {
+public final class MoxProxyServer extends MoxProxyService implements IMoxProxyServer {
 
     private HttpProxyServer proxyServer;
 
     @Autowired
-    private IProxyServiceConfiguration configuration;
-
-    @Autowired
-    private HttpFilters httpFilters;
-
-    @Autowired
-    private IMoxProxyDatabase database;
-
+    private IMoxProxyServiceConfiguration configuration;
 
     @Override
     public void startServer() {
@@ -40,11 +33,8 @@ public final class MoxProxyServer extends MoxProxyService implements IProxyServe
     private void startProxyServer(){
         proxyServer = DefaultHttpProxyServer.bootstrap()
                 .withPort(configuration.getProxyPort())
-                .withFiltersSource(new HttpFiltersSourceAdapter() {
-                    public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
-                        return httpFilters;
-                    }
-                })
+                .withAllowLocalOnly(false)
+                .withFiltersSource(getFiltersSource())
                 .start();
     }
 
@@ -52,5 +42,30 @@ public final class MoxProxyServer extends MoxProxyService implements IProxyServe
     public void stopServer() {
         proxyServer.stop();
         database.stopDatabase();
+    }
+
+    private HttpFiltersSource getFiltersSource(){
+        return new HttpFiltersSource() {
+
+            @Override
+            public HttpFilters filterRequest(HttpRequest httpRequest, ChannelHandlerContext channelHandlerContext) {
+
+                return new MoxProxyFiltersAdapter(httpRequest, channelHandlerContext);
+            }
+
+            @Override
+            public int getMaximumRequestBufferSizeInBytes() {
+                return getBufferSize();
+            }
+
+            @Override
+            public int getMaximumResponseBufferSizeInBytes() {
+                return getBufferSize();
+            }
+
+            private int getBufferSize(){
+                return 512 * 1024;
+            }
+        };
     }
 }
