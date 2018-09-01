@@ -21,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(SpringExtension.class)
 @Import(ProxyServiceTestConfiguration.class)
-public class ProxyServiceTest extends TestBase {
+class ProxyServiceTest extends TestBase {
 
     @Autowired
-    IMoxProxyDatabase database;
+    private IMoxProxyDatabase database;
 
     @Autowired
-    IMoxProxyService service;
+    private IMoxProxyService service;
 
     @BeforeEach
     void beforeEachSetup(){
@@ -108,5 +108,33 @@ public class ProxyServiceTest extends TestBase {
 
         assertEquals(1, actualTraffic.size());
         assertEquals(1, actualRules.size());
+    }
+
+    @Test
+    void givenTraffic_whenGetAllTraffic_thenAllTrafficReturned(){
+        var traffic1 = createDefaultTrafficEntry();
+        var traffic2 = createDefaultTrafficEntry();
+        var traffic3 = createDefaultTrafficEntry();
+        traffic3.setSessionId(UNKNOWN);
+        database.addProcessedRequest(traffic1);
+        database.addProcessedRequest(traffic2);
+        database.addProcessedRequest(traffic3);
+
+        ArrayList<MoxProxyProcessedTrafficEntry> traffic = Lists.newArrayList(service.getAllNetworkTraffic());
+        assertEquals(3, traffic.size());
+    }
+
+    @Test
+    void givenTraffic_whenGetSessionAllTraffic_thenSessionTrafficReturned(){
+        var traffic1 = createDefaultTrafficEntry();
+        var traffic2 = createDefaultTrafficEntry();
+        var traffic3 = createDefaultTrafficEntry();
+        traffic3.setSessionId(UNKNOWN);
+        database.addProcessedRequest(traffic1);
+        database.addProcessedRequest(traffic2);
+        database.addProcessedRequest(traffic3);
+
+        ArrayList<MoxProxyProcessedTrafficEntry> traffic = Lists.newArrayList(service.getSessionNetworkTraffic(traffic1.getSessionId()));
+        assertEquals(2, traffic.size());
     }
 }
