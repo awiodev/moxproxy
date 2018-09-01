@@ -11,6 +11,6 @@ public class MoxProxyServiceConfiguration implements IMoxProxyServiceConfigurati
 
     @Override
     public int getProxyPort() {
-        return 8081;
+        return 89;
     }
 }

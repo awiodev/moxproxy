@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import testing.TestBase;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @Import(DatabaseTestConfiguration.class)
-class DatabaseTest {
+class DatabaseTest extends TestBase {
 
     private static final String UNKNOWN = "UNKNOWN";
 
@@ -200,17 +201,4 @@ class DatabaseTest {
         List found = Lists.newArrayList(database.getAllRules());
         assertTrue(found.isEmpty());
     }
-
-    private MoxProxyProcessedTrafficEntry createDefaultTrafficEntry(){
-        var trafficEntry = new MoxProxyProcessedTrafficEntry();
-        trafficEntry.setSessionId("123");
-        return trafficEntry;
-    }
-
-    private MoxProxyRule createDefaultRule(){
-        var rule = new MoxProxyRule();
-        rule.setSessionId("456");
-        return rule;
-    }
-
 }
