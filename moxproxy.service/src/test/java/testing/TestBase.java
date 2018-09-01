@@ -5,6 +5,8 @@ import moxproxy.dto.MoxProxyRule;
 
 public class TestBase {
 
+    protected static final String UNKNOWN = "UNKNOWN";
+
     protected MoxProxyProcessedTrafficEntry createDefaultTrafficEntry(){
         var trafficEntry = new MoxProxyProcessedTrafficEntry();
         trafficEntry.setSessionId("123");

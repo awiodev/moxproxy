@@ -23,8 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(DatabaseTestConfiguration.class)
 class DatabaseTest extends TestBase {
 
-    private static final String UNKNOWN = "UNKNOWN";
-
     @Autowired
     private IMoxProxyDatabase database;
 
