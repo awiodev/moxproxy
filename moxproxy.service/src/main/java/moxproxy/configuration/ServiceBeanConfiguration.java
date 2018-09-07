@@ -1,7 +1,7 @@
 package moxproxy.configuration;
 
 import moxproxy.interfaces.*;
-import moxproxy.rules.MoxProxyRules;
+import moxproxy.rules.MoxProxyRulesMatcher;
 import moxproxy.services.MoxProxyDatabase;
 import moxproxy.services.MoxProxyServer;
 import moxproxy.services.MoxProxyService;
@@ -22,8 +22,8 @@ public class ServiceBeanConfiguration {
     }
 
     @Bean
-    IMoxProxyRules moxProxyRules(){
-        return new MoxProxyRules();
+    IMoxProxyRulesMatcher moxProxyRules(){
+        return new MoxProxyRulesMatcher();
     }
 
     @Bean

@@ -4,14 +4,14 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
-import moxproxy.interfaces.IMoxProxyRules;
+import moxproxy.interfaces.IMoxProxyRulesMatcher;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
 
     @Autowired
-    private IMoxProxyRules rules;
+    private IMoxProxyRulesMatcher rules;
 
     public MoxProxyFiltersAdapter(HttpRequest originalRequest, ChannelHandlerContext ctx) {
         super(originalRequest, ctx);
