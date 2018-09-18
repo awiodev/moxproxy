@@ -12,6 +12,7 @@
         <module>moxproxy.commons</module>
         <module>moxproxy.client</module>
         <module>moxproxy.service</module>
+        <module>moxproxy.web.service</module>
     </modules>
 
     <properties>
