@@ -2,7 +2,7 @@ package moxproxy.services;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
-import moxproxy.filters.MoxProxyFiltersAdapter;
+import moxproxy.adapters.MoxProxyFiltersAdapter;
 import moxproxy.interfaces.IMoxProxyDatabase;
 import moxproxy.interfaces.IMoxProxyServer;
 import moxproxy.interfaces.IMoxProxyServiceConfiguration;

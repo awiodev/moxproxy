@@ -1,11 +1,13 @@
 package moxproxy.dto;
 
+import java.util.List;
+
 public class MoxProxyHttpObject {
 
     private String method;
     private String path;
     private String body;
-    private Iterable<MoxProxyHeader> headers;
+    private List<MoxProxyHeader> headers;
     private int statusCode;
 
     public String getMethod() {
@@ -32,11 +34,11 @@ public class MoxProxyHttpObject {
         this.body = body;
     }
 
-    public Iterable<MoxProxyHeader> getHeaders() {
+    public List<MoxProxyHeader> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(Iterable<MoxProxyHeader> headers) {
+    public void setHeaders(List<MoxProxyHeader> headers) {
         this.headers = headers;
     }
 

@@ -3,6 +3,8 @@ package moxproxy.builders;
 import moxproxy.dto.MoxProxyHeader;
 import moxproxy.dto.MoxProxyHttpObject;
 
+import java.util.List;
+
 public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, MoxProxyHttpObjectBuilder, MoxProxyHttpObject, MoxProxyHttpObjectBuilderValidator> {
 
     private String method;
@@ -62,7 +64,7 @@ public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, 
 
     @Override
     MoxProxyHttpObject performBuild() {
-        Iterable<MoxProxyHeader> headers = headersCollectionBuilder.build();
+        List<MoxProxyHeader> headers = headersCollectionBuilder.build();
         var httpObject = new MoxProxyHttpObject();
         httpObject.setMethod(method);
         httpObject.setPath(path);
