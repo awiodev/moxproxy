@@ -14,6 +14,7 @@ public class MoxProxyRule {
     private MoxProxyHttpObject moxProxyHttpObject;
     private MoxProxyAction moxProxyAction;
     private Date date;
+    private MoxProxyMatchingStrategy moxProxyMatchingStrategy;
 
     public MoxProxyRule(){
         id = UUID.randomUUID().toString();
@@ -58,5 +59,13 @@ public class MoxProxyRule {
 
     public void setAction(MoxProxyAction moxProxyAction) {
         this.moxProxyAction = moxProxyAction;
+    }
+
+    public void setMoxProxyMatchingStrategy(MoxProxyMatchingStrategy moxProxyMatchingStrategy) {
+        this.moxProxyMatchingStrategy = moxProxyMatchingStrategy;
+    }
+
+    public MoxProxyMatchingStrategy getMoxProxyMatchingStrategy() {
+        return moxProxyMatchingStrategy;
     }
 }

@@ -48,6 +48,9 @@ class MoxProxyRuleBuilderTest {
             .withDirection(MoxProxyDirection.RESPONSE)
             .withSessionId(DEFAULT_SESSION_ID)
             .withAction(MoxProxyAction.RESPOND)
+            .withMatchingStrategy()
+                .useMethod()
+                .backToParent()
             .withHttpObject()
                 .withMethod(method)
                 .withPath(path)
@@ -64,6 +67,9 @@ class MoxProxyRuleBuilderTest {
 
         assertNotNull(actual.getId());
         assertNotNull(actual.getDate());
+        assertTrue(actual.getMoxProxyMatchingStrategy().isUseMethod());
+        assertFalse(actual.getMoxProxyMatchingStrategy().isUseSessionId());
+        assertFalse(actual.getMoxProxyMatchingStrategy().isUsePath());
         assertEquals(DEFAULT_SESSION_ID, actual.getSessionId());
         assertEquals(MoxProxyDirection.RESPONSE, actual.getHttpDirection());
         assertEquals(MoxProxyAction.RESPOND, actual.getAction());

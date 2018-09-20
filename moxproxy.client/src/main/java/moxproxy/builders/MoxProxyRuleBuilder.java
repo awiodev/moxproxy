@@ -1,5 +1,6 @@
 package moxproxy.builders;
 
+import moxproxy.dto.MoxProxyMatchingStrategy;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.dto.MoxProxyHttpObject;
@@ -15,9 +16,12 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
 
     private MoxProxyHttpObjectBuilder httpObjectBuilder;
 
+    private MoxProxyMatchingStrategyBuilder strategyBuilder;
+
     public MoxProxyRuleBuilder(){
         super(null, new MoxProxyRuleBuilderValidator());
         httpObjectBuilder = new MoxProxyHttpObjectBuilder(this);
+        strategyBuilder = new MoxProxyMatchingStrategyBuilder(this);
     }
 
     public MoxProxyRuleBuilder withSessionId(String sessionId){
@@ -39,30 +43,40 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
         return this;
     }
 
-    public String getSessionId() {
+    public MoxProxyMatchingStrategyBuilder withMatchingStrategy(){
+        return strategyBuilder;
+    }
+
+    String getSessionId() {
         return sessionId;
     }
 
-    public MoxProxyDirection getDirection() {
+    MoxProxyDirection getDirection() {
         return direction;
     }
 
-    public MoxProxyAction getAction() {
+    MoxProxyAction getAction() {
         return action;
     }
 
-    public MoxProxyHttpObjectBuilder getHttpObjectBuilder() {
+    MoxProxyHttpObjectBuilder getHttpObjectBuilder() {
         return httpObjectBuilder;
+    }
+
+    MoxProxyMatchingStrategyBuilder getStrategyBuilder() {
+        return strategyBuilder;
     }
 
     @Override
     MoxProxyRule performBuild() {
-        MoxProxyHttpObject child = httpObjectBuilder.build();
+        MoxProxyHttpObject httpObject = httpObjectBuilder.build();
+        MoxProxyMatchingStrategy strategy = strategyBuilder.build();
         var rule = new MoxProxyRule();
         rule.setAction(action);
         rule.setSessionId(sessionId);
         rule.setHttpDirection(direction);
-        rule.setMoxProxyHttpObject(child);
+        rule.setMoxProxyHttpObject(httpObject);
+        rule.setMoxProxyMatchingStrategy(strategy);
         return rule;
     }
 

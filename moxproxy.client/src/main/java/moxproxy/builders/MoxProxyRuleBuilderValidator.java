@@ -12,6 +12,7 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     public void performValidation(MoxProxyRuleBuilder builder) throws BuilderValidationException {
         validateBasics(builder);
         validateActions(builder);
+        validateMatchingStrategy(builder);
     }
 
     private void validateBasics(MoxProxyRuleBuilder builder) throws BuilderValidationException {
@@ -69,6 +70,12 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
             MoxProxyHttpObjectBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
             int statusCode = httpObjectBuilder.getStatusCode();
             shouldBeTheSameAs(statusCode, 0, getClassName(httpObjectBuilder), "STATUS_CODE", "Status code cannot be different than 0 when using direction: " + MoxProxyDirection.REQUEST);
+        }
+    }
+
+    private void validateMatchingStrategy(MoxProxyRuleBuilder builder){
+        if(builder.getStrategyBuilder().isUseSessionId()){
+            notNull(builder.getSessionId(), getClassName(builder), "SESSION_ID", "Set session ID when using session id in matching strategy");
         }
     }
 }
