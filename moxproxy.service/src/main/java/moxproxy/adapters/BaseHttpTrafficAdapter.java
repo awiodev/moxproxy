@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObject;
+import io.netty.handler.codec.http.HttpRequest;
 import moxproxy.dto.MoxProxyHeader;
 
 import java.nio.charset.StandardCharsets;
@@ -22,8 +23,11 @@ public abstract class BaseHttpTrafficAdapter implements IHttpTrafficAdapter{
     private String url;
     private String sessionId;
 
-    protected BaseHttpTrafficAdapter(HttpObject httpObject){
+    protected HttpRequest originalRequest;
+
+    protected BaseHttpTrafficAdapter(HttpObject httpObject, HttpRequest originalRequest){
         this.httpObject = httpObject;
+        this.originalRequest = originalRequest;
         headers = transformToProxyHeaders(getHeaders());
         body = readContent(getContent());
         method = getMethod().name();

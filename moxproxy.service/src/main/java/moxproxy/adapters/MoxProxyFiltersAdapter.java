@@ -18,7 +18,8 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
     @Override
     public HttpResponse clientToProxyRequest(HttpObject httpObject) {
         if(httpObject instanceof FullHttpRequest){
-            IHttpRequestAdapter requestAdapter = new HttpRequestAdapter(httpObject);
+            IHttpRequestAdapter requestAdapter = new HttpRequestAdapter(httpObject, originalRequest);
+            System.out.println();
         }
         return null;
     }
@@ -26,7 +27,8 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
     @Override
     public HttpObject serverToProxyResponse(HttpObject httpObject) {
         if(httpObject instanceof FullHttpResponse){
-            IHttpResponseAdapter responseAdapter = new HttpResponseAdapter(httpObject);
+            IHttpResponseAdapter responseAdapter = new HttpResponseAdapter(httpObject, originalRequest);
+            System.out.println();
         }
         return httpObject;
     }

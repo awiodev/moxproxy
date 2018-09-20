@@ -5,8 +5,8 @@ import io.netty.handler.codec.http.*;
 
 public class HttpResponseAdapter extends BaseHttpTrafficAdapter implements IHttpResponseAdapter {
 
-    public HttpResponseAdapter(HttpObject httpObject) {
-        super(httpObject);
+    public HttpResponseAdapter(HttpObject httpObject, HttpRequest originalRequest) {
+        super(httpObject, originalRequest);
     }
 
     @Override
@@ -21,12 +21,12 @@ public class HttpResponseAdapter extends BaseHttpTrafficAdapter implements IHttp
 
     @Override
     protected HttpMethod getMethod() {
-        return ((FullHttpRequest)getHttpObject()).method();
+        return originalRequest.method();
     }
 
     @Override
     protected String getUrl() {
-        return ((FullHttpRequest)getHttpObject()).uri();
+        return originalRequest.uri();
     }
 
     @Override
