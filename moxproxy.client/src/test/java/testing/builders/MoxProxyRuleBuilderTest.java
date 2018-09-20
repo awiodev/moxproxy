@@ -74,7 +74,7 @@ class MoxProxyRuleBuilderTest {
         assertEquals(MoxProxyDirection.RESPONSE, actual.getHttpDirection());
         assertEquals(MoxProxyAction.RESPOND, actual.getAction());
         assertEquals(method, actual.getMoxProxyHttpObject().getMethod());
-        assertEquals(path, actual.getMoxProxyHttpObject().getPath());
+        assertEquals(path, actual.getMoxProxyHttpObject().getPathPattern());
         assertEquals(statusCode, actual.getMoxProxyHttpObject().getStatusCode());
         assertEquals(body, actual.getMoxProxyHttpObject().getBody());
         assertEquals(headerName, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getName());

@@ -67,7 +67,7 @@ public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, 
         List<MoxProxyHeader> headers = headersCollectionBuilder.build();
         var httpObject = new MoxProxyHttpObject();
         httpObject.setMethod(method);
-        httpObject.setPath(pathPattern);
+        httpObject.setPathPattern(pathPattern);
         httpObject.setStatusCode(statusCode);
         httpObject.setBody(body);
         httpObject.setHeaders(headers);

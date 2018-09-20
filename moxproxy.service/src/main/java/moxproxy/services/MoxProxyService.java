@@ -3,13 +3,19 @@ package moxproxy.services;
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.interfaces.IMoxProxyDatabase;
+import moxproxy.interfaces.IMoxProxyRulesMatcher;
 import moxproxy.interfaces.IMoxProxyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MoxProxyService implements IMoxProxyService {
 
     @Autowired
     IMoxProxyDatabase database;
+
+    @Autowired
+    IMoxProxyRulesMatcher matcher;
 
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getSessionNetworkTraffic(String sessionId) {
@@ -42,5 +48,15 @@ public class MoxProxyService implements IMoxProxyService {
     public String createRule(MoxProxyRule moxProxyRule) {
         database.addRule(moxProxyRule);
         return moxProxyRule.getId();
+    }
+
+    @Override
+    public void enableSessionIdMatchingStrategy() {
+        matcher.useSessionIdMatchingStrategy(true);
+    }
+
+    @Override
+    public void disableSessionIdMatchingStrategy() {
+        matcher.useSessionIdMatchingStrategy(false);
     }
 }

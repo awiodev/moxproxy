@@ -1,6 +1,7 @@
 package testing.service;
 
 import com.google.common.collect.Lists;
+import moxproxy.configuration.ServiceBeanConfiguration;
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.interfaces.IMoxProxyDatabase;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import testing.TestBase;

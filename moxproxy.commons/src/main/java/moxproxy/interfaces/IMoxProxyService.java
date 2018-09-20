@@ -16,4 +16,8 @@ public interface IMoxProxyService {
     void clearAllSessionEntries();
 
     String createRule(MoxProxyRule moxProxyRule);
+
+    void enableSessionIdMatchingStrategy();
+
+    void disableSessionIdMatchingStrategy();
 }

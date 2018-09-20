@@ -36,4 +36,14 @@ public class MoxProxyClient implements IMoxProxyService {
         //TODO Rule creation
         return moxProxyRule.getId();
     }
+
+    @Override
+    public void enableSessionIdMatchingStrategy() {
+
+    }
+
+    @Override
+    public void disableSessionIdMatchingStrategy() {
+
+    }
 }

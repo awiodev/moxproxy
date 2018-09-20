@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public final class MoxProxyServer implements IMoxProxyServer {
+public final class MoxProxyServer extends MoxProxyService implements IMoxProxyServer {
 
     private HttpProxyServer proxyServer;
 

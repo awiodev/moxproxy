@@ -5,7 +5,7 @@ import java.util.List;
 public class MoxProxyHttpObject {
 
     private String method;
-    private String path;
+    private String pathPattern;
     private String body;
     private List<MoxProxyHeader> headers;
     private int statusCode;
@@ -18,12 +18,12 @@ public class MoxProxyHttpObject {
         this.method = method;
     }
 
-    public String getPath() {
-        return path;
+    public String getPathPattern() {
+        return pathPattern;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setPathPattern(String pathPattern) {
+        this.pathPattern = pathPattern;
     }
 
     public String getBody() {
