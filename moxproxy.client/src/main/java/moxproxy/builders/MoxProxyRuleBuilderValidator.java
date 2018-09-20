@@ -12,7 +12,7 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     public void performValidation(MoxProxyRuleBuilder builder) throws BuilderValidationException {
         validateBasics(builder);
         validateActions(builder);
-        validateMatchingStrategy(builder);
+        //validateMatchingStrategy(builder);
     }
 
     private void validateBasics(MoxProxyRuleBuilder builder) throws BuilderValidationException {
@@ -73,9 +73,9 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
         }
     }
 
-    private void validateMatchingStrategy(MoxProxyRuleBuilder builder){
+/*    private void validateMatchingStrategy(MoxProxyRuleBuilder builder){
         if(builder.getStrategyBuilder().isUseSessionId()){
             notNull(builder.getSessionId(), getClassName(builder), "SESSION_ID", "Set session ID when using session id in matching strategy");
         }
-    }
+    }*/
 }
