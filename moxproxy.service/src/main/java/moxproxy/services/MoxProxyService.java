@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 public class MoxProxyService implements IMoxProxyService {
 
     @Autowired
-    IMoxProxyDatabase database;
+    private IMoxProxyDatabase database;
 
     @Autowired
-    IMoxProxyRulesMatcher matcher;
+    protected IMoxProxyRulesMatcher matcher;
 
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getSessionNetworkTraffic(String sessionId) {
