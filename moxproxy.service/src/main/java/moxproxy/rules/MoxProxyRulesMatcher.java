@@ -44,7 +44,7 @@ public class MoxProxyRulesMatcher implements IMoxProxyRulesMatcher {
     }
 
     private boolean match(MoxProxyRule rule, IHttpTrafficAdapter adapter){
-        if(adapter.method().equalsIgnoreCase(rule.getMoxProxyHttpObject().getPathPattern())
+        if(adapter.method().equalsIgnoreCase(rule.getMoxProxyHttpObject().getMethod())
                 && isPathMatch(rule.getMoxProxyHttpObject().getPathPattern(), adapter.url())){
             return true;
         }
