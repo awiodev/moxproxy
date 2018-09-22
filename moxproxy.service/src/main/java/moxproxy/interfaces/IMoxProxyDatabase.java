@@ -27,9 +27,15 @@ public interface IMoxProxyDatabase {
 
     void addProcessedRequest(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry);
 
-    Iterable<MoxProxyProcessedTrafficEntry> getProcessedTraffic();
+    void addProcessedResponse(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry);
 
-    Iterable<MoxProxyProcessedTrafficEntry> getProcessedTraffic(String sessionId);
+    Iterable<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic();
+
+    Iterable<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic(String sessionId);
+
+    Iterable<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic();
+
+    Iterable<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic(String sessionId);
 
     Iterable<MoxProxyRule> findRulesBySessionId(String sessionId);
 

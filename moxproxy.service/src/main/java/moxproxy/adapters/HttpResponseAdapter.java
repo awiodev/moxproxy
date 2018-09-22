@@ -2,6 +2,7 @@ package moxproxy.adapters;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.*;
+import moxproxy.interfaces.IHttpResponseAdapter;
 
 public class HttpResponseAdapter extends BaseHttpTrafficAdapter implements IHttpResponseAdapter {
 

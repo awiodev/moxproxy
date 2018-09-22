@@ -5,9 +5,13 @@ import moxproxy.dto.MoxProxyRule;
 
 public interface IMoxProxyService {
 
-    Iterable<MoxProxyProcessedTrafficEntry> getSessionNetworkTraffic(String sessionId);
+    Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId);
 
-    Iterable<MoxProxyProcessedTrafficEntry> getAllNetworkTraffic();
+    Iterable<MoxProxyProcessedTrafficEntry> getAllRequestTraffic();
+
+    Iterable<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId);
+
+    Iterable<MoxProxyProcessedTrafficEntry> getAllResponseTraffic();
 
     void cancelRule(String ruleId);
 

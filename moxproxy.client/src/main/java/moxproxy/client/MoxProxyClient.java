@@ -7,12 +7,22 @@ import moxproxy.interfaces.IMoxProxyService;
 public class MoxProxyClient implements IMoxProxyService {
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getSessionNetworkTraffic(String sessionId) {
+    public Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
         return null;
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getAllNetworkTraffic() {
+    public Iterable<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
+        return null;
+    }
+
+    @Override
+    public Iterable<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
+        return null;
+    }
+
+    @Override
+    public Iterable<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
         return null;
     }
 

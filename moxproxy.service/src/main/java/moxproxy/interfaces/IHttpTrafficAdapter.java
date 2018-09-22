@@ -1,4 +1,4 @@
-package moxproxy.adapters;
+package moxproxy.interfaces;
 
 import moxproxy.dto.MoxProxyHeader;
 

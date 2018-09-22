@@ -14,29 +14,34 @@ import java.util.stream.Collectors;
 public class MoxProxyDatabase implements IMoxProxyDatabase {
 
     private ConcurrentMap<String, MoxProxyRule> rulesDatabase;
-    private ConcurrentMap<String, MoxProxyProcessedTrafficEntry> processedTrafficDatabase;
+    private ConcurrentMap<String, MoxProxyProcessedTrafficEntry> processedRequestDatabase;
+    private ConcurrentMap<String, MoxProxyProcessedTrafficEntry> processedResponseDatabase;
 
     @Override
     public void startDatabase() {
         rulesDatabase = new ConcurrentHashMap<>();
-        processedTrafficDatabase = new ConcurrentHashMap<>();
+        processedRequestDatabase = new ConcurrentHashMap<>();
+        processedResponseDatabase = new ConcurrentHashMap<>();
     }
 
     @Override
     public void stopDatabase() {
         rulesDatabase.clear();
-        processedTrafficDatabase.clear();
+        processedRequestDatabase.clear();
+        processedResponseDatabase.clear();
     }
 
     @Override
     public void cleanProcessedTraffic(String sessionId) {
-        processedTrafficDatabase.entrySet().removeIf(p -> p.getValue().getSessionId().equals(sessionId));
+        processedRequestDatabase.entrySet().removeIf(p -> p.getValue().getSessionId().equals(sessionId));
+        processedResponseDatabase.entrySet().removeIf(p -> p.getValue().getSessionId().equals(sessionId));
     }
 
     @Override
     public void cleanProcessedTraffic(Date olderThan) {
 
-        processedTrafficDatabase.entrySet().removeIf(p -> p.getValue().getTimestamp().before(olderThan));
+        processedRequestDatabase.entrySet().removeIf(p -> p.getValue().getTimestamp().before(olderThan));
+        processedResponseDatabase.entrySet().removeIf(p -> p.getValue().getTimestamp().before(olderThan));
     }
 
     @Override
@@ -46,7 +51,8 @@ public class MoxProxyDatabase implements IMoxProxyDatabase {
 
     @Override
     public void cleanAllProcessedTraffic() {
-        processedTrafficDatabase.clear();
+        processedRequestDatabase.clear();
+        processedResponseDatabase.clear();
     }
 
     @Override
@@ -67,17 +73,32 @@ public class MoxProxyDatabase implements IMoxProxyDatabase {
 
     @Override
     public void addProcessedRequest(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry) {
-        processedTrafficDatabase.put(moxProxyProcessedTrafficEntry.getId(), moxProxyProcessedTrafficEntry);
+        processedRequestDatabase.put(moxProxyProcessedTrafficEntry.getId(), moxProxyProcessedTrafficEntry);
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedTraffic() {
-        return processedTrafficDatabase.values();
+    public void addProcessedResponse(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry) {
+        processedResponseDatabase.put(moxProxyProcessedTrafficEntry.getId(), moxProxyProcessedTrafficEntry);
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedTraffic(String sessionId) {
-        return processedTrafficDatabase.values().stream().filter(p -> p.getSessionId().equals(sessionId)).collect(Collectors.toList());
+    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic() {
+        return processedRequestDatabase.values();
+    }
+
+    @Override
+    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic(String sessionId) {
+        return processedRequestDatabase.values().stream().filter(p -> p.getSessionId().equals(sessionId)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic() {
+        return processedResponseDatabase.values();
+    }
+
+    @Override
+    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic(String sessionId) {
+        return processedResponseDatabase.values().stream().filter(p -> p.getSessionId().equals(sessionId)).collect(Collectors.toList());
     }
 
     @Override

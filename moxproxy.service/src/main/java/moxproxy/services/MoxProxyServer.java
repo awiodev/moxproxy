@@ -3,10 +3,8 @@ package moxproxy.services;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
 import moxproxy.adapters.MoxProxyFiltersAdapter;
-import moxproxy.interfaces.IMoxProxyDatabase;
-import moxproxy.interfaces.IMoxProxyRulesMatcher;
-import moxproxy.interfaces.IMoxProxyServer;
-import moxproxy.interfaces.IMoxProxyServiceConfiguration;
+import moxproxy.interfaces.IEntityConverter;
+import moxproxy.interfaces.*;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersSource;
 import org.littleshoot.proxy.HttpProxyServer;
@@ -23,7 +21,10 @@ public final class MoxProxyServer extends MoxProxyService implements IMoxProxySe
     private IMoxProxyServiceConfiguration configuration;
 
     @Autowired
-    private IMoxProxyDatabase database;
+    private IMoxProxyTrafficRecorder recorder;
+
+    @Autowired
+    private IEntityConverter converter;
 
     @Override
     public void startServer() {
@@ -54,7 +55,7 @@ public final class MoxProxyServer extends MoxProxyService implements IMoxProxySe
 
             @Override
             public HttpFilters filterRequest(HttpRequest httpRequest, ChannelHandlerContext channelHandlerContext) {
-                return new MoxProxyFiltersAdapter(httpRequest, channelHandlerContext, matcher);
+                return new MoxProxyFiltersAdapter(httpRequest, channelHandlerContext, matcher, recorder, converter);
             }
 
             @Override

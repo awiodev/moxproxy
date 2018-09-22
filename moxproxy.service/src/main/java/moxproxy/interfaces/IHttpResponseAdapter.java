@@ -1,4 +1,4 @@
-package moxproxy.adapters;
+package moxproxy.interfaces;
 
 public interface IHttpResponseAdapter extends IHttpTrafficAdapter {
 

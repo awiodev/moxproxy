@@ -12,19 +12,29 @@ import org.springframework.stereotype.Service;
 public class MoxProxyService implements IMoxProxyService {
 
     @Autowired
-    private IMoxProxyDatabase database;
+    protected IMoxProxyDatabase database;
 
     @Autowired
     protected IMoxProxyRulesMatcher matcher;
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getSessionNetworkTraffic(String sessionId) {
-        return database.getProcessedTraffic(sessionId);
+    public Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
+        return database.getProcessedRequestTraffic(sessionId);
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getAllNetworkTraffic() {
-        return database.getProcessedTraffic();
+    public Iterable<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
+        return database.getProcessedRequestTraffic();
+    }
+
+    @Override
+    public Iterable<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
+        return database.getProcessedResponseTraffic(sessionId);
+    }
+
+    @Override
+    public Iterable<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
+        return database.getProcessedResponseTraffic();
     }
 
     @Override

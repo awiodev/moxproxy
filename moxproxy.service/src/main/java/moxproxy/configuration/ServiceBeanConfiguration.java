@@ -1,10 +1,12 @@
 package moxproxy.configuration;
 
+import moxproxy.converters.EntityConverter;
 import moxproxy.interfaces.*;
 import moxproxy.rules.MoxProxyRulesMatcher;
 import moxproxy.services.MoxProxyDatabase;
 import moxproxy.services.MoxProxyServer;
 import moxproxy.services.MoxProxyService;
+import moxproxy.services.MoxProxyTrafficRecorder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,6 +29,11 @@ public class ServiceBeanConfiguration {
     }
 
     @Bean
+    IMoxProxyTrafficRecorder moxProxyTrafficRecorder(){
+        return new MoxProxyTrafficRecorder();
+    }
+
+    @Bean
     IMoxProxyServer moxProxyServer(){
         return new MoxProxyServer();
     }
@@ -34,5 +41,10 @@ public class ServiceBeanConfiguration {
     @Bean
     IMoxProxyServiceConfiguration moxProxyServiceConfiguration(){
         return new MoxProxyServiceConfiguration();
+    }
+
+    @Bean
+    IEntityConverter entityConverter(){
+        return new EntityConverter();
     }
 }

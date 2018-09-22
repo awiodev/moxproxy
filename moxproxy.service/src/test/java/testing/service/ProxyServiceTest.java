@@ -1,7 +1,6 @@
 package testing.service;
 
 import com.google.common.collect.Lists;
-import moxproxy.configuration.ServiceBeanConfiguration;
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.interfaces.IMoxProxyDatabase;
@@ -11,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import testing.TestBase;
@@ -72,7 +69,7 @@ class ProxyServiceTest extends TestBase {
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
         service.clearAllSessionEntries();
-        ArrayList<MoxProxyProcessedTrafficEntry> actualTraffic = Lists.newArrayList(database.getProcessedTraffic());
+        ArrayList<MoxProxyProcessedTrafficEntry> actualTraffic = Lists.newArrayList(database.getProcessedRequestTraffic());
         assertEquals(0, actualTraffic.size());
         ArrayList<MoxProxyRule> actualRules = Lists.newArrayList(database.getAllRules());
         assertEquals(0, actualRules.size());
@@ -100,21 +97,28 @@ class ProxyServiceTest extends TestBase {
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
         database.addProcessedRequest(traffic3);
+        database.addProcessedResponse(traffic1);
+        database.addProcessedResponse(traffic2);
+        database.addProcessedResponse(traffic3);
         service.clearSessionEntries(sessionId);
-        ArrayList<MoxProxyProcessedTrafficEntry> actualTraffic = Lists.newArrayList(database.getProcessedTraffic(rule1.getSessionId()));
-        assertEquals(0, actualTraffic.size());
+        ArrayList<MoxProxyProcessedTrafficEntry> actualRequestTraffic = Lists.newArrayList(database.getProcessedRequestTraffic(rule1.getSessionId()));
+        assertEquals(0, actualRequestTraffic.size());
+        ArrayList<MoxProxyProcessedTrafficEntry> actualResponseTraffic = Lists.newArrayList(database.getProcessedResponseTraffic(rule1.getSessionId()));
+        assertEquals(0, actualResponseTraffic.size());
         ArrayList<MoxProxyRule> actualRules = Lists.newArrayList(database.findRulesBySessionId(rule1.getSessionId()));
         assertEquals(0, actualRules.size());
 
-        actualTraffic = Lists.newArrayList(database.getProcessedTraffic());
+        actualRequestTraffic = Lists.newArrayList(database.getProcessedRequestTraffic());
+        actualResponseTraffic = Lists.newArrayList(database.getProcessedResponseTraffic());
         actualRules = Lists.newArrayList(database.getAllRules());
 
-        assertEquals(1, actualTraffic.size());
+        assertEquals(1, actualRequestTraffic.size());
+        assertEquals(1, actualResponseTraffic.size());
         assertEquals(1, actualRules.size());
     }
 
     @Test
-    void givenTraffic_whenGetAllTraffic_thenAllTrafficReturned(){
+    void givenRequestTraffic_whenGetAllRequestTraffic_thenAllTrafficReturned(){
         var traffic1 = createDefaultTrafficEntry();
         var traffic2 = createDefaultTrafficEntry();
         var traffic3 = createDefaultTrafficEntry();
@@ -123,12 +127,26 @@ class ProxyServiceTest extends TestBase {
         database.addProcessedRequest(traffic2);
         database.addProcessedRequest(traffic3);
 
-        ArrayList<MoxProxyProcessedTrafficEntry> traffic = Lists.newArrayList(service.getAllNetworkTraffic());
+        ArrayList<MoxProxyProcessedTrafficEntry> traffic = Lists.newArrayList(service.getAllRequestTraffic());
         assertEquals(3, traffic.size());
     }
 
     @Test
-    void givenTraffic_whenGetSessionAllTraffic_thenSessionTrafficReturned(){
+    void givenResponseTraffic_whenGetAllResponseTraffic_thenAllTrafficReturned(){
+        var traffic1 = createDefaultTrafficEntry();
+        var traffic2 = createDefaultTrafficEntry();
+        var traffic3 = createDefaultTrafficEntry();
+        traffic3.setSessionId(UNKNOWN);
+        database.addProcessedResponse(traffic1);
+        database.addProcessedResponse(traffic2);
+        database.addProcessedResponse(traffic3);
+
+        ArrayList<MoxProxyProcessedTrafficEntry> traffic = Lists.newArrayList(service.getAllResponseTraffic());
+        assertEquals(3, traffic.size());
+    }
+
+    @Test
+    void givenRequestTraffic_whenGetSessionRequestTraffic_thenSessionTrafficReturned(){
         var traffic1 = createDefaultTrafficEntry();
         var traffic2 = createDefaultTrafficEntry();
         var traffic3 = createDefaultTrafficEntry();
@@ -137,7 +155,21 @@ class ProxyServiceTest extends TestBase {
         database.addProcessedRequest(traffic2);
         database.addProcessedRequest(traffic3);
 
-        ArrayList<MoxProxyProcessedTrafficEntry> traffic = Lists.newArrayList(service.getSessionNetworkTraffic(traffic1.getSessionId()));
+        ArrayList<MoxProxyProcessedTrafficEntry> traffic = Lists.newArrayList(service.getSessionRequestTraffic(traffic1.getSessionId()));
+        assertEquals(2, traffic.size());
+    }
+
+    @Test
+    void givenResponseTraffic_whenGetSessionResponseTraffic_thenSessionTrafficReturned(){
+        var traffic1 = createDefaultTrafficEntry();
+        var traffic2 = createDefaultTrafficEntry();
+        var traffic3 = createDefaultTrafficEntry();
+        traffic3.setSessionId(UNKNOWN);
+        database.addProcessedResponse(traffic1);
+        database.addProcessedResponse(traffic2);
+        database.addProcessedResponse(traffic3);
+
+        ArrayList<MoxProxyProcessedTrafficEntry> traffic = Lists.newArrayList(service.getSessionResponseTraffic(traffic1.getSessionId()));
         assertEquals(2, traffic.size());
     }
 }

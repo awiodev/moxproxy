@@ -37,7 +37,7 @@ class DatabaseTest extends TestBase {
     }
 
     @Test
-    void givenTrafficEntries_whenAddAndFind_thenEntriesFound(){
+    void givenTrafficEntries_whenAddRequestAndFind_thenRequestFound(){
         MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
@@ -45,7 +45,20 @@ class DatabaseTest extends TestBase {
         database.addProcessedRequest(entry2);
         database.addProcessedRequest(entry3);
 
-        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic());
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedRequestTraffic());
+        assertEquals(3, found.size());
+    }
+
+    @Test
+    void givenTrafficEntries_whenAddResponseAndFind_thenResponseFound(){
+        MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
+        database.addProcessedResponse(entry1);
+        database.addProcessedResponse(entry2);
+        database.addProcessedResponse(entry3);
+
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedResponseTraffic());
         assertEquals(3, found.size());
     }
 
@@ -58,12 +71,20 @@ class DatabaseTest extends TestBase {
         database.addProcessedRequest(entry1);
         database.addProcessedRequest(entry2);
         database.addProcessedRequest(entry3);
+        database.addProcessedResponse(entry1);
+        database.addProcessedResponse(entry2);
+        database.addProcessedResponse(entry3);
 
         database.cleanProcessedTraffic(entry1.getSessionId());
 
-        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic());
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedRequestTraffic());
         assertEquals(1, found.size());
         MoxProxyProcessedTrafficEntry first = found.get(0);
+        assertEquals(entry3, first);
+
+        found = Lists.newArrayList(database.getProcessedResponseTraffic());
+        assertEquals(1, found.size());
+        first = found.get(0);
         assertEquals(entry3, first);
     }
 
@@ -84,12 +105,12 @@ class DatabaseTest extends TestBase {
 
         database.cleanProcessedTraffic(newDate);
 
-        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic());
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedRequestTraffic());
         assertEquals(0, found.size());
     }
 
     @Test
-    void givenTrafficEntries_whenFindBySessionId_thenEntriesFound(){
+    void givenRequestTrafficEntries_whenFindBySessionId_thenEntriesFound(){
         MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
@@ -98,7 +119,21 @@ class DatabaseTest extends TestBase {
         database.addProcessedRequest(entry2);
         database.addProcessedRequest(entry3);
 
-        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic(entry1.getSessionId()));
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedRequestTraffic(entry1.getSessionId()));
+        assertEquals(2, found.size());
+    }
+
+    @Test
+    void givenResponseTrafficEntries_whenFindBySessionId_thenEntriesFound(){
+        MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
+        entry3.setSessionId(UNKNOWN);
+        database.addProcessedResponse(entry1);
+        database.addProcessedResponse(entry2);
+        database.addProcessedResponse(entry3);
+
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedResponseTraffic(entry1.getSessionId()));
         assertEquals(2, found.size());
     }
 
@@ -111,10 +146,16 @@ class DatabaseTest extends TestBase {
         database.addProcessedRequest(entry1);
         database.addProcessedRequest(entry2);
         database.addProcessedRequest(entry3);
+        database.addProcessedResponse(entry1);
+        database.addProcessedResponse(entry2);
+        database.addProcessedResponse(entry3);
 
         database.cleanAllProcessedTraffic();
 
-        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedTraffic(entry1.getSessionId()));
+        List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedRequestTraffic(entry1.getSessionId()));
+        assertEquals(0, found.size());
+
+        found = Lists.newArrayList(database.getProcessedResponseTraffic(entry1.getSessionId()));
         assertEquals(0, found.size());
     }
 

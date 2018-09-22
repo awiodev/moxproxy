@@ -6,6 +6,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import moxproxy.dto.MoxProxyHeader;
+import moxproxy.interfaces.IHttpTrafficAdapter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class BaseHttpTrafficAdapter implements IHttpTrafficAdapter{
+public abstract class BaseHttpTrafficAdapter implements IHttpTrafficAdapter {
 
     private HttpObject httpObject;
     private List<MoxProxyHeader> headers;
