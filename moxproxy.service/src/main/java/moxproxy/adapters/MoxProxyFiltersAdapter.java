@@ -2,12 +2,11 @@ package moxproxy.adapters;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
-import moxproxy.interfaces.IEntityConverter;
+import moxproxy.interfaces.*;
 import moxproxy.dto.MoxProxyRule;
-import moxproxy.interfaces.IHttpRequestAdapter;
-import moxproxy.interfaces.IHttpResponseAdapter;
+import moxproxy.interfaces.IMoxProxyRuleProcessor;
 import moxproxy.interfaces.IMoxProxyRulesMatcher;
-import moxproxy.interfaces.IMoxProxyTrafficRecorder;
+import moxproxy.rules.MoxProxyRuleProcessingResult;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 
 import java.util.List;
@@ -17,32 +16,42 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
     private IMoxProxyRulesMatcher matcher;
     private IMoxProxyTrafficRecorder trafficRecorder;
     private IEntityConverter entityConverter;
+    private IMoxProxyRuleProcessor proxyRuleProcessor;
 
     public MoxProxyFiltersAdapter(HttpRequest originalRequest, ChannelHandlerContext ctx,
                                   IMoxProxyRulesMatcher matcher, IMoxProxyTrafficRecorder recorder,
-                                  IEntityConverter entityConverter) {
+                                  IEntityConverter entityConverter, IMoxProxyRuleProcessor proxyRuleProcessor) {
         super(originalRequest, ctx);
         this.matcher = matcher;
         this.trafficRecorder = recorder;
         this.entityConverter = entityConverter;
+        this.proxyRuleProcessor = proxyRuleProcessor;
     }
 
     @Override
     public HttpResponse clientToProxyRequest(HttpObject httpObject) {
         if(httpObject instanceof FullHttpRequest){
             IHttpRequestAdapter requestAdapter = new HttpRequestAdapter(httpObject, originalRequest);
+            trafficRecorder.recordRequest(entityConverter.fromRequestAdapter(requestAdapter));
             List<MoxProxyRule> result = matcher.match(requestAdapter);
-            System.out.println();
+            MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processRequest(result, requestAdapter, httpObject);
+            if(processingResult.isRespond()){
+                return processingResult.getResponse();
+            }
         }
         return null;
     }
 
     @Override
-    public HttpObject serverToProxyResponse(HttpObject httpObject) {
+    public HttpObject proxyToClientResponse(HttpObject httpObject) {
         if(httpObject instanceof FullHttpResponse){
             IHttpResponseAdapter responseAdapter = new HttpResponseAdapter(httpObject, originalRequest);
+            trafficRecorder.recordResponse(entityConverter.fromResponseAdapter(responseAdapter));
             List<MoxProxyRule> result = matcher.match(responseAdapter);
-            System.out.println();
+            var processingResult = proxyRuleProcessor.processResponse(result, responseAdapter, httpObject);
+            if(processingResult.isRespond()){
+                return processingResult.getResponse();
+            }
         }
         return httpObject;
     }

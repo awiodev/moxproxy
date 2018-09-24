@@ -2,7 +2,7 @@ package moxproxy.dto;
 
 import java.util.List;
 
-public class MoxProxyHttpObject {
+public class MoxProxyHttpRuleDefinition {
 
     private String method;
     private String pathPattern;

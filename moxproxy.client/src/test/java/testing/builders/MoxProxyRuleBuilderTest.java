@@ -1,6 +1,6 @@
 package testing.builders;
 
-import moxproxy.builders.MoxProxyHttpObjectBuilder;
+import moxproxy.builders.MoxProxyHttpRuleDefinitionBuilder;
 import moxproxy.builders.MoxProxyRuleBuilder;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.enums.MoxProxyAction;
@@ -29,7 +29,7 @@ class MoxProxyRuleBuilderTest {
         builder.withDirection(MoxProxyDirection.REQUEST)
                 .withSessionId(DEFAULT_SESSION_ID);
 
-        MoxProxyHttpObjectBuilder childBuilder = builder.withHttpObject();
+        MoxProxyHttpRuleDefinitionBuilder childBuilder = builder.withHttpObjectDefinition();
         MoxProxyRuleBuilder actual = childBuilder.backToParent();
 
         assertEquals(builder, actual);
@@ -51,7 +51,7 @@ class MoxProxyRuleBuilderTest {
             /*.withMatchingStrategy()
                 .useMethod()
                 .backToParent()*/
-            .withHttpObject()
+            .withHttpObjectDefinition()
                 .withMethod(method)
                 .withPathPattern(path)
                 .withStatusCode(statusCode)

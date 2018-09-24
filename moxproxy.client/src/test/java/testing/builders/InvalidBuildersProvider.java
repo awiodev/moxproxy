@@ -56,7 +56,7 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 /*.withMatchingStrategy()
                     .useMethod()
                     .backToParent()*/
-                .withHttpObject()
+                .withHttpObjectDefinition()
                 .withBody("").backToParent();
     }
 
@@ -76,7 +76,7 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 /*.withMatchingStrategy()
                     .useMethod()
                     .backToParent()*/
-                .withHttpObject()
+                .withHttpObjectDefinition()
                 .withMethod(defaultMethod)
                 .withPathPattern(defaultPath)
                 .havingHeaders()
@@ -93,7 +93,7 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 /*.withMatchingStrategy()
                     .useMethod()
                     .backToParent()*/
-                .withHttpObject()
+                .withHttpObjectDefinition()
                     .withMethod(defaultMethod)
                     .withPathPattern(defaultPath)
                     .backToParent();
@@ -106,7 +106,7 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 /*.withMatchingStrategy()
                     .useMethod()
                     .backToParent()*/
-                .withHttpObject()
+                .withHttpObjectDefinition()
                     .withMethod(defaultMethod)
                     .withPathPattern(defaultPath)
                     .withStatusCode(defaultStatusCode)
@@ -117,7 +117,7 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
         return createDefault()
                 .withDirection(MoxProxyDirection.RESPONSE)
                 .withAction(MoxProxyAction.RESPOND)
-                    .withHttpObject()
+                    .withHttpObjectDefinition()
                     .withMethod(defaultMethod)
                     .withPathPattern(defaultPath)
                     .withStatusCode(defaultStatusCode)
@@ -131,7 +131,7 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                     .useSessionId()
                     .backToParent()*//*
                 .withAction(MoxProxyAction.RESPOND)
-                    .withHttpObject()
+                    .withHttpObjectDefinition()
                     .withMethod(defaultMethod)
                     .withPathPattern(defaultPath)
                     .withStatusCode(defaultStatusCode)
@@ -142,7 +142,7 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
         return createDefault()
                 .withDirection(MoxProxyDirection.RESPONSE)
                 .withAction(MoxProxyAction.RESPOND)
-                .withHttpObject()
+                .withHttpObjectDefinition()
                 .withMethod(defaultMethod)
                 .withStatusCode(defaultStatusCode)
                 .backToParent();

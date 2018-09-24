@@ -1,9 +1,9 @@
 package moxproxy.builders;
 
-class MoxProxyHttpObjectBuilderValidator extends BaseBuilderValidator<MoxProxyHttpObjectBuilder> {
+class MoxProxyHttpRuleDefinitionBuilderValidator extends BaseBuilderValidator<MoxProxyHttpRuleDefinitionBuilder> {
 
     @Override
-    public void performValidation(MoxProxyHttpObjectBuilder builder) {
+    public void performValidation(MoxProxyHttpRuleDefinitionBuilder builder) {
         notNull(builder.getMethod(), getClassName(builder), "METHOD");
         notNull(builder.getPathPattern(), getClassName(builder), "PATH_PATTERN");
     }

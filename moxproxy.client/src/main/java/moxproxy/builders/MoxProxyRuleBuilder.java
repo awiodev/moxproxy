@@ -1,6 +1,6 @@
 package moxproxy.builders;
 
-import moxproxy.dto.MoxProxyHttpObject;
+import moxproxy.dto.MoxProxyHttpRuleDefinition;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
@@ -13,13 +13,13 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
 
     private MoxProxyAction action;
 
-    private MoxProxyHttpObjectBuilder httpObjectBuilder;
+    private MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder;
 
     //private MoxProxyMatchingStrategyBuilder strategyBuilder;
 
     public MoxProxyRuleBuilder(){
         super(null, new MoxProxyRuleBuilderValidator());
-        httpObjectBuilder = new MoxProxyHttpObjectBuilder(this);
+        httpObjectBuilder = new MoxProxyHttpRuleDefinitionBuilder(this);
         //strategyBuilder = new MoxProxyMatchingStrategyBuilder(this);
     }
 
@@ -33,7 +33,7 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
         return this;
     }
 
-    public MoxProxyHttpObjectBuilder withHttpObject(){
+    public MoxProxyHttpRuleDefinitionBuilder withHttpObjectDefinition(){
         return httpObjectBuilder;
     }
 
@@ -58,7 +58,7 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
         return action;
     }
 
-    MoxProxyHttpObjectBuilder getHttpObjectBuilder() {
+    MoxProxyHttpRuleDefinitionBuilder getHttpObjectBuilder() {
         return httpObjectBuilder;
     }
 
@@ -68,7 +68,7 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
 
     @Override
     MoxProxyRule performBuild() {
-        MoxProxyHttpObject httpObject = httpObjectBuilder.build();
+        MoxProxyHttpRuleDefinition httpObject = httpObjectBuilder.build();
         //MoxProxyMatchingStrategy strategy = strategyBuilder.build();
         var rule = new MoxProxyRule();
         rule.setAction(action);

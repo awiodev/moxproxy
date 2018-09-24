@@ -11,7 +11,7 @@ public class MoxProxyRule {
     private String sessionId;
     private String id;
     private MoxProxyDirection direction;
-    private MoxProxyHttpObject moxProxyHttpObject;
+    private MoxProxyHttpRuleDefinition moxProxyHttpObject;
     private MoxProxyAction moxProxyAction;
     private Date date;
     //private MoxProxyMatchingStrategy moxProxyMatchingStrategy;
@@ -45,11 +45,11 @@ public class MoxProxyRule {
         this.direction = htmlObjectType;
     }
 
-    public MoxProxyHttpObject getMoxProxyHttpObject() {
+    public MoxProxyHttpRuleDefinition getMoxProxyHttpObject() {
         return moxProxyHttpObject;
     }
 
-    public void setMoxProxyHttpObject(MoxProxyHttpObject moxProxyHttpObject) {
+    public void setMoxProxyHttpObject(MoxProxyHttpRuleDefinition moxProxyHttpObject) {
         this.moxProxyHttpObject = moxProxyHttpObject;
     }
 

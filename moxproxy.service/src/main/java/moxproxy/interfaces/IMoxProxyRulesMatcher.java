@@ -1,6 +1,7 @@
 package moxproxy.interfaces;
 
 import moxproxy.dto.MoxProxyRule;
+import moxproxy.interfaces.IHttpTrafficAdapter;
 
 import java.util.List;
 

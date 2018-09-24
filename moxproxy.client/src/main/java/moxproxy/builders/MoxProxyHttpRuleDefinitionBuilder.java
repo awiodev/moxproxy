@@ -1,11 +1,11 @@
 package moxproxy.builders;
 
 import moxproxy.dto.MoxProxyHeader;
-import moxproxy.dto.MoxProxyHttpObject;
+import moxproxy.dto.MoxProxyHttpRuleDefinition;
 
 import java.util.List;
 
-public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, MoxProxyHttpObjectBuilder, MoxProxyHttpObject, MoxProxyHttpObjectBuilderValidator> {
+public class MoxProxyHttpRuleDefinitionBuilder extends BaseBuilder<MoxProxyRuleBuilder, MoxProxyHttpRuleDefinitionBuilder, MoxProxyHttpRuleDefinition, MoxProxyHttpRuleDefinitionBuilderValidator> {
 
     private String method;
     private String pathPattern;
@@ -13,27 +13,27 @@ public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, 
     private MoxProxyHeadersCollectionBuilder headersCollectionBuilder;
     private int statusCode;
 
-    MoxProxyHttpObjectBuilder(MoxProxyRuleBuilder moxProxyRuleBuilder) {
-        super(moxProxyRuleBuilder, new MoxProxyHttpObjectBuilderValidator());
+    MoxProxyHttpRuleDefinitionBuilder(MoxProxyRuleBuilder moxProxyRuleBuilder) {
+        super(moxProxyRuleBuilder, new MoxProxyHttpRuleDefinitionBuilderValidator());
         headersCollectionBuilder = new MoxProxyHeadersCollectionBuilder(this);
     }
 
-    public MoxProxyHttpObjectBuilder withMethod(String method){
+    public MoxProxyHttpRuleDefinitionBuilder withMethod(String method){
         this.method = method;
         return this;
     }
 
-    public MoxProxyHttpObjectBuilder withPathPattern(String path){
+    public MoxProxyHttpRuleDefinitionBuilder withPathPattern(String path){
         this.pathPattern = path;
         return this;
     }
 
-    public MoxProxyHttpObjectBuilder withStatusCode(int statusCode){
+    public MoxProxyHttpRuleDefinitionBuilder withStatusCode(int statusCode){
         this.statusCode = statusCode;
         return this;
     }
 
-    public MoxProxyHttpObjectBuilder withBody(String body){
+    public MoxProxyHttpRuleDefinitionBuilder withBody(String body){
         this.body = body;
         return this;
     }
@@ -63,9 +63,9 @@ public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, 
     }
 
     @Override
-    MoxProxyHttpObject performBuild() {
+    MoxProxyHttpRuleDefinition performBuild() {
         List<MoxProxyHeader> headers = headersCollectionBuilder.build();
-        var httpObject = new MoxProxyHttpObject();
+        var httpObject = new MoxProxyHttpRuleDefinition();
         httpObject.setMethod(method);
         httpObject.setPathPattern(pathPattern);
         httpObject.setStatusCode(statusCode);
@@ -75,7 +75,7 @@ public class MoxProxyHttpObjectBuilder extends BaseBuilder<MoxProxyRuleBuilder, 
     }
 
     @Override
-    MoxProxyHttpObjectBuilder getCurrentBuilder() {
+    MoxProxyHttpRuleDefinitionBuilder getCurrentBuilder() {
         return this;
     }
 

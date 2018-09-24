@@ -2,6 +2,8 @@ package moxproxy.configuration;
 
 import moxproxy.converters.EntityConverter;
 import moxproxy.interfaces.*;
+import moxproxy.interfaces.IMoxProxyRulesMatcher;
+import moxproxy.rules.MoxProxyRuleProcessor;
 import moxproxy.rules.MoxProxyRulesMatcher;
 import moxproxy.services.MoxProxyDatabase;
 import moxproxy.services.MoxProxyServer;
@@ -46,5 +48,10 @@ public class ServiceBeanConfiguration {
     @Bean
     IEntityConverter entityConverter(){
         return new EntityConverter();
+    }
+
+    @Bean
+    IMoxProxyRuleProcessor moxProxyRuleProcessor(){
+        return new MoxProxyRuleProcessor();
     }
 }

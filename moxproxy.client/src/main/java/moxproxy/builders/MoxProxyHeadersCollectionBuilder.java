@@ -6,9 +6,9 @@ import moxproxy.exceptions.BuilderValidationException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoxProxyHeadersCollectionBuilder extends CollectionBuilder<MoxProxyHttpObjectBuilder, MoxProxyHeadersCollectionBuilder, MoxProxyHeaderBuilder, List<MoxProxyHeader>, MoxProxyHeadersCollectionBuilderValidator> {
+public class MoxProxyHeadersCollectionBuilder extends CollectionBuilder<MoxProxyHttpRuleDefinitionBuilder, MoxProxyHeadersCollectionBuilder, MoxProxyHeaderBuilder, List<MoxProxyHeader>, MoxProxyHeadersCollectionBuilderValidator> {
 
-    MoxProxyHeadersCollectionBuilder(MoxProxyHttpObjectBuilder moxProxyHttpObjectBuilder) {
+    MoxProxyHeadersCollectionBuilder(MoxProxyHttpRuleDefinitionBuilder moxProxyHttpObjectBuilder) {
         super(moxProxyHttpObjectBuilder, new MoxProxyHeadersCollectionBuilderValidator());
     }
 

@@ -5,6 +5,7 @@ import io.netty.handler.codec.http.HttpRequest;
 import moxproxy.adapters.MoxProxyFiltersAdapter;
 import moxproxy.interfaces.IEntityConverter;
 import moxproxy.interfaces.*;
+import moxproxy.interfaces.IMoxProxyRuleProcessor;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersSource;
 import org.littleshoot.proxy.HttpProxyServer;
@@ -25,6 +26,9 @@ public final class MoxProxyServer extends MoxProxyService implements IMoxProxySe
 
     @Autowired
     private IEntityConverter converter;
+
+    @Autowired
+    private IMoxProxyRuleProcessor processor;
 
     @Override
     public void startServer() {
@@ -55,7 +59,7 @@ public final class MoxProxyServer extends MoxProxyService implements IMoxProxySe
 
             @Override
             public HttpFilters filterRequest(HttpRequest httpRequest, ChannelHandlerContext channelHandlerContext) {
-                return new MoxProxyFiltersAdapter(httpRequest, channelHandlerContext, matcher, recorder, converter);
+                return new MoxProxyFiltersAdapter(httpRequest, channelHandlerContext, matcher, recorder, converter, processor);
             }
 
             @Override
@@ -69,7 +73,7 @@ public final class MoxProxyServer extends MoxProxyService implements IMoxProxySe
             }
 
             private int getBufferSize(){
-                return 512 * 1024;
+                return 10 * 1024 * 1024;
             }
         };
     }

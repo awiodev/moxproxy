@@ -34,7 +34,7 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     private void validateBodyActions(MoxProxyRuleBuilder builder){
         var action = MoxProxyAction.SET_BODY;
         if(builder.getAction() == action){
-            MoxProxyHttpObjectBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
+            MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
             String body = httpObjectBuilder.getBody();
             notNull(body, getClassName(httpObjectBuilder), "BODY", "Set body when using action: " + action.name());
         }
@@ -59,7 +59,7 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     private void validateRespondAction(MoxProxyRuleBuilder builder){
         var action = MoxProxyAction.RESPOND;
         if(builder.getAction() == action){
-            MoxProxyHttpObjectBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
+            MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
             int statusCode = httpObjectBuilder.getStatusCode();
             notValue(statusCode, 0, getClassName(httpObjectBuilder), "STATUS_CODE", "Status code cannot be 0 when using action: " + action.name());
         }
@@ -67,7 +67,7 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
 
     private void validateRequestStatusCode(MoxProxyRuleBuilder builder){
         if(builder.getDirection() == MoxProxyDirection.REQUEST && builder.getAction() != MoxProxyAction.RESPOND){
-            MoxProxyHttpObjectBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
+            MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
             int statusCode = httpObjectBuilder.getStatusCode();
             shouldBeTheSameAs(statusCode, 0, getClassName(httpObjectBuilder), "STATUS_CODE", "Status code cannot be different than 0 when using direction: " + MoxProxyDirection.REQUEST);
         }
