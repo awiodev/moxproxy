@@ -34,7 +34,7 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
             IHttpRequestAdapter requestAdapter = new HttpRequestAdapter(httpObject, originalRequest);
             trafficRecorder.recordRequest(entityConverter.fromRequestAdapter(requestAdapter));
             List<MoxProxyRule> result = matcher.match(requestAdapter);
-            MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processRequest(result, requestAdapter, httpObject);
+            MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processRequest(result, httpObject);
             if(processingResult.isRespond()){
                 return processingResult.getResponse();
             }
@@ -48,7 +48,7 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
             IHttpResponseAdapter responseAdapter = new HttpResponseAdapter(httpObject, originalRequest);
             trafficRecorder.recordResponse(entityConverter.fromResponseAdapter(responseAdapter));
             List<MoxProxyRule> result = matcher.match(responseAdapter);
-            var processingResult = proxyRuleProcessor.processResponse(result, responseAdapter, httpObject);
+            var processingResult = proxyRuleProcessor.processResponse(result, httpObject);
             if(processingResult.isRespond()){
                 return processingResult.getResponse();
             }

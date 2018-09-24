@@ -18,6 +18,14 @@
             <artifactId>moxproxy.service</artifactId>
             <version>${parent.version}</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.moxproxy</groupId>
+            <artifactId>moxproxy.client</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

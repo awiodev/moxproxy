@@ -6,7 +6,7 @@ public class MoxProxyHeaderBuilder extends BaseBuilder<MoxProxyHeadersCollection
 
     private String name;
 
-    private String value;
+    private Object value;
 
     MoxProxyHeaderBuilder(MoxProxyHeadersCollectionBuilder moxProxyHeadersCollectionBuilder) {
         super(moxProxyHeadersCollectionBuilder, new MoxProxyHeaderBuilderValidator());
@@ -17,7 +17,7 @@ public class MoxProxyHeaderBuilder extends BaseBuilder<MoxProxyHeadersCollection
         return this;
     }
 
-    public MoxProxyHeaderBuilder withValue(String value){
+    public MoxProxyHeaderBuilder withValue(Object value){
         this.value = value;
         return this;
     }
@@ -26,7 +26,7 @@ public class MoxProxyHeaderBuilder extends BaseBuilder<MoxProxyHeadersCollection
         return name;
     }
 
-    String getValue() {
+    Object getValue() {
         return value;
     }
 

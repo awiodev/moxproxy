@@ -21,40 +21,40 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     }
 
     private void validateActions(MoxProxyRuleBuilder builder){
-        validateHeaderActionsCollection(builder, MoxProxyAction.SET_HEADER);
-        validateHeaderActionsCollection(builder, MoxProxyAction.SET_HEADER);
-        validateHeaderActionsCollection(builder, MoxProxyAction.DELETE_HEADER);
-        validateBodyActions(builder);
-        validateHeaderNameForAction(builder, MoxProxyAction.SET_HEADER);
-        validateHeaderNameForAction(builder, MoxProxyAction.DELETE_HEADER);
+        //validateHeaderActionsCollection(builder, MoxProxyAction.SET_HEADER);
+        //validateHeaderActionsCollection(builder, MoxProxyAction.SET_HEADER);
+        //validateHeaderActionsCollection(builder, MoxProxyAction.DELETE_HEADER);
+        //validateBodyActions(builder);
+        //validateHeaderNameForAction(builder, MoxProxyAction.SET_HEADER);
+        //validateHeaderNameForAction(builder, MoxProxyAction.DELETE_HEADER);
         validateRespondAction(builder);
         validateRequestStatusCode(builder);
     }
 
-    private void validateBodyActions(MoxProxyRuleBuilder builder){
+/*    private void validateBodyActions(MoxProxyRuleBuilder builder){
         var action = MoxProxyAction.SET_BODY;
         if(builder.getAction() == action){
             MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
             String body = httpObjectBuilder.getBody();
             notNull(body, getClassName(httpObjectBuilder), "BODY", "Set body when using action: " + action.name());
         }
-    }
+    }*/
 
-    private void validateHeaderActionsCollection(MoxProxyRuleBuilder builder, MoxProxyAction action){
+/*    private void validateHeaderActionsCollection(MoxProxyRuleBuilder builder, MoxProxyAction action){
         if(builder.getAction() == action){
             MoxProxyHeadersCollectionBuilder headersBuilder = builder.getHttpObjectBuilder().getHeadersCollectionBuilder();
             List<MoxProxyHeaderBuilder> items = headersBuilder.getItems();
             notEmpty(items.iterator(), getClassName(headersBuilder), "HEADERS", "Set at least one header when using action: " + action.name());
         }
-    }
+    }*/
 
-    private void validateHeaderNameForAction(MoxProxyRuleBuilder builder, MoxProxyAction action){
+/*    private void validateHeaderNameForAction(MoxProxyRuleBuilder builder, MoxProxyAction action){
         if(builder.getAction() == action){
             MoxProxyHeadersCollectionBuilder headersBuilder = builder.getHttpObjectBuilder().getHeadersCollectionBuilder();
             List<MoxProxyHeaderBuilder> items = headersBuilder.getItems();
             items.forEach(header -> notNull(header.getName(), getClassName(headersBuilder), "HEADER_NAME", "Header name cannot be null when using action: " + action.name()));
         }
-    }
+    }*/
 
     private void validateRespondAction(MoxProxyRuleBuilder builder){
         var action = MoxProxyAction.RESPOND;
@@ -62,6 +62,10 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
             MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
             int statusCode = httpObjectBuilder.getStatusCode();
             notValue(statusCode, 0, getClassName(httpObjectBuilder), "STATUS_CODE", "Status code cannot be 0 when using action: " + action.name());
+        }
+
+        if(builder.getAction() == action && builder.getDirection() == MoxProxyDirection.RESPONSE){
+            throw new BuilderValidationException("ACTION: " + action.name() + " cannot be applied to DIRECTION: " + MoxProxyDirection.RESPONSE);
         }
     }
 

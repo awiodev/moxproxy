@@ -92,7 +92,7 @@ public abstract class BaseHttpTrafficAdapter implements IHttpTrafficAdapter {
 
     private void extractSessionId(){
         for(MoxProxyHeader header : headers){
-            var extracted = extractSessionId(header.getValue());
+            var extracted = extractSessionId(header.getValue().toString());
             if(extracted != null){
                 sessionId = extracted;
                 break;

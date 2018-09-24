@@ -3,7 +3,7 @@ package moxproxy.dto;
 public class MoxProxyHeader {
 
     private String name;
-    private String value;
+    private Object value;
 
     public String getName() {
         return name;
@@ -13,11 +13,11 @@ public class MoxProxyHeader {
         this.name = name;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 }
