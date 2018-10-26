@@ -12,12 +12,8 @@ public class MoxProxyHeaderBuilder extends BaseBuilder<MoxProxyHeadersCollection
         super(moxProxyHeadersCollectionBuilder, new MoxProxyHeaderBuilderValidator());
     }
 
-    public MoxProxyHeaderBuilder withName(String name){
+    public MoxProxyHeaderBuilder withHeader(String name, Object value){
         this.name = name;
-        return this;
-    }
-
-    public MoxProxyHeaderBuilder withValue(Object value){
         this.value = value;
         return this;
     }

@@ -20,6 +20,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <guice.version>4.0</guice.version>
         <little.proxy.version>1.1.2</little.proxy.version>
+        <little.proxy.mitm.version>1.1.0</little.proxy.mitm.version>
         <junit.version>5.2.0</junit.version>
         <junit.platform.version>1.2.0</junit.platform.version>
         <spring.boot.version>2.0.3.RELEASE</spring.boot.version>

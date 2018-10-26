@@ -83,7 +83,7 @@ public class InvalidBuildersProvider implements ArgumentsProvider {
                 .withMethod(defaultMethod)
                 .withPathPattern(defaultPath)
                 .havingHeaders()
-                    .addChildItem().withValue(defaultValue)
+                    .addItem().withHeader(null, defaultValue)
                         .backToParent()
                     .backToParent()
                 .backToParent();

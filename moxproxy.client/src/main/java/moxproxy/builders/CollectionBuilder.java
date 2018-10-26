@@ -12,7 +12,7 @@ public abstract class CollectionBuilder<Parent extends IBuilder, Builder extends
         items = new ArrayList<>();
     }
 
-    public ChildBuilder addChildItem(){
+    public ChildBuilder addItem(){
         ChildBuilder newChild = CreateChildBuilder();
         items.add(newChild);
         return newChild;

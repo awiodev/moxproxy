@@ -25,7 +25,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         proxyServer.startServer();
-/*        String body = "<!DOCTYPE HTML \"-//IETF//DTD HTML 2.0//EN\">\n"
+        String body = "<!DOCTYPE HTML \"-//IETF//DTD HTML 2.0//EN\">\n"
                 + "<html><head>\n"
                 + "<title>"+"Bad Gateway"+"</title>\n"
                 + "</head><body>\n"
@@ -39,15 +39,16 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                 .withAction(MoxProxyAction.RESPOND)
                 .withHttpObjectDefinition()
                 .withMethod("GET")
-                .withPathPattern("w3schools")
+                .withPathPattern("page\\.art")
                 .withStatusCode(500)
                 .withBody(body)
                 .havingHeaders()
-                    .addChildItem().withName("Content-Type").withValue("text/html; charset=UTF-8").backToParent()
-                    .addChildItem().withName(HttpHeaders.Names.CONTENT_LENGTH).withValue(len.length).backToParent()
+                    .addItem().withHeader("Content-Type", "text/html; charset=UTF-8").backToParent()
+                    .addItem().withHeader(HttpHeaders.Names.CONTENT_LENGTH, len.length).backToParent()
+                    //.addItem().withHeader("Cache-Control", "no-cache").backToParent()
                     .backToParent()
                 .backToParent().build();
 
-        proxyServer.createRule(rule);*/
+        proxyServer.createRule(rule);
     }
 }

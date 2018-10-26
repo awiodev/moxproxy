@@ -38,6 +38,10 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
             if(processingResult.isRespond()){
                 return processingResult.getResponse();
             }
+            if(processingResult.isModifiedRequest()){
+                httpObject = processingResult.getRequest();
+                super.clientToProxyRequest(httpObject);
+            }
         }
         return null;
     }
