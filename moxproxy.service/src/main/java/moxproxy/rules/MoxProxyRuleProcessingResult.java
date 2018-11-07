@@ -6,17 +6,20 @@ import io.netty.handler.codec.http.HttpResponse;
 
 public class MoxProxyRuleProcessingResult {
 
-    private boolean respond;
-    private boolean modifiedRequest;
     private HttpResponse response;
     private HttpObject request;
+    private MoxProxyProcessingResultType moxProxyProcessingResultType;
 
-    public boolean isRespond() {
-        return respond;
+    public MoxProxyRuleProcessingResult(){
+        moxProxyProcessingResultType = MoxProxyProcessingResultType.DO_NOTING;
     }
 
-    public void setRespond(boolean respond) {
-        this.respond = respond;
+    public MoxProxyProcessingResultType getMoxProxyProcessingResultType() {
+        return moxProxyProcessingResultType;
+    }
+
+    public void setMoxProxyProcessingResultType(MoxProxyProcessingResultType moxProxyProcessingResultType) {
+        this.moxProxyProcessingResultType = moxProxyProcessingResultType;
     }
 
     public HttpResponse getResponse() {
@@ -27,19 +30,15 @@ public class MoxProxyRuleProcessingResult {
         this.response = response;
     }
 
-    public boolean isModifiedRequest() {
-        return modifiedRequest;
-    }
-
-    public void setModifiedRequest(boolean modifiedRequest) {
-        this.modifiedRequest = modifiedRequest;
-    }
-
     public HttpObject getRequest() {
         return request;
     }
 
     public void setRequest(HttpObject request) {
         this.request = request;
+    }
+
+    public void setResponse(HttpResponse response) {
+        this.response = response;
     }
 }

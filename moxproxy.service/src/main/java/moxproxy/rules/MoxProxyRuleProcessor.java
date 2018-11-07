@@ -3,6 +3,7 @@ package moxproxy.rules;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
+import moxproxy.conts.MoxProxyConts;
 import moxproxy.dto.MoxProxyHeader;
 import moxproxy.dto.MoxProxyHttpRuleDefinition;
 import moxproxy.dto.MoxProxyRule;
@@ -23,22 +24,25 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
 
         List<MoxProxyRule> respondRules = getResponseRules(rules);
         if(respondRules.size() > 0){
-            ruleProcessingResult.setRespond(true);
+            ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.RESPOND);
             ruleProcessingResult.setResponse(createDefaultResponse(getLatestResponse(respondRules)));
             return ruleProcessingResult;
         }
 
+        var modificationRules = getModificationRules(rules);
 
+        for(MoxProxyRule rule : modificationRules){
+            request = modifyRequest(rule, request);
+            ruleProcessingResult.setRequest(request);
+            ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
+        }
 
-        for(MoxProxyRule rule : rules){
-            if(rule.getAction() == MoxProxyAction.MODIFY){
-                request = modifyRequest(rule, request);
-                ruleProcessingResult.setModifiedRequest(true);
-                ruleProcessingResult.setRequest(request);
-            }
-            if(rule.getAction() == MoxProxyAction.DELETE){
+        var deleteRules = getDeleteRules(rules);
 
-            }
+        for(MoxProxyRule rule : deleteRules){
+            request = deleteFromRequest(rule, request);
+            ruleProcessingResult.setRequest(request);
+            ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
         }
 
         return ruleProcessingResult;
@@ -59,6 +63,25 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
 
         if(ruleDefinition.getBody() != null){
             httpRequest = httpRequest.replace(convertContent(ruleDefinition.getBody()));
+        }
+
+        return httpRequest;
+    }
+
+    private HttpObject deleteFromRequest(MoxProxyRule rule, HttpObject request){
+        var httpRequest = (FullHttpRequest)request;
+        MoxProxyHttpRuleDefinition ruleDefinition = rule.getMoxProxyHttpObject();
+
+        if(ruleDefinition.getHeaders() != null && !ruleDefinition.getHeaders().isEmpty()){
+            for(MoxProxyHeader header : ruleDefinition.getHeaders()){
+                if(httpRequest.headers().contains(header.getName())){
+                    httpRequest.headers().remove(header.getName());
+                }
+            }
+        }
+
+        if(ruleDefinition.getBody() != null && ruleDefinition.getBody().equals(MoxProxyConts.DELETE_BODY_INDICATOR)){
+            httpRequest = httpRequest.replace(convertContent(MoxProxyConts.EMPTY_STRING));
         }
 
         return httpRequest;
@@ -86,9 +109,66 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
 
     @Override
     public MoxProxyRuleProcessingResult processResponse(List<MoxProxyRule> rules, HttpObject response) {
+
+        FullHttpResponse fullHttpResponse = (FullHttpResponse)response;
         var ruleProcessingResult = new MoxProxyRuleProcessingResult();
 
+        var modificationRules = getModificationRules(rules);
+
+        for(MoxProxyRule rule : modificationRules){
+            fullHttpResponse = modifyResponse(rule, fullHttpResponse);
+            ruleProcessingResult.setResponse(fullHttpResponse);
+            ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
+        }
+
+        var deleteRules = getDeleteRules(rules);
+
+        for(MoxProxyRule rule : deleteRules){
+            fullHttpResponse = deleteFromResponse(rule, fullHttpResponse);
+            ruleProcessingResult.setResponse(fullHttpResponse);
+            ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
+        }
+
         return ruleProcessingResult;
+    }
+
+    private FullHttpResponse modifyResponse(MoxProxyRule rule, FullHttpResponse response) {
+
+        MoxProxyHttpRuleDefinition ruleDefinition = rule.getMoxProxyHttpObject();
+
+        if(ruleDefinition.getHeaders() != null && !ruleDefinition.getHeaders().isEmpty()){
+            for(MoxProxyHeader header : ruleDefinition.getHeaders()){
+                if(response.headers().contains(header.getName())){
+                    response.headers().remove(header.getName());
+                }
+                response.headers().add(header.getName(), header.getValue());
+            }
+        }
+
+        if(ruleDefinition.getBody() != null){
+            response = response.replace(convertContent(ruleDefinition.getBody()));
+        }
+
+        return response;
+    }
+
+    private FullHttpResponse deleteFromResponse(MoxProxyRule rule, FullHttpResponse response){
+
+        MoxProxyHttpRuleDefinition ruleDefinition = rule.getMoxProxyHttpObject();
+
+        if(ruleDefinition.getHeaders() != null && !ruleDefinition.getHeaders().isEmpty()){
+            for(MoxProxyHeader header : ruleDefinition.getHeaders()){
+                if(response.headers().contains(header.getName())){
+                    response.headers().remove(header.getName());
+                }
+            }
+        }
+
+        if(ruleDefinition.getBody() != null && ruleDefinition.getBody().equals(MoxProxyConts.DELETE_BODY_INDICATOR)){
+            response = response.replace(convertContent(MoxProxyConts.EMPTY_STRING));
+        }
+
+        return response;
     }
 
     private ByteBuf convertContent(String content){

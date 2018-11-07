@@ -1,8 +1,9 @@
 package moxproxy.rules;
 
 import com.google.common.collect.Lists;
-import moxproxy.interfaces.IHttpTrafficAdapter;
 import moxproxy.dto.MoxProxyRule;
+import moxproxy.enums.MoxProxyDirection;
+import moxproxy.interfaces.IHttpTrafficAdapter;
 import moxproxy.interfaces.IMoxProxyDatabase;
 import moxproxy.interfaces.IMoxProxyRulesMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 public class MoxProxyRulesMatcher implements IMoxProxyRulesMatcher {
@@ -27,9 +29,9 @@ public class MoxProxyRulesMatcher implements IMoxProxyRulesMatcher {
     }
 
     @Override
-    public List<MoxProxyRule> match(IHttpTrafficAdapter adapter) {
+    public List<MoxProxyRule> match(IHttpTrafficAdapter adapter, MoxProxyDirection moxProxyDirection) {
         var matched = new ArrayList<MoxProxyRule>();
-        for(var rule : getRules(adapter)){
+        for(var rule : getRules(adapter, moxProxyDirection)){
             if(match(rule, adapter)){
                 matched.add(rule);
             }
@@ -38,9 +40,10 @@ public class MoxProxyRulesMatcher implements IMoxProxyRulesMatcher {
         return matched;
     }
 
-    private List<MoxProxyRule> getRules(IHttpTrafficAdapter adapter){
-        return matchSessionId ? Lists.newArrayList(database.findRulesBySessionId(adapter.sessionId()))
+    private List<MoxProxyRule> getRules(IHttpTrafficAdapter adapter, MoxProxyDirection moxProxyDirection){
+        var result = matchSessionId ? Lists.newArrayList(database.findRulesBySessionId(adapter.sessionId()))
                 : Lists.newArrayList(database.getAllRules());
+        return result.stream().filter(x -> x.getHttpDirection() == moxProxyDirection).collect(Collectors.toList());
     }
 
     private boolean match(MoxProxyRule rule, IHttpTrafficAdapter adapter){

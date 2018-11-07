@@ -1,5 +1,6 @@
 package moxproxy.builders;
 
+import moxproxy.conts.MoxProxyConts;
 import moxproxy.dto.MoxProxyHeader;
 import moxproxy.dto.MoxProxyHttpRuleDefinition;
 
@@ -35,6 +36,11 @@ public class MoxProxyHttpRuleDefinitionBuilder extends BaseBuilder<MoxProxyRuleB
 
     public MoxProxyHttpRuleDefinitionBuilder withBody(String body){
         this.body = body;
+        return this;
+    }
+
+    public MoxProxyHttpRuleDefinitionBuilder withDeleteBody(){
+        this.body = MoxProxyConts.DELETE_BODY_INDICATOR;
         return this;
     }
 

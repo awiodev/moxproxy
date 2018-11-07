@@ -2,6 +2,7 @@ package testing.builders;
 
 import moxproxy.builders.MoxProxyHttpRuleDefinitionBuilder;
 import moxproxy.builders.MoxProxyRuleBuilder;
+import moxproxy.conts.MoxProxyConts;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
@@ -21,6 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class MoxProxyRuleBuilderTest {
 
     private static final String DEFAULT_SESSION_ID = "1234";
+    private static final String method = "POST";
+    private static final String path = "test/path";
+    private static final String body = "{something:\"some value\"}";
+    private static final String headerName = "firstHeader";
+    private static final String headerValue = "firstHeaderValue";
 
     @Test
     void givenChildBuilder_whenBackToParent_thenParentReturned(){
@@ -37,11 +43,6 @@ class MoxProxyRuleBuilderTest {
 
     @Test
     void givenBuilder_whenBuild_thenAllBuilt() throws BuilderValidationException {
-        String method = "POST";
-        String path = "test/path";
-        String body = "{something:\"some value\"}";
-        String headerName = "firstHeader";
-        String headerValue = "firstHeaderValue";
         int statusCode = 500;
         var builder = new MoxProxyRuleBuilder();
         MoxProxyRule actual = builder
@@ -78,6 +79,33 @@ class MoxProxyRuleBuilderTest {
         assertEquals(body, actual.getMoxProxyHttpObject().getBody());
         assertEquals(headerName, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getName());
         assertEquals(headerValue, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getValue());
+    }
+
+    @Test
+    void givenBuilderWithDeleteBody_whenBuild_thenIndicatorSet() throws BuilderValidationException {
+        int statusCode = 500;
+        var builder = new MoxProxyRuleBuilder();
+        MoxProxyRule actual = builder
+                .withDirection(MoxProxyDirection.RESPONSE)
+                .withSessionId(DEFAULT_SESSION_ID)
+                .withAction(MoxProxyAction.DELETE)
+                /*.withMatchingStrategy()
+                    .useMethod()
+                    .backToParent()*/
+                .withHttpObjectDefinition()
+                .withMethod(method)
+                .withPathPattern(path)
+                .withStatusCode(statusCode)
+                .withDeleteBody()
+                .havingHeaders()
+                .addItem()
+                .withHeader(headerName, headerValue)
+                .backToParent()
+                .backToParent()
+                .backToParent()
+                .build();
+
+        assertEquals(actual.getMoxProxyHttpObject().getBody(), MoxProxyConts.DELETE_BODY_INDICATOR);
     }
 
     @DisplayName("Should throw validation exception")

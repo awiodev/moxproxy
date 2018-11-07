@@ -2,10 +2,12 @@ package moxproxy.adapters;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
+import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.*;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.interfaces.IMoxProxyRuleProcessor;
 import moxproxy.interfaces.IMoxProxyRulesMatcher;
+import moxproxy.rules.MoxProxyProcessingResultType;
 import moxproxy.rules.MoxProxyRuleProcessingResult;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 
@@ -33,12 +35,12 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
         if(httpObject instanceof FullHttpRequest){
             IHttpRequestAdapter requestAdapter = new HttpRequestAdapter(httpObject, originalRequest);
             trafficRecorder.recordRequest(entityConverter.fromRequestAdapter(requestAdapter));
-            List<MoxProxyRule> result = matcher.match(requestAdapter);
+            List<MoxProxyRule> result = matcher.match(requestAdapter, MoxProxyDirection.REQUEST);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processRequest(result, httpObject);
-            if(processingResult.isRespond()){
+            if(processingResult.getMoxProxyProcessingResultType() == MoxProxyProcessingResultType.RESPOND){
                 return processingResult.getResponse();
             }
-            if(processingResult.isModifiedRequest()){
+            if(processingResult.getMoxProxyProcessingResultType() == MoxProxyProcessingResultType.PROCESS){
                 httpObject = processingResult.getRequest();
                 super.clientToProxyRequest(httpObject);
             }
@@ -51,9 +53,9 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
         if(httpObject instanceof FullHttpResponse){
             IHttpResponseAdapter responseAdapter = new HttpResponseAdapter(httpObject, originalRequest);
             trafficRecorder.recordResponse(entityConverter.fromResponseAdapter(responseAdapter));
-            List<MoxProxyRule> result = matcher.match(responseAdapter);
-            var processingResult = proxyRuleProcessor.processResponse(result, httpObject);
-            if(processingResult.isRespond()){
+            List<MoxProxyRule> result = matcher.match(responseAdapter, MoxProxyDirection.RESPONSE);
+            MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processResponse(result, httpObject);
+            if(processingResult.getMoxProxyProcessingResultType() == MoxProxyProcessingResultType.PROCESS){
                 return processingResult.getResponse();
             }
         }
