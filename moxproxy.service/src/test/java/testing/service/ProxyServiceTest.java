@@ -59,6 +59,24 @@ class ProxyServiceTest extends TestBase {
     }
 
     @Test
+    void givenRules_whenClearSessionRules_thenRulesRemoved(){
+        var rule1 = createDefaultRule();
+        var rule2 = createDefaultRule();
+        var rule3 = createDefaultRule();
+        rule3.setSessionId(UNKNOWN);
+        service.createRule(rule1);
+        service.createRule(rule2);
+        service.createRule(rule3);
+        var actual = Lists.newArrayList(database.getAllRules());
+        assertEquals(3, actual.size());
+        service.clearSessionRules(rule1.getSessionId());
+        actual = Lists.newArrayList(database.getAllRules());
+        assertEquals(1, actual.size());
+        MoxProxyRule found = actual.stream().findFirst().get();
+        assertEquals(rule3.getSessionId(), found.getSessionId());
+    }
+
+    @Test
     void givenRulesAndTraffic_whenClearAll_thenAllCleared(){
         var rule1 = createDefaultRule();
         var rule2 = createDefaultRule();

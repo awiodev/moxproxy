@@ -3,7 +3,7 @@ package moxproxy.rules;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
-import moxproxy.conts.MoxProxyConts;
+import moxproxy.consts.MoxProxyConts;
 import moxproxy.dto.MoxProxyHeader;
 import moxproxy.dto.MoxProxyHttpRuleDefinition;
 import moxproxy.dto.MoxProxyRule;

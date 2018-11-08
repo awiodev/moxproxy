@@ -1,4 +1,4 @@
-package moxproxy.conts;
+package moxproxy.consts;
 
 public class MoxProxyConts {
     public static final String DELETE_BODY_INDICATOR = "DELETE_BODY";

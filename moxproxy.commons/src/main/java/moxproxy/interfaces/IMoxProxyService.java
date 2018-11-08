@@ -15,6 +15,8 @@ public interface IMoxProxyService {
 
     void cancelRule(String ruleId);
 
+    void clearSessionRules(String sessionId);
+
     void clearSessionEntries(String sessionId);
 
     void clearAllSessionEntries();

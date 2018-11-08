@@ -1,6 +1,6 @@
 package moxproxy.builders;
 
-import moxproxy.conts.MoxProxyConts;
+import moxproxy.consts.MoxProxyConts;
 import moxproxy.dto.MoxProxyHeader;
 import moxproxy.dto.MoxProxyHttpRuleDefinition;
 

@@ -32,6 +32,11 @@ public class MoxProxyClient implements IMoxProxyService {
     }
 
     @Override
+    public void clearSessionRules(String sessionId) {
+
+    }
+
+    @Override
     public void clearSessionEntries(String sessionId) {
 
     }

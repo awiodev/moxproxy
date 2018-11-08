@@ -25,7 +25,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         proxyServer.startServer();
-        String body = "<!DOCTYPE HTML \"-//IETF//DTD HTML 2.0//EN\">\n"
+/*        String body = "<!DOCTYPE HTML \"-//IETF//DTD HTML 2.0//EN\">\n"
                 + "<html><head>\n"
                 + "<title>"+"Bad Gateway"+"</title>\n"
                 + "</head><body>\n"
@@ -49,6 +49,6 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                     .backToParent()
                 .backToParent().build();
 
-        proxyServer.createRule(rule);
+        proxyServer.createRule(rule);*/
     }
 }

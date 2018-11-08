@@ -43,6 +43,11 @@ public class MoxProxyService implements IMoxProxyService {
     }
 
     @Override
+    public void clearSessionRules(String sessionId) {
+        database.cleanRules(sessionId);
+    }
+
+    @Override
     public void clearSessionEntries(String sessionId) {
         database.cleanProcessedTraffic(sessionId);
         database.cleanRules(sessionId);
