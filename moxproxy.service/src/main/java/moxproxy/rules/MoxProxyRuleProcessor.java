@@ -9,6 +9,8 @@ import moxproxy.dto.MoxProxyHttpRuleDefinition;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.interfaces.IMoxProxyRuleProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.util.Comparator;
@@ -16,6 +18,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MoxProxyRuleProcessor.class);
 
     @Override
     public MoxProxyRuleProcessingResult processRequest(List<MoxProxyRule> rules, HttpObject request) {
@@ -26,6 +30,7 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
         if(respondRules.size() > 0){
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.RESPOND);
             ruleProcessingResult.setResponse(createDefaultResponse(getLatestResponse(respondRules)));
+            LOG.info("Processed request response");
             return ruleProcessingResult;
         }
 
@@ -35,6 +40,7 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
             request = modifyRequest(rule, request);
             ruleProcessingResult.setRequest(request);
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
+            LOG.info("Processed request modification");
         }
 
         var deleteRules = getDeleteRules(rules);
@@ -43,6 +49,7 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
             request = deleteFromRequest(rule, request);
             ruleProcessingResult.setRequest(request);
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
+            LOG.info("Processed request elements removal");
         }
 
         return ruleProcessingResult;
@@ -58,11 +65,15 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
                     httpRequest.headers().remove(header.getName());
                 }
                 httpRequest.headers().add(header.getName(), header.getValue());
+                LOG.info("Setting request header: {} value {} for path {} and method {}", header.getName(), header.getValue(),
+                        httpRequest.uri(), httpRequest.method());
             }
         }
 
         if(ruleDefinition.getBody() != null){
             httpRequest = httpRequest.replace(convertContent(ruleDefinition.getBody()));
+            LOG.info("Setting request body: {} for path {} and method {}", ruleDefinition.getBody(),
+                    httpRequest.uri(), httpRequest.method());
         }
 
         return httpRequest;
@@ -76,12 +87,15 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
             for(MoxProxyHeader header : ruleDefinition.getHeaders()){
                 if(httpRequest.headers().contains(header.getName())){
                     httpRequest.headers().remove(header.getName());
+                    LOG.info("Removing request header: {} for path {} and method {}", header.getName(),
+                            httpRequest.uri(), httpRequest.method());
                 }
             }
         }
 
         if(ruleDefinition.getBody() != null && ruleDefinition.getBody().equals(MoxProxyConts.DELETE_BODY_INDICATOR)){
             httpRequest = httpRequest.replace(convertContent(MoxProxyConts.EMPTY_STRING));
+            LOG.info("Removing request body for path {} and method {}", httpRequest.uri(), httpRequest.method());
         }
 
         return httpRequest;
@@ -119,6 +133,7 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
             fullHttpResponse = modifyResponse(rule, fullHttpResponse);
             ruleProcessingResult.setResponse(fullHttpResponse);
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
+            LOG.info("Processed response modification");
         }
 
         var deleteRules = getDeleteRules(rules);
@@ -127,6 +142,7 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
             fullHttpResponse = deleteFromResponse(rule, fullHttpResponse);
             ruleProcessingResult.setResponse(fullHttpResponse);
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
+            LOG.info("Processed response elements removal");
         }
 
         return ruleProcessingResult;
@@ -142,11 +158,13 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
                     response.headers().remove(header.getName());
                 }
                 response.headers().add(header.getName(), header.getValue());
+                LOG.info("Setting response header: {} value {}", header.getName(), header.getValue());
             }
         }
 
         if(ruleDefinition.getBody() != null){
             response = response.replace(convertContent(ruleDefinition.getBody()));
+            LOG.info("Setting response body: {}", ruleDefinition.getBody());
         }
 
         return response;
@@ -160,19 +178,21 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
             for(MoxProxyHeader header : ruleDefinition.getHeaders()){
                 if(response.headers().contains(header.getName())){
                     response.headers().remove(header.getName());
+                    LOG.info("Removing response header: {}", header.getName());
                 }
             }
         }
 
         if(ruleDefinition.getBody() != null && ruleDefinition.getBody().equals(MoxProxyConts.DELETE_BODY_INDICATOR)){
             response = response.replace(convertContent(MoxProxyConts.EMPTY_STRING));
+            LOG.info("Removing response body");
         }
 
         return response;
     }
 
     private ByteBuf convertContent(String content){
-        return  Unpooled.copiedBuffer(content.getBytes(Charset.forName("UTF-8")));
+        return  Unpooled.copiedBuffer(content.getBytes(Charset.forName(MoxProxyConts.UTF8)));
     }
 
     private List<MoxProxyRule> getResponseRules(List<MoxProxyRule> rules){

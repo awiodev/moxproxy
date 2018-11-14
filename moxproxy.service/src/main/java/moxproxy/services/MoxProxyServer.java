@@ -9,11 +9,15 @@ import org.littleshoot.proxy.HttpFiltersSource;
 import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 import org.littleshoot.proxy.mitm.CertificateSniffingMitmManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public final class MoxProxyServer extends MoxProxyService implements IMoxProxyServer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MoxProxyServer.class);
 
     private HttpProxyServer proxyServer;
 
@@ -48,18 +52,24 @@ public final class MoxProxyServer extends MoxProxyService implements IMoxProxySe
             e.printStackTrace();
         }
 
+        LOG.info("Starting MoxProxy on port {}", configuration.getProxyPort());
+
         proxyServer = DefaultHttpProxyServer.bootstrap()
                 .withPort(configuration.getProxyPort())
                 .withAllowLocalOnly(false)
                 .withFiltersSource(getFiltersSource())
                 .withManInTheMiddle(mitm)
                 .start();
+
+        LOG.info("MoxProxy server started");
     }
 
     @Override
     public void stopServer() {
         proxyServer.stop();
         database.stopDatabase();
+
+        LOG.info("MoxProxy server stopped");
     }
 
     private HttpFiltersSource getFiltersSource(){

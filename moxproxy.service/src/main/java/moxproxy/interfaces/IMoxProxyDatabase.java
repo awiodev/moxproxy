@@ -23,6 +23,8 @@ public interface IMoxProxyDatabase {
 
     void cleanRules(String sessionId);
 
+    void cleanRules(Date olderThan);
+
     String addRule(MoxProxyRule moxProxyRule);
 
     void addProcessedRequest(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry);

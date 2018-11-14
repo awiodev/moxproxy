@@ -240,4 +240,27 @@ class DatabaseTest extends TestBase {
         List found = Lists.newArrayList(database.getAllRules());
         assertTrue(found.isEmpty());
     }
+
+    @Test
+    void givenRules_whenCleanByDate_ThenRulesRemoved(){
+        MoxProxyRule rule1 = createDefaultRule();
+        MoxProxyRule rule2 = createDefaultRule();
+        MoxProxyRule rule3 = createDefaultRule();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MINUTE, 1);
+
+        database.addRule(rule1);
+        database.addRule(rule2);
+
+        rule3.getDate().setTime(cal.getTimeInMillis());
+        database.addRule(rule3);
+
+        Date cleanDate = cal.getTime();
+
+        database.cleanRules(cleanDate);
+        List found = Lists.newArrayList(database.findRulesBySessionId(rule3.getSessionId()));
+        assertEquals(1, found.size());
+    }
 }

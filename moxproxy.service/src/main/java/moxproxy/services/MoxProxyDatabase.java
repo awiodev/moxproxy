@@ -66,6 +66,11 @@ public class MoxProxyDatabase implements IMoxProxyDatabase {
     }
 
     @Override
+    public void cleanRules(Date olderThan) {
+        rulesDatabase.entrySet().removeIf(p -> p.getValue().getDate().before(olderThan));
+    }
+
+    @Override
     public String addRule(MoxProxyRule moxProxyRule) {
         rulesDatabase.put(moxProxyRule.getId(), moxProxyRule);
         return moxProxyRule.getId();
