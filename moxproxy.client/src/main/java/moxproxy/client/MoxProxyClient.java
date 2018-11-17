@@ -98,10 +98,13 @@ public class MoxProxyClient implements IMoxProxyService {
         List<Object> providers = new ArrayList();
         providers.add(new JacksonJaxbJsonProvider());
         WebClient client = WebClient.create(configuration.getBaseUrl(), providers).type(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).path(path, values);
+        client.header(MoxProxyConts.AUTH_HEADER, "Basic " + encodeAuth());
+        return client;
+    }
+
+    private String encodeAuth(){
         var base64 = new Base64();
         String before = configuration.getUserName()+":"+configuration.getPassword();
-        String encoded = new String(base64.encode(before.getBytes()));
-        client.header(MoxProxyConts.AUTH_HEADER, "Basic " + encoded);
-        return client;
+        return new String(base64.encode(before.getBytes()));
     }
 }
