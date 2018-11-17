@@ -2,6 +2,7 @@
   "proxyPort":89,
   "webServicePort":8081,
   "cleanupDelayInSeconds":300,
-  "basicAuthUserName":"",
-  "basicAuthPassword":""
+  "basicAuthUserName":"change-user",
+  "basicAuthPassword":"change-password",
+  "urlWhiteListForTrafficRecorder":[]
 }

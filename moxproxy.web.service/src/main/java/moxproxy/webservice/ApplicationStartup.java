@@ -3,6 +3,7 @@ package moxproxy.webservice;
 import moxproxy.interfaces.IMoxProxyServer;
 import moxproxy.webservice.config.WebServiceBeanConfiguration;
 import moxproxy.webservice.config.WebServiceConfiguration;
+import moxproxy.webservice.config.WebServiceSecurityConfig;
 import moxproxy.webservice.services.CleanupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,7 +17,7 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 @Component
-@Import({WebServiceBeanConfiguration.class})
+@Import({WebServiceBeanConfiguration.class, WebServiceSecurityConfig.class})
 public class ApplicationStartup implements ApplicationListener<ApplicationReadyEvent> {
 
     @Autowired

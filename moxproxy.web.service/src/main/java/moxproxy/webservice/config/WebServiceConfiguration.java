@@ -7,6 +7,7 @@ public class WebServiceConfiguration {
     private int cleanupDelayInSeconds;
     private String basicAuthUserName;
     private String basicAuthPassword;
+    private Iterable<String> urlWhiteListForTrafficRecorder;
 
     public int getProxyPort() {
         return proxyPort;
@@ -26,5 +27,9 @@ public class WebServiceConfiguration {
 
     public String getBasicAuthPassword() {
         return basicAuthPassword;
+    }
+
+    public Iterable<String> getUrlWhiteListForTrafficRecorder() {
+        return urlWhiteListForTrafficRecorder;
     }
 }

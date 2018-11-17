@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -77,7 +79,7 @@ public class WebServiceBeanConfiguration {
 
     @Bean
     IMoxProxyServiceConfiguration moxProxyServiceConfiguration(){
-        return new MoxProxyServiceConfiguration(webServiceConfiguration.getProxyPort());
+        return new MoxProxyServiceConfiguration(webServiceConfiguration.getProxyPort(), webServiceConfiguration.getUrlWhiteListForTrafficRecorder());
     }
 
     @Bean
@@ -88,6 +90,11 @@ public class WebServiceBeanConfiguration {
     @Bean
     IMoxProxyRuleProcessor moxProxyRuleProcessor(){
         return new MoxProxyRuleProcessor();
+    }
+
+    @Bean
+    AuthenticationEntryPoint authenticationEntryPoint(){
+        return new AuthenticationEntryPoint();
     }
 
     private File getConfigFile() throws FileNotFoundException {

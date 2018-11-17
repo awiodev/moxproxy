@@ -7,6 +7,7 @@ import moxproxy.consts.MoxProxyRoutes;
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.interfaces.IMoxProxyService;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.cxf.jaxrs.client.WebClient;
 
 import javax.ws.rs.core.MediaType;
@@ -93,9 +94,14 @@ public class MoxProxyClient implements IMoxProxyService {
         var response = createClient(route).post(MoxProxyConts.EMPTY_STRING);
     }
 
-    private WebClient createClient(String path, Object... values){
+    private WebClient createClient(String path, Object... values) {
         List<Object> providers = new ArrayList();
         providers.add(new JacksonJaxbJsonProvider());
-        return WebClient.create(configuration.getBaseUrl(), providers).type(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).path(path, values);
+        WebClient client = WebClient.create(configuration.getBaseUrl(), providers).type(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE).path(path, values);
+        var base64 = new Base64();
+        String before = configuration.getUserName()+":"+configuration.getPassword();
+        String encoded = new String(base64.encode(before.getBytes()));
+        client.header(MoxProxyConts.AUTH_HEADER, "Basic " + encoded);
+        return client;
     }
 }
