@@ -1,7 +1,9 @@
 package moxproxy.services;
 
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
+import io.netty.util.AttributeKey;
 import moxproxy.adapters.MoxProxyFiltersAdapter;
 import moxproxy.interfaces.*;
 import org.littleshoot.proxy.HttpFilters;

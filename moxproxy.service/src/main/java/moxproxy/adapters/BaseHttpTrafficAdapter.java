@@ -23,12 +23,14 @@ public abstract class BaseHttpTrafficAdapter implements IHttpTrafficAdapter {
     private String method;
     private String url;
     private String sessionId;
+    protected String connectedUrl;
 
     protected HttpRequest originalRequest;
 
-    protected BaseHttpTrafficAdapter(HttpObject httpObject, HttpRequest originalRequest){
+    protected BaseHttpTrafficAdapter(HttpObject httpObject, HttpRequest originalRequest, String connectedUrl){
         this.httpObject = httpObject;
         this.originalRequest = originalRequest;
+        this.connectedUrl = connectedUrl;
         headers = transformToProxyHeaders(getHeaders());
         body = readContent(getContent());
         method = getMethod().name();

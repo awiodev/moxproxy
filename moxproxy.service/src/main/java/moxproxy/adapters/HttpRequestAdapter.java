@@ -6,8 +6,8 @@ import moxproxy.interfaces.IHttpRequestAdapter;
 
 public class HttpRequestAdapter extends BaseHttpTrafficAdapter implements IHttpRequestAdapter {
 
-    public HttpRequestAdapter(HttpObject request, HttpRequest originalRequest){
-        super(request, originalRequest);
+    public HttpRequestAdapter(HttpObject request, HttpRequest originalRequest, String connectedUrl){
+        super(request, originalRequest, connectedUrl);
     }
 
     @Override
@@ -27,6 +27,6 @@ public class HttpRequestAdapter extends BaseHttpTrafficAdapter implements IHttpR
 
     @Override
     protected String getUrl() {
-        return ((FullHttpRequest)getHttpObject()).uri();
+        return connectedUrl + ((FullHttpRequest)getHttpObject()).uri();
     }
 }
