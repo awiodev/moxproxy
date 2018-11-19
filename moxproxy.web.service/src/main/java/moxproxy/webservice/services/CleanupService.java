@@ -18,8 +18,7 @@ public class CleanupService {
     @Autowired
     @Qualifier("moxProxyScheduleService")
     IMoxProxyScheduleFunctionService moxProxyCleanupService;
-
-    //@Scheduled(fixedRate = 300000, initialDelay = 300000)
+    
     public void performCleanup(){
         LOG.info("Staring cleanup service");
         Date today = Calendar.getInstance().getTime();

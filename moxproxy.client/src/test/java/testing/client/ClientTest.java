@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ClientTest {
 
 
-    //@Test
+    @Test
     public void testClient(){
         var config = new MoxProxyClientConfiguration();
         var client = new MoxProxyClient(config);
