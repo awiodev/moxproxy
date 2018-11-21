@@ -30,23 +30,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @Import({WebServiceIntegrationTestConfiguration.class, WebServiceBeanConfiguration.class})
 public class WebServiceIntegrationTest {
 
-    @Autowired
+    /*@Autowired
     MockMvc mockMvc;
 
     @Autowired
     MoxProxyClient moxProxyClient;
 
     @Autowired
-    IMoxProxyClientConfiguration configuration;
+    IMoxProxyClientConfiguration configuration;*/
 
+    @Autowired
     private WebServiceTestClient client;
 
     @Autowired
     private IMoxProxyDatabase database;
 
-
-
-    private static ConfigurableApplicationContext context;
+    //private static ConfigurableApplicationContext context;
 
     /*@BeforeAll
     public static void startService(){
@@ -60,13 +59,7 @@ public class WebServiceIntegrationTest {
 
     //@Test
     public void test(){
-        Iterable<MoxProxyProcessedTrafficEntry> traffic = moxProxyClient.getAllRequestTraffic();
-    }
-
-
-    @BeforeEach
-    public void before(){
-        client = new WebServiceTestClient(mockMvc, configuration);
+        //Iterable<MoxProxyProcessedTrafficEntry> traffic = moxProxyClient.getAllRequestTraffic();
     }
 
     @Test

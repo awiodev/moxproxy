@@ -23,17 +23,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Component
 public class WebServiceTestClient implements IMoxProxyService {
 
-    private IMoxProxyClientConfiguration configuration;
+    @Autowired
+    MockMvc mockMvc;
 
-    private final MockMvc mockMvc;
+    @Autowired
+    IMoxProxyClientConfiguration configuration;
+
+
 
     private final ObjectMapper mapper;
 
-    public WebServiceTestClient(MockMvc mockMvc, IMoxProxyClientConfiguration configuration){
-        this.mockMvc = mockMvc;
-        this.configuration = configuration;
+    public WebServiceTestClient( ){
         mapper = new ObjectMapper();
     }
 
