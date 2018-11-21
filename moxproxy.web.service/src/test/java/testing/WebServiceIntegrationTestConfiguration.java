@@ -1,7 +1,6 @@
 package testing;
 
-import client.WebServiceTestClient;
-import moxproxy.client.MoxProxyClient;
+import client.WebServiceIntegrationTestClient;
 import moxproxy.configuration.IMoxProxyClientConfiguration;
 import moxproxy.configuration.MoxProxyClientConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -11,8 +10,8 @@ import org.springframework.context.annotation.Bean;
 public class WebServiceIntegrationTestConfiguration {
 
     @Bean
-    WebServiceTestClient webServiceTestClient(){
-        return new WebServiceTestClient();
+    WebServiceIntegrationTestClient webServiceTestClient(){
+        return new WebServiceIntegrationTestClient();
     }
 
     @Bean
