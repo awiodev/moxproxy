@@ -6,13 +6,15 @@ public class MoxProxyServiceConfiguration implements IMoxProxyServiceConfigurati
 
     private int port = 89;
     private Iterable<String>  urlWhiteListForTrafficRecorder;
+    private boolean matchSessionIdStrategy = false;
 
     public MoxProxyServiceConfiguration(){
     }
 
-    public MoxProxyServiceConfiguration(int port, Iterable<String> urlWhiteListForTrafficRecorder){
+    public MoxProxyServiceConfiguration(int port, Iterable<String> urlWhiteListForTrafficRecorder, boolean matchSessionIdStrategy){
         this.port = port;
         this.urlWhiteListForTrafficRecorder = urlWhiteListForTrafficRecorder;
+        this.matchSessionIdStrategy = matchSessionIdStrategy;
     }
 
     @Override
@@ -23,5 +25,10 @@ public class MoxProxyServiceConfiguration implements IMoxProxyServiceConfigurati
     @Override
     public Iterable<String> getUrlWhiteListForTrafficRecorder() {
         return urlWhiteListForTrafficRecorder;
+    }
+
+    @Override
+    public boolean isMatchSessionIdStrategy() {
+        return matchSessionIdStrategy;
     }
 }

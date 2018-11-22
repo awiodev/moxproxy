@@ -34,6 +34,10 @@
         <commons.io.version>2.6</commons.io.version>
         <slf4j.version>1.7.25</slf4j.version>
         <apache.cxf.version>3.2.7</apache.cxf.version>
+        <assertj.version>3.11.1</assertj.version>
+        <jaxb.api.version>2.1</jaxb.api.version>
+        <jackson.jaxrs.json.provider.version>2.9.7</jackson.jaxrs.json.provider.version>
+        <javax.activation.version>1.1.1</javax.activation.version>
     </properties>
 
     <parent>
@@ -94,6 +98,15 @@
             </exclusions>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-core -->
         <dependency>

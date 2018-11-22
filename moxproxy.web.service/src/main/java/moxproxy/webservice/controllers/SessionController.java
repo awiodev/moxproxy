@@ -1,15 +1,13 @@
 package moxproxy.webservice.controllers;
 
 import moxproxy.consts.MoxProxyRoutes;
+import moxproxy.dto.MoxProxySessionIdMatchingStrategy;
 import moxproxy.interfaces.IMoxProxyService;
 import moxproxy.webservice.consts.ControllerConsts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(MoxProxyRoutes.API_ROUTE)
@@ -30,15 +28,15 @@ public final class SessionController extends BaseController {
         return new ResponseEntity<>(createResponseForRemovedItem(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = MoxProxyRoutes.SESSION_ROUTE_ENABLE_ID_MATCH, method = RequestMethod.POST, produces = ControllerConsts.APPLICATION_JSON)
-    public ResponseEntity<?> enableIdMatch(){
-        moxProxyService.enableSessionIdMatchingStrategy();
+    @RequestMapping(value = MoxProxyRoutes.SESSION_ROUTE_MATCH_STRATEGY, method = RequestMethod.POST, produces = ControllerConsts.APPLICATION_JSON)
+    public ResponseEntity<?> modifyMatchingStrategy(@RequestBody MoxProxySessionIdMatchingStrategy strategy){
+        moxProxyService.modifySessionMatchingStrategy(strategy);
         return new ResponseEntity<>(createResponseForModified(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = MoxProxyRoutes.SESSION_ROUTE_DISABLE_ID_MATCH, method = RequestMethod.POST, produces = ControllerConsts.APPLICATION_JSON)
-    public ResponseEntity<?> disableIdMatch(){
-        moxProxyService.disableSessionIdMatchingStrategy();
-        return new ResponseEntity<>(createResponseForModified(), HttpStatus.OK);
+    @RequestMapping(value = MoxProxyRoutes.SESSION_ROUTE_MATCH_STRATEGY, method = RequestMethod.GET, produces = ControllerConsts.APPLICATION_JSON)
+    public ResponseEntity<?> getMatchingStrategy(){
+        MoxProxySessionIdMatchingStrategy result = moxProxyService.getSessionMatchingStrategy();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

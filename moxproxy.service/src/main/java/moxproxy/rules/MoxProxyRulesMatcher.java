@@ -29,6 +29,11 @@ public class MoxProxyRulesMatcher implements IMoxProxyRulesMatcher {
     }
 
     @Override
+    public boolean getSessionIdMatchingStrategy() {
+        return matchSessionId;
+    }
+
+    @Override
     public List<MoxProxyRule> match(IHttpTrafficAdapter adapter, MoxProxyDirection moxProxyDirection) {
         var matched = new ArrayList<MoxProxyRule>();
         for(var rule : getRules(adapter, moxProxyDirection)){

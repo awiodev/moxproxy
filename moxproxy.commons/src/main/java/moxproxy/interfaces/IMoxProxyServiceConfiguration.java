@@ -4,4 +4,5 @@ public interface IMoxProxyServiceConfiguration {
 
     int getProxyPort();
     Iterable<String>  getUrlWhiteListForTrafficRecorder();
+    boolean isMatchSessionIdStrategy();
 }
