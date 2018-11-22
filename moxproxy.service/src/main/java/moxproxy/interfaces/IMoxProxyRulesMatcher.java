@@ -10,5 +10,7 @@ public interface IMoxProxyRulesMatcher {
 
     void useSessionIdMatchingStrategy(boolean value);
 
+    boolean getSessionIdMatchingStrategy();
+
     List<MoxProxyRule> match(IHttpTrafficAdapter adapter, MoxProxyDirection moxProxyDirection);
 }

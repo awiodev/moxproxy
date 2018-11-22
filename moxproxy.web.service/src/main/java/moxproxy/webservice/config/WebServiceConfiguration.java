@@ -8,6 +8,7 @@ public class WebServiceConfiguration {
     private String basicAuthUserName;
     private String basicAuthPassword;
     private Iterable<String> urlWhiteListForTrafficRecorder;
+    private boolean sessionIdMatchStrategy;
 
     public int getProxyPort() {
         return proxyPort;
@@ -31,5 +32,9 @@ public class WebServiceConfiguration {
 
     public Iterable<String> getUrlWhiteListForTrafficRecorder() {
         return urlWhiteListForTrafficRecorder;
+    }
+
+    public boolean isSessionIdMatchStrategy() {
+        return sessionIdMatchStrategy;
     }
 }

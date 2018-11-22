@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import moxproxy.configuration.IMoxProxyClientConfiguration;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.consts.MoxProxyRoutes;
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.dto.MoxProxyRule;
-import moxproxy.dto.MoxProxyStatusMessage;
-import moxproxy.dto.MoxProxyStatusResponse;
+import moxproxy.dto.*;
 import moxproxy.exceptions.MoxProxyClientException;
 import moxproxy.interfaces.IMoxProxyService;
 import org.apache.commons.codec.binary.Base64;
@@ -160,11 +157,12 @@ public class WebServiceIntegrationTestClient implements IMoxProxyService {
     }
 
     @Override
-    public void enableSessionIdMatchingStrategy() {
-        String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_ENABLE_ID_MATCH;
+    public void modifySessionMatchingStrategy(MoxProxySessionIdMatchingStrategy matchingStrategy) {
+        String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_MATCH_STRATEGY;
         try{
+            String payload = mapper.writeValueAsString(matchingStrategy);
             MvcResult mockMvcResult = mockMvc.perform(post(route).contentType(MediaType.APPLICATION_JSON)
-                    .content(MoxProxyConts.EMPTY_STRING)
+                    .content(payload)
                     .header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
             String json = mockMvcResult.getResponse().getContentAsString();
             MoxProxyStatusResponse proxyResponse = mapper.readValue(json, MoxProxyStatusResponse.class);
@@ -175,15 +173,13 @@ public class WebServiceIntegrationTestClient implements IMoxProxyService {
     }
 
     @Override
-    public void disableSessionIdMatchingStrategy() {
-        String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_DISABLE_ID_MATCH;
+    public MoxProxySessionIdMatchingStrategy getSessionMatchingStrategy() {
+        String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_MATCH_STRATEGY;
         try{
-            MvcResult mockMvcResult = mockMvc.perform(post(route).contentType(MediaType.APPLICATION_JSON)
-                    .content(MoxProxyConts.EMPTY_STRING)
-                    .header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
+            MvcResult mockMvcResult = mockMvc.perform(get(route).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
             String json = mockMvcResult.getResponse().getContentAsString();
-            MoxProxyStatusResponse proxyResponse = mapper.readValue(json, MoxProxyStatusResponse.class);
-            proxyStatusMessageShouldBe(proxyResponse, MoxProxyStatusMessage.MODIFIED);
+            var proxyResponse = mapper.readValue(json, MoxProxySessionIdMatchingStrategy.class);
+            return proxyResponse;
         }catch (Exception e){
             throw new RuntimeException(e);
         }

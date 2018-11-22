@@ -1,8 +1,10 @@
 package testing.service;
 
+import moxproxy.configuration.MoxProxyServiceConfiguration;
 import moxproxy.interfaces.IMoxProxyDatabase;
 import moxproxy.interfaces.IMoxProxyRulesMatcher;
 import moxproxy.interfaces.IMoxProxyService;
+import moxproxy.interfaces.IMoxProxyServiceConfiguration;
 import moxproxy.rules.MoxProxyRulesMatcher;
 import moxproxy.services.MoxProxyDatabase;
 import moxproxy.services.MoxProxyService;
@@ -25,5 +27,10 @@ public class ProxyServiceTestConfiguration {
     @Bean
     IMoxProxyRulesMatcher moxProxyMatcher(){
         return new MoxProxyRulesMatcher();
+    }
+
+    @Bean
+    IMoxProxyServiceConfiguration moxProxyServiceConfiguration() {
+        return new MoxProxyServiceConfiguration();
     }
 }

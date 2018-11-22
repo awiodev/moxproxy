@@ -5,10 +5,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import moxproxy.configuration.IMoxProxyClientConfiguration;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.consts.MoxProxyRoutes;
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.dto.MoxProxyRule;
-import moxproxy.dto.MoxProxyStatusMessage;
-import moxproxy.dto.MoxProxyStatusResponse;
+import moxproxy.dto.*;
 import moxproxy.exceptions.MoxProxyClientException;
 import moxproxy.interfaces.IMoxProxyService;
 import org.apache.commons.codec.binary.Base64;
@@ -94,17 +91,17 @@ public class MoxProxyClient implements IMoxProxyService {
     }
 
     @Override
-    public void enableSessionIdMatchingStrategy() {
-        String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_ENABLE_ID_MATCH;
-        Response response = createClient(route).post(MoxProxyConts.EMPTY_STRING);
+    public void modifySessionMatchingStrategy(MoxProxySessionIdMatchingStrategy matchingStrategy) {
+        String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_MATCH_STRATEGY;
+        Response response = createClient(route).post(matchingStrategy);
         verifyResponse(response, MoxProxyStatusMessage.MODIFIED);
     }
 
     @Override
-    public void disableSessionIdMatchingStrategy() {
-        String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_DISABLE_ID_MATCH;
-        Response response = createClient(route).post(MoxProxyConts.EMPTY_STRING);
-        verifyResponse(response, MoxProxyStatusMessage.MODIFIED);
+    public MoxProxySessionIdMatchingStrategy getSessionMatchingStrategy() {
+        String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_MATCH_STRATEGY;
+        var result = createClient(route).get(MoxProxySessionIdMatchingStrategy.class);
+        return result;
     }
 
     private WebClient createClient(String path, Object... values) {

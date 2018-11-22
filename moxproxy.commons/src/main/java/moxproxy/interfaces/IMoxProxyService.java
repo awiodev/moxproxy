@@ -2,6 +2,7 @@ package moxproxy.interfaces;
 
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
+import moxproxy.dto.MoxProxySessionIdMatchingStrategy;
 
 public interface IMoxProxyService {
 
@@ -23,7 +24,7 @@ public interface IMoxProxyService {
 
     String createRule(MoxProxyRule moxProxyRule);
 
-    void enableSessionIdMatchingStrategy();
+    void modifySessionMatchingStrategy(MoxProxySessionIdMatchingStrategy matchingStrategy);
 
-    void disableSessionIdMatchingStrategy();
+    MoxProxySessionIdMatchingStrategy getSessionMatchingStrategy();
 }

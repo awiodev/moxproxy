@@ -2,15 +2,14 @@ package moxproxy.services;
 
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
-import moxproxy.interfaces.IMoxProxyDatabase;
-import moxproxy.interfaces.IMoxProxyRulesMatcher;
-import moxproxy.interfaces.IMoxProxyScheduleFunctionService;
-import moxproxy.interfaces.IMoxProxyService;
+import moxproxy.dto.MoxProxySessionIdMatchingStrategy;
+import moxproxy.interfaces.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +24,14 @@ public class MoxProxyService implements IMoxProxyService, IMoxProxyScheduleFunct
 
     @Autowired
     protected IMoxProxyRulesMatcher matcher;
+
+    @Autowired
+    protected IMoxProxyServiceConfiguration configuration;
+
+    @PostConstruct
+    public void init(){
+        matcher.useSessionIdMatchingStrategy(configuration.isMatchSessionIdStrategy());
+    }
 
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
@@ -84,15 +91,16 @@ public class MoxProxyService implements IMoxProxyService, IMoxProxyScheduleFunct
     }
 
     @Override
-    public void enableSessionIdMatchingStrategy() {
-        LOG.info("Enabling session id matching strategy");
-        matcher.useSessionIdMatchingStrategy(true);
+    public void modifySessionMatchingStrategy(MoxProxySessionIdMatchingStrategy matchingStrategy) {
+        matcher.useSessionIdMatchingStrategy(matchingStrategy.isIncludeSessionIdMatch());
+        LOG.info("Session id match modified to: " + matchingStrategy.isIncludeSessionIdMatch());
     }
 
     @Override
-    public void disableSessionIdMatchingStrategy() {
-        LOG.info("Disabling session id matching strategy");
-        matcher.useSessionIdMatchingStrategy(false);
+    public MoxProxySessionIdMatchingStrategy getSessionMatchingStrategy() {
+        var strat = new MoxProxySessionIdMatchingStrategy();
+        strat.setIncludeSessionIdMatch(matcher.getSessionIdMatchingStrategy());
+        return strat;
     }
 
     @Override

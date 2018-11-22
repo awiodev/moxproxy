@@ -48,9 +48,6 @@ public class ClientTest {
 
         client.createRule(actual);
 
-        client.enableSessionIdMatchingStrategy();
-        client.disableSessionIdMatchingStrategy();
-
         client.cancelRule(actual.getId());
     }
 

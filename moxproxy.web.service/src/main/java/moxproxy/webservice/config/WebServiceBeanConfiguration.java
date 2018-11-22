@@ -79,7 +79,9 @@ public class WebServiceBeanConfiguration {
 
     @Bean
     IMoxProxyServiceConfiguration moxProxyServiceConfiguration(){
-        return new MoxProxyServiceConfiguration(webServiceConfiguration.getProxyPort(), webServiceConfiguration.getUrlWhiteListForTrafficRecorder());
+        return new MoxProxyServiceConfiguration(webServiceConfiguration.getProxyPort(),
+                webServiceConfiguration.getUrlWhiteListForTrafficRecorder(),
+                webServiceConfiguration.isSessionIdMatchStrategy());
     }
 
     @Bean

@@ -4,5 +4,6 @@
   "cleanupDelayInSeconds":300,
   "basicAuthUserName":"change-user",
   "basicAuthPassword":"change-password",
-  "urlWhiteListForTrafficRecorder":[]
+  "urlWhiteListForTrafficRecorder":[],
+  "sessionIdMatchStrategy":false
 }
