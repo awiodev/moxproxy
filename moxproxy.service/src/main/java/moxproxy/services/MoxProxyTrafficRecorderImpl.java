@@ -2,22 +2,22 @@ package moxproxy.services;
 
 import com.google.common.collect.Lists;
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.interfaces.IMoxProxyDatabase;
-import moxproxy.interfaces.IMoxProxyServiceConfiguration;
-import moxproxy.interfaces.IMoxProxyTrafficRecorder;
+import moxproxy.interfaces.MoxProxyDatabase;
+import moxproxy.interfaces.MoxProxyServiceConfiguration;
+import moxproxy.interfaces.MoxProxyTrafficRecorder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class MoxProxyTrafficRecorder implements IMoxProxyTrafficRecorder {
+public class MoxProxyTrafficRecorderImpl implements MoxProxyTrafficRecorder {
 
     @Autowired
-    IMoxProxyServiceConfiguration configuration;
+    MoxProxyServiceConfiguration configuration;
 
     @Autowired
-    IMoxProxyDatabase database;
+    MoxProxyDatabase database;
 
-    List<String> whiteList;
+    private List<String> whiteList;
 
     @Override
     public void recordRequest(MoxProxyProcessedTrafficEntry entry) {

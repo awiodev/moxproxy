@@ -4,7 +4,7 @@ import client.WebServiceIntegrationTestClient;
 import moxproxy.dto.*;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
-import moxproxy.interfaces.IMoxProxyDatabase;
+import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.webservice.MoxProxyWebService;
 import moxproxy.webservice.config.WebServiceBeanConfiguration;
 import org.assertj.core.util.Lists;
@@ -27,22 +27,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = MoxProxyWebService.class)
 @AutoConfigureMockMvc
 @Import({WebServiceIntegrationTestConfiguration.class, WebServiceBeanConfiguration.class})
-public class WebServiceIntegrationTest {
+class WebServiceIntegrationTest {
 
     @Autowired
     private WebServiceIntegrationTestClient client;
 
     @Autowired
-    private IMoxProxyDatabase database;
+    private MoxProxyDatabase database;
 
     private static String defaultId = "123";
     private static String unknown = "unknown";
     private static int defaultStatusCode = 200;
     private static String defaultBody = "{\"hello\":\"world\"}";
     private static String defaultMethod = "Get";
-    private static String defaultUrl= "https://hello.world.com/api/rest";
-
-    private static String defaultPathPattern= "hello\\.world";
 
     @AfterEach
     private void cleanup(){
@@ -51,7 +48,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenRequestTraffic_whenGetAll_ThenTrafficReturned(){
+    void givenRequestTraffic_whenGetAll_ThenTrafficReturned(){
         var traffic1 = createDefaultFullyFilledTrafficEntity();
         var traffic2 = createDefaultFullyFilledTrafficEntity();
         var traffic3 = createDefaultFullyFilledTrafficEntity();
@@ -67,7 +64,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenResponsesTraffic_whenGetAll_ThenTrafficReturned(){
+    void givenResponsesTraffic_whenGetAll_ThenTrafficReturned(){
         var traffic1 = createDefaultFullyFilledTrafficEntity();
         var traffic2 = createDefaultFullyFilledTrafficEntity();
         var traffic3 = createDefaultFullyFilledTrafficEntity();
@@ -83,7 +80,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenRequestTraffic_whenBySessionId_ThenTrafficReturned(){
+    void givenRequestTraffic_whenBySessionId_ThenTrafficReturned(){
         var traffic1 = createDefaultFullyFilledTrafficEntity();
         var traffic2 = createDefaultFullyFilledTrafficEntity();
         var traffic3 = createDefaultFullyFilledTrafficEntity();
@@ -100,7 +97,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenResponseTraffic_whenBySessionId_ThenTrafficReturned(){
+    void givenResponseTraffic_whenBySessionId_ThenTrafficReturned(){
         var traffic1 = createDefaultFullyFilledTrafficEntity();
         var traffic2 = createDefaultFullyFilledTrafficEntity();
         var traffic3 = createDefaultFullyFilledTrafficEntity();
@@ -117,7 +114,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenRule_whenCreate_thenRuleCreated(){
+    void givenRule_whenCreate_thenRuleCreated(){
         var rule = createDefaultFullyFilledRule();
 
         client.createRule(rule);
@@ -127,7 +124,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenTrafficAndRules_whenClearAll_thenAllCleared() throws Exception {
+    void givenTrafficAndRules_whenClearAll_thenAllCleared() {
 
         database.addProcessedRequest(createDefaultFullyFilledTrafficEntity());
         database.addProcessedRequest(createDefaultFullyFilledTrafficEntity());
@@ -148,7 +145,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenTrafficAnRules_whenClearBySession_thenSessionEntriesCleared(){
+    void givenTrafficAnRules_whenClearBySession_thenSessionEntriesCleared(){
         database.addProcessedRequest(createDefaultFullyFilledTrafficEntity());
         var request = createDefaultFullyFilledTrafficEntity();
         request.setSessionId(unknown);
@@ -178,7 +175,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenRule_whenCancel_thenRuleRemoved(){
+    void givenRule_whenCancel_thenRuleRemoved(){
         var rule1 = createDefaultFullyFilledRule();
         var rule2 = createDefaultFullyFilledRule();
         rule2.setSessionId(unknown);
@@ -194,7 +191,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenRules_whenClearBySessionId_thenRulesRemoved(){
+    void givenRules_whenClearBySessionId_thenRulesRemoved(){
         var rule1 = createDefaultFullyFilledRule();
         var rule2 = createDefaultFullyFilledRule();
         var rule3 = createDefaultFullyFilledRule();
@@ -212,7 +209,7 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    public void givenSessionIdStrategy_whenTurnOn_thenStrategyModified(){
+    void givenSessionIdStrategy_whenTurnOn_thenStrategyModified(){
 
         var strategy = new MoxProxySessionIdMatchingStrategy();
         strategy.setIncludeSessionIdMatch(true);
@@ -232,6 +229,7 @@ public class WebServiceIntegrationTest {
         entity.setBody(defaultBody);
         entity.setHeaders(defaultHeaders());
         entity.setMethod(defaultMethod);
+        String defaultUrl = "https://hello.world.com/api/rest";
         entity.setUrl(defaultUrl);
         return entity;
     }
@@ -244,6 +242,7 @@ public class WebServiceIntegrationTest {
 
         var definition = new MoxProxyHttpRuleDefinition();
         definition.setBody(defaultBody);
+        String defaultPathPattern = "hello\\.world";
         definition.setPathPattern(defaultPathPattern);
         definition.setHeaders(defaultHeaders());
         definition.setMethod(defaultMethod);

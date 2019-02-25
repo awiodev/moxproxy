@@ -15,18 +15,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
-public class MoxProxyService implements IMoxProxyService, IMoxProxyScheduleFunctionService {
+public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFunctionService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MoxProxyService.class);
-
-    @Autowired
-    protected IMoxProxyDatabase database;
+    private static final Logger LOG = LoggerFactory.getLogger(MoxProxyServiceImpl.class);
 
     @Autowired
-    protected IMoxProxyRulesMatcher matcher;
+    protected MoxProxyDatabase database;
 
     @Autowired
-    protected IMoxProxyServiceConfiguration configuration;
+    protected MoxProxyRulesMatcher matcher;
+
+    @Autowired
+    protected MoxProxyServiceConfiguration configuration;
 
     @PostConstruct
     public void init(){

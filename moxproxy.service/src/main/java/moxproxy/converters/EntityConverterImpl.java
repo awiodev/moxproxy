@@ -1,27 +1,27 @@
 package moxproxy.converters;
 
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.interfaces.IEntityConverter;
-import moxproxy.interfaces.IHttpRequestAdapter;
-import moxproxy.interfaces.IHttpResponseAdapter;
-import moxproxy.interfaces.IHttpTrafficAdapter;
+import moxproxy.interfaces.EntityConverter;
+import moxproxy.interfaces.HttpRequestAdapter;
+import moxproxy.interfaces.HttpResponseAdapter;
+import moxproxy.interfaces.HttpTrafficAdapter;
 
-public class EntityConverter implements IEntityConverter {
+public class EntityConverterImpl implements EntityConverter {
 
 
     @Override
-    public MoxProxyProcessedTrafficEntry fromRequestAdapter(IHttpRequestAdapter adapter) {
+    public MoxProxyProcessedTrafficEntry fromRequestAdapter(HttpRequestAdapter adapter) {
         return convertFromHttpTrafficAdapter(adapter);
     }
 
     @Override
-    public MoxProxyProcessedTrafficEntry fromResponseAdapter(IHttpResponseAdapter adapter) {
+    public MoxProxyProcessedTrafficEntry fromResponseAdapter(HttpResponseAdapter adapter) {
         var fromAdapter = convertFromHttpTrafficAdapter(adapter);
         fromAdapter.setStatusCode(adapter.statusCode());
         return fromAdapter;
     }
 
-    private MoxProxyProcessedTrafficEntry convertFromHttpTrafficAdapter(IHttpTrafficAdapter adapter){
+    private MoxProxyProcessedTrafficEntry convertFromHttpTrafficAdapter(HttpTrafficAdapter adapter){
         var processedRequest = new MoxProxyProcessedTrafficEntry();
         processedRequest.setSessionId(adapter.sessionId());
         processedRequest.setMethod(adapter.method());

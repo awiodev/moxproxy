@@ -2,7 +2,7 @@ package moxproxy.interfaces;
 
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 
-public interface IMoxProxyTrafficRecorder {
+public interface MoxProxyTrafficRecorder {
 
     void recordRequest(MoxProxyProcessedTrafficEntry entry);
     void recordResponse(MoxProxyProcessedTrafficEntry entry);

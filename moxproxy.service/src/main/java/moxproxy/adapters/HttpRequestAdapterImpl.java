@@ -2,11 +2,11 @@ package moxproxy.adapters;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.*;
-import moxproxy.interfaces.IHttpRequestAdapter;
+import moxproxy.interfaces.HttpRequestAdapter;
 
-public class HttpRequestAdapter extends BaseHttpTrafficAdapter implements IHttpRequestAdapter {
+public class HttpRequestAdapterImpl extends BaseHttpTrafficAdapter implements HttpRequestAdapter {
 
-    public HttpRequestAdapter(HttpObject request, HttpRequest originalRequest, String connectedUrl){
+    HttpRequestAdapterImpl(HttpObject request, HttpRequest originalRequest, String connectedUrl){
         super(request, originalRequest, connectedUrl);
     }
 

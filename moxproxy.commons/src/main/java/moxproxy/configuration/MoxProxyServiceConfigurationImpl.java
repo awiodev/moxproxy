@@ -1,17 +1,17 @@
 package moxproxy.configuration;
 
-import moxproxy.interfaces.IMoxProxyServiceConfiguration;
+import moxproxy.interfaces.MoxProxyServiceConfiguration;
 
-public class MoxProxyServiceConfiguration implements IMoxProxyServiceConfiguration {
+public class MoxProxyServiceConfigurationImpl implements MoxProxyServiceConfiguration {
 
     private int port = 89;
     private Iterable<String>  urlWhiteListForTrafficRecorder;
     private boolean matchSessionIdStrategy = false;
 
-    public MoxProxyServiceConfiguration(){
+    public MoxProxyServiceConfigurationImpl(){
     }
 
-    public MoxProxyServiceConfiguration(int port, Iterable<String> urlWhiteListForTrafficRecorder, boolean matchSessionIdStrategy){
+    public MoxProxyServiceConfigurationImpl(int port, Iterable<String> urlWhiteListForTrafficRecorder, boolean matchSessionIdStrategy){
         this.port = port;
         this.urlWhiteListForTrafficRecorder = urlWhiteListForTrafficRecorder;
         this.matchSessionIdStrategy = matchSessionIdStrategy;

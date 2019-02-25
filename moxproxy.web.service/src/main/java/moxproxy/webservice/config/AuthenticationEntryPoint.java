@@ -20,7 +20,7 @@ public class AuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        setRealmName("MoxProxyService");
+        setRealmName("MoxProxyServiceImpl");
         super.afterPropertiesSet();
     }
 

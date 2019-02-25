@@ -1,9 +1,7 @@
 package moxproxy.services;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
-import io.netty.util.AttributeKey;
 import moxproxy.adapters.MoxProxyFiltersAdapter;
 import moxproxy.interfaces.*;
 import org.littleshoot.proxy.HttpFilters;
@@ -17,23 +15,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public final class MoxProxyServer extends MoxProxyService implements IMoxProxyServer {
+public final class MoxProxyServerImpl extends MoxProxyServiceImpl implements MoxProxyServer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MoxProxyServer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MoxProxyServerImpl.class);
 
     private HttpProxyServer proxyServer;
 
     @Autowired
-    private IMoxProxyServiceConfiguration configuration;
+    private MoxProxyServiceConfiguration configuration;
 
     @Autowired
-    private IMoxProxyTrafficRecorder recorder;
+    private MoxProxyTrafficRecorder recorder;
 
     @Autowired
-    private IEntityConverter converter;
+    private EntityConverter converter;
 
     @Autowired
-    private IMoxProxyRuleProcessor processor;
+    private MoxProxyRuleProcessor processor;
 
     @Override
     public void startServer() {

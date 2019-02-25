@@ -4,7 +4,7 @@ import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.dto.MoxProxySessionIdMatchingStrategy;
 
-public interface IMoxProxyService {
+public interface MoxProxyService {
 
     Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId);
 

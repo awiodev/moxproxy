@@ -1,7 +1,7 @@
 package moxproxy.services;
 
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.interfaces.IMoxProxyDatabase;
+import moxproxy.interfaces.MoxProxyDatabase;
 import org.springframework.stereotype.Service;
 import moxproxy.dto.MoxProxyRule;
 
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 @Service
-public class MoxProxyDatabase implements IMoxProxyDatabase {
+public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     private ConcurrentMap<String, MoxProxyRule> rulesDatabase;
     private ConcurrentMap<String, MoxProxyProcessedTrafficEntry> processedRequestDatabase;

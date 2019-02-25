@@ -8,7 +8,7 @@ import moxproxy.dto.MoxProxyHeader;
 import moxproxy.dto.MoxProxyHttpRuleDefinition;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.enums.MoxProxyAction;
-import moxproxy.interfaces.IMoxProxyRuleProcessor;
+import moxproxy.interfaces.MoxProxyRuleProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +17,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
+public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MoxProxyRuleProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MoxProxyRuleProcessorImpl.class);
 
     @Override
     public MoxProxyRuleProcessingResult processRequest(List<MoxProxyRule> rules, HttpObject request) {
@@ -208,7 +208,7 @@ public class MoxProxyRuleProcessor implements IMoxProxyRuleProcessor {
     }
 
     private MoxProxyHttpRuleDefinition getLatestResponse(List<MoxProxyRule> rules){
-        rules.sort(Comparator.comparing(x->x.getDate()));
+        rules.sort(Comparator.comparing(MoxProxyRule::getDate));
         return rules.get(rules.size()-1).getMoxProxyHttpObject();
     }
 }

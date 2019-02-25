@@ -1,6 +1,6 @@
 package moxproxy.webservice.services;
 
-import moxproxy.interfaces.IMoxProxyScheduleFunctionService;
+import moxproxy.interfaces.MoxProxyScheduleFunctionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class CleanupService {
 
     @Autowired
     @Qualifier("moxProxyScheduleService")
-    IMoxProxyScheduleFunctionService moxProxyCleanupService;
+    MoxProxyScheduleFunctionService moxProxyCleanupService;
     
     public void performCleanup(){
         LOG.info("Staring cleanup service");

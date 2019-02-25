@@ -2,7 +2,7 @@ package moxproxy.webservice.controllers;
 
 import moxproxy.consts.MoxProxyRoutes;
 import moxproxy.dto.MoxProxySessionIdMatchingStrategy;
-import moxproxy.interfaces.IMoxProxyService;
+import moxproxy.interfaces.MoxProxyService;
 import moxproxy.webservice.consts.ControllerConsts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public final class SessionController extends BaseController {
 
     @Autowired
-    IMoxProxyService moxProxyService;
+    MoxProxyService moxProxyService;
 
     @RequestMapping(value = MoxProxyRoutes.SESSION_ROUTE, method = RequestMethod.DELETE, produces = ControllerConsts.APPLICATION_JSON)
     public ResponseEntity<?> clearAllSessionEntries(){

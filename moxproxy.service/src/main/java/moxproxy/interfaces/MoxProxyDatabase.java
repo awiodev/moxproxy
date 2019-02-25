@@ -5,7 +5,7 @@ import moxproxy.dto.MoxProxyRule;
 
 import java.util.Date;
 
-public interface IMoxProxyDatabase {
+public interface MoxProxyDatabase {
 
     void startDatabase();
 

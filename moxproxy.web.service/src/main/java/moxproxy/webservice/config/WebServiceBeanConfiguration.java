@@ -1,33 +1,29 @@
 package moxproxy.webservice.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import moxproxy.configuration.MoxProxyServiceConfiguration;
-import moxproxy.converters.EntityConverter;
+import moxproxy.configuration.MoxProxyServiceConfigurationImpl;
+import moxproxy.converters.EntityConverterImpl;
 import moxproxy.interfaces.*;
-import moxproxy.rules.MoxProxyRuleProcessor;
-import moxproxy.rules.MoxProxyRulesMatcher;
-import moxproxy.services.MoxProxyDatabase;
-import moxproxy.services.MoxProxyServer;
-import moxproxy.services.MoxProxyService;
-import moxproxy.services.MoxProxyTrafficRecorder;
+import moxproxy.rules.MoxProxyRuleProcessorImpl;
+import moxproxy.rules.MoxProxyRulesMatcherImpl;
+import moxproxy.services.*;
+import moxproxy.services.MoxProxyServerImpl;
+import moxproxy.services.MoxProxyServiceImpl;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 
 @Configuration
 public class WebServiceBeanConfiguration {
-
-    private final String cfgFileName = "webServiceConfiguration.json";
 
     private WebServiceConfiguration webServiceConfiguration;
 
@@ -43,8 +39,8 @@ public class WebServiceBeanConfiguration {
     }
 
     @Bean(name = "moxProxyScheduleService")
-    IMoxProxyScheduleFunctionService moxProxyScheduleService(){
-        return new MoxProxyService();
+    MoxProxyScheduleFunctionService moxProxyScheduleService(){
+        return new MoxProxyServiceImpl();
     }
 
     @Bean
@@ -53,45 +49,45 @@ public class WebServiceBeanConfiguration {
     }
 
     @Bean
-    IMoxProxyDatabase moxProxyDatabase(){
-        return new MoxProxyDatabase();
+    MoxProxyDatabase moxProxyDatabase(){
+        return new MoxProxyDatabaseImpl();
     }
 
     @Bean(name = "moxProxyService")
-    IMoxProxyService moxProxyService(){
-        return new MoxProxyService();
+    MoxProxyService moxProxyService(){
+        return new MoxProxyServiceImpl();
     }
 
     @Bean
-    IMoxProxyRulesMatcher moxProxyRules(){
-        return new MoxProxyRulesMatcher();
+    MoxProxyRulesMatcher moxProxyRules(){
+        return new MoxProxyRulesMatcherImpl();
     }
 
     @Bean
-    IMoxProxyTrafficRecorder moxProxyTrafficRecorder(){
-        return new MoxProxyTrafficRecorder();
+    MoxProxyTrafficRecorder moxProxyTrafficRecorder(){
+        return new MoxProxyTrafficRecorderImpl();
     }
 
     @Bean(name = "moxProxyServer")
-    IMoxProxyServer moxProxyServer(){
-        return new MoxProxyServer();
+    MoxProxyServer moxProxyServer(){
+        return new MoxProxyServerImpl();
     }
 
     @Bean
-    IMoxProxyServiceConfiguration moxProxyServiceConfiguration(){
-        return new MoxProxyServiceConfiguration(webServiceConfiguration.getProxyPort(),
+    MoxProxyServiceConfiguration moxProxyServiceConfiguration(){
+        return new MoxProxyServiceConfigurationImpl(webServiceConfiguration.getProxyPort(),
                 webServiceConfiguration.getUrlWhiteListForTrafficRecorder(),
                 webServiceConfiguration.isSessionIdMatchStrategy());
     }
 
     @Bean
-    IEntityConverter entityConverter(){
-        return new EntityConverter();
+    EntityConverter entityConverter(){
+        return new EntityConverterImpl();
     }
 
     @Bean
-    IMoxProxyRuleProcessor moxProxyRuleProcessor(){
-        return new MoxProxyRuleProcessor();
+    MoxProxyRuleProcessor moxProxyRuleProcessor(){
+        return new MoxProxyRuleProcessorImpl();
     }
 
     @Bean
@@ -100,12 +96,13 @@ public class WebServiceBeanConfiguration {
     }
 
     private File getConfigFile() throws FileNotFoundException {
-        File configFile = null;
+        File configFile;
+        String cfgFileName = "webServiceConfiguration.json";
         configFile = new File(cfgFileName);
         if(configFile.exists()){
             return configFile;
         }
-        configFile = new File(getClass().getClassLoader().getResource(cfgFileName).getFile());
+        configFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(cfgFileName)).getFile());
         if(configFile.exists()){
             return configFile;
         }

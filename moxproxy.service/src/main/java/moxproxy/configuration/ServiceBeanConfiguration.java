@@ -1,14 +1,13 @@
 package moxproxy.configuration;
 
-import moxproxy.converters.EntityConverter;
+import moxproxy.converters.EntityConverterImpl;
 import moxproxy.interfaces.*;
-import moxproxy.interfaces.IMoxProxyRulesMatcher;
-import moxproxy.rules.MoxProxyRuleProcessor;
-import moxproxy.rules.MoxProxyRulesMatcher;
-import moxproxy.services.MoxProxyDatabase;
-import moxproxy.services.MoxProxyServer;
-import moxproxy.services.MoxProxyService;
-import moxproxy.services.MoxProxyTrafficRecorder;
+import moxproxy.interfaces.MoxProxyRulesMatcher;
+import moxproxy.rules.MoxProxyRuleProcessorImpl;
+import moxproxy.rules.MoxProxyRulesMatcherImpl;
+import moxproxy.services.*;
+import moxproxy.services.MoxProxyServerImpl;
+import moxproxy.services.MoxProxyServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,42 +15,42 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceBeanConfiguration {
 
     @Bean
-    IMoxProxyDatabase moxProxyDatabase(){
-        return new MoxProxyDatabase();
+    MoxProxyDatabase moxProxyDatabase(){
+        return new MoxProxyDatabaseImpl();
     }
 
     @Bean
-    IMoxProxyService moxProxyService(){
-        return new MoxProxyService();
+    MoxProxyService moxProxyService(){
+        return new MoxProxyServiceImpl();
     }
 
     @Bean
-    IMoxProxyRulesMatcher moxProxyRules(){
-        return new MoxProxyRulesMatcher();
+    MoxProxyRulesMatcher moxProxyRules(){
+        return new MoxProxyRulesMatcherImpl();
     }
 
     @Bean
-    IMoxProxyTrafficRecorder moxProxyTrafficRecorder(){
-        return new MoxProxyTrafficRecorder();
+    MoxProxyTrafficRecorder moxProxyTrafficRecorder(){
+        return new MoxProxyTrafficRecorderImpl();
     }
 
     @Bean
-    IMoxProxyServer moxProxyServer(){
-        return new MoxProxyServer();
+    MoxProxyServer moxProxyServer(){
+        return new MoxProxyServerImpl();
     }
 
     @Bean
-    IMoxProxyServiceConfiguration moxProxyServiceConfiguration(){
-        return new MoxProxyServiceConfiguration();
+    MoxProxyServiceConfiguration moxProxyServiceConfiguration(){
+        return new MoxProxyServiceConfigurationImpl();
     }
 
     @Bean
-    IEntityConverter entityConverter(){
-        return new EntityConverter();
+    EntityConverter entityConverter(){
+        return new EntityConverterImpl();
     }
 
     @Bean
-    IMoxProxyRuleProcessor moxProxyRuleProcessor(){
-        return new MoxProxyRuleProcessor();
+    MoxProxyRuleProcessor moxProxyRuleProcessor(){
+        return new MoxProxyRuleProcessorImpl();
     }
 }

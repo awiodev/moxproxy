@@ -2,7 +2,7 @@ package moxproxy.webservice.controllers;
 
 import moxproxy.consts.MoxProxyRoutes;
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.interfaces.IMoxProxyService;
+import moxproxy.interfaces.MoxProxyService;
 import moxproxy.webservice.consts.ControllerConsts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public final class TrafficController extends BaseController {
 
     @Autowired
-    IMoxProxyService moxProxyService;
+    MoxProxyService moxProxyService;
 
     @RequestMapping(value = MoxProxyRoutes.REQUESTS_ROUTE, method = RequestMethod.GET, produces = ControllerConsts.APPLICATION_JSON)
     public ResponseEntity<?> getAllProcessedRequests(){

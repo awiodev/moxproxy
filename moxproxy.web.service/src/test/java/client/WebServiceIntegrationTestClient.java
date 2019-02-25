@@ -1,12 +1,12 @@
 package client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import moxproxy.configuration.IMoxProxyClientConfiguration;
+import moxproxy.configuration.MoxProxyClientConfiguration;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.consts.MoxProxyRoutes;
 import moxproxy.dto.*;
 import moxproxy.exceptions.MoxProxyClientException;
-import moxproxy.interfaces.IMoxProxyService;
+import moxproxy.interfaces.MoxProxyService;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,13 +20,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Component
-public class WebServiceIntegrationTestClient implements IMoxProxyService {
+public class WebServiceIntegrationTestClient implements MoxProxyService {
 
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
-    IMoxProxyClientConfiguration configuration;
+    MoxProxyClientConfiguration configuration;
 
     private final ObjectMapper mapper;
 
@@ -40,8 +40,7 @@ public class WebServiceIntegrationTestClient implements IMoxProxyService {
         try{
             MvcResult mockMvcResult = mockMvc.perform(get(route, sessionId).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
             String json = mockMvcResult.getResponse().getContentAsString();
-            List<MoxProxyProcessedTrafficEntry> proxyResponse = mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, MoxProxyProcessedTrafficEntry.class));
-            return proxyResponse;
+            return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, MoxProxyProcessedTrafficEntry.class));
         }catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -53,8 +52,7 @@ public class WebServiceIntegrationTestClient implements IMoxProxyService {
         try{
             MvcResult mockMvcResult = mockMvc.perform(get(route).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
             String json = mockMvcResult.getResponse().getContentAsString();
-            List<MoxProxyProcessedTrafficEntry> proxyResponse = mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, MoxProxyProcessedTrafficEntry.class));
-            return proxyResponse;
+            return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, MoxProxyProcessedTrafficEntry.class));
         }catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -66,8 +64,7 @@ public class WebServiceIntegrationTestClient implements IMoxProxyService {
         try{
             MvcResult mockMvcResult = mockMvc.perform(get(route, sessionId).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
             String json = mockMvcResult.getResponse().getContentAsString();
-            List<MoxProxyProcessedTrafficEntry> proxyResponse = mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, MoxProxyProcessedTrafficEntry.class));
-            return proxyResponse;
+            return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, MoxProxyProcessedTrafficEntry.class));
         }catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -79,8 +76,7 @@ public class WebServiceIntegrationTestClient implements IMoxProxyService {
         try{
             MvcResult mockMvcResult = mockMvc.perform(get(route).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
             String json = mockMvcResult.getResponse().getContentAsString();
-            List<MoxProxyProcessedTrafficEntry> proxyResponse = mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, MoxProxyProcessedTrafficEntry.class));
-            return proxyResponse;
+            return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, MoxProxyProcessedTrafficEntry.class));
         }catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -178,8 +174,7 @@ public class WebServiceIntegrationTestClient implements IMoxProxyService {
         try{
             MvcResult mockMvcResult = mockMvc.perform(get(route).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
             String json = mockMvcResult.getResponse().getContentAsString();
-            var proxyResponse = mapper.readValue(json, MoxProxySessionIdMatchingStrategy.class);
-            return proxyResponse;
+            return mapper.readValue(json, MoxProxySessionIdMatchingStrategy.class);
         }catch (Exception e){
             throw new RuntimeException(e);
         }

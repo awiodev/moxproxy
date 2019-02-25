@@ -4,7 +4,7 @@ import moxproxy.dto.MoxProxyHeader;
 
 import java.util.List;
 
-public interface IHttpTrafficAdapter {
+public interface HttpTrafficAdapter {
 
     List<MoxProxyHeader> headers();
     String body();

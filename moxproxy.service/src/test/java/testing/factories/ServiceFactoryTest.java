@@ -1,7 +1,7 @@
 package testing.factories;
 
 import moxproxy.factories.MoxProxyServiceFactory;
-import moxproxy.interfaces.IMoxProxyServer;
+import moxproxy.interfaces.MoxProxyServer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -13,7 +13,7 @@ class ServiceFactoryTest {
 
     @Test
     void givenFactory_whenCreateLocal_ThenLocalServerCreated(){
-        IMoxProxyServer server = MoxProxyServiceFactory.localServer();
+        MoxProxyServer server = MoxProxyServiceFactory.localServer();
         assertNotNull(server);
     }
 }

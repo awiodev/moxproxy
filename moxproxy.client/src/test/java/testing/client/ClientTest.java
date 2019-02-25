@@ -3,12 +3,11 @@ package testing.client;
 import com.google.common.collect.Lists;
 import moxproxy.builders.MoxProxyRuleBuilder;
 import moxproxy.client.MoxProxyClient;
-import moxproxy.configuration.MoxProxyClientConfiguration;
+import moxproxy.configuration.MoxProxyClientConfigurationImpl;
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -18,7 +17,7 @@ public class ClientTest {
 
     //@Test
     public void testClient(){
-        var config = new MoxProxyClientConfiguration();
+        var config = new MoxProxyClientConfigurationImpl();
         var client = new MoxProxyClient(config);
 
         Iterable<MoxProxyProcessedTrafficEntry> traffic =  client.getAllRequestTraffic();

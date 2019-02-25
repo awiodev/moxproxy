@@ -1,6 +1,6 @@
 package moxproxy.interfaces;
 
-public interface IMoxProxyServiceConfiguration {
+public interface MoxProxyServiceConfiguration {
 
     int getProxyPort();
     Iterable<String>  getUrlWhiteListForTrafficRecorder();

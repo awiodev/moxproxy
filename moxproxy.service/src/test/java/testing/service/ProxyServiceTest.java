@@ -3,8 +3,8 @@ package testing.service;
 import com.google.common.collect.Lists;
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
-import moxproxy.interfaces.IMoxProxyDatabase;
-import moxproxy.interfaces.IMoxProxyService;
+import moxproxy.interfaces.MoxProxyDatabase;
+import moxproxy.interfaces.MoxProxyService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,10 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class ProxyServiceTest extends TestBase {
 
     @Autowired
-    private IMoxProxyDatabase database;
+    private MoxProxyDatabase database;
 
     @Autowired
-    private IMoxProxyService service;
+    private MoxProxyService service;
 
     @BeforeEach
     void beforeEachSetup(){

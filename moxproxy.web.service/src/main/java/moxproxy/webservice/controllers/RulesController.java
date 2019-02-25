@@ -2,7 +2,7 @@ package moxproxy.webservice.controllers;
 
 import moxproxy.consts.MoxProxyRoutes;
 import moxproxy.dto.MoxProxyRule;
-import moxproxy.interfaces.IMoxProxyService;
+import moxproxy.interfaces.MoxProxyService;
 import moxproxy.webservice.consts.ControllerConsts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class RulesController extends BaseController {
 
     @Autowired
-    IMoxProxyService moxProxyService;
+    MoxProxyService moxProxyService;
 
     @RequestMapping(value = MoxProxyRoutes.RULES_ROUTE, method = RequestMethod.POST, produces = ControllerConsts.APPLICATION_JSON)
     public ResponseEntity<?> createRule(@RequestBody MoxProxyRule rule){

@@ -7,8 +7,8 @@ import moxproxy.consts.MoxProxyConts;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.*;
 import moxproxy.dto.MoxProxyRule;
-import moxproxy.interfaces.IMoxProxyRuleProcessor;
-import moxproxy.interfaces.IMoxProxyRulesMatcher;
+import moxproxy.interfaces.MoxProxyRuleProcessor;
+import moxproxy.interfaces.MoxProxyRulesMatcher;
 import moxproxy.rules.MoxProxyProcessingResultType;
 import moxproxy.rules.MoxProxyRuleProcessingResult;
 import org.littleshoot.proxy.HttpFiltersAdapter;
@@ -19,14 +19,14 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
 
     private static final AttributeKey<String> CONNECTED_URL = AttributeKey.valueOf("connected_url");
 
-    private IMoxProxyRulesMatcher matcher;
-    private IMoxProxyTrafficRecorder trafficRecorder;
-    private IEntityConverter entityConverter;
-    private IMoxProxyRuleProcessor proxyRuleProcessor;
+    private MoxProxyRulesMatcher matcher;
+    private MoxProxyTrafficRecorder trafficRecorder;
+    private EntityConverter entityConverter;
+    private MoxProxyRuleProcessor proxyRuleProcessor;
 
     public MoxProxyFiltersAdapter(HttpRequest originalRequest, ChannelHandlerContext ctx,
-                                  IMoxProxyRulesMatcher matcher, IMoxProxyTrafficRecorder recorder,
-                                  IEntityConverter entityConverter, IMoxProxyRuleProcessor proxyRuleProcessor) {
+                                  MoxProxyRulesMatcher matcher, MoxProxyTrafficRecorder recorder,
+                                  EntityConverter entityConverter, MoxProxyRuleProcessor proxyRuleProcessor) {
         super(originalRequest, ctx);
         this.matcher = matcher;
         this.trafficRecorder = recorder;
@@ -39,7 +39,7 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
         if(httpObject instanceof FullHttpRequest){
             handleConnectRequest();
             String connectedUrl = getConnectedUrl();
-            IHttpRequestAdapter requestAdapter = new HttpRequestAdapter(httpObject, originalRequest, connectedUrl);
+            HttpRequestAdapter requestAdapter = new HttpRequestAdapterImpl(httpObject, originalRequest, connectedUrl);
             trafficRecorder.recordRequest(entityConverter.fromRequestAdapter(requestAdapter));
             List<MoxProxyRule> result = matcher.match(requestAdapter, MoxProxyDirection.REQUEST);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processRequest(result, httpObject);
@@ -58,7 +58,7 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
     public HttpObject proxyToClientResponse(HttpObject httpObject) {
         if(httpObject instanceof FullHttpResponse){
             String connectedUrl = getConnectedUrl();
-            IHttpResponseAdapter responseAdapter = new HttpResponseAdapter(httpObject, originalRequest, connectedUrl);
+            HttpResponseAdapter responseAdapter = new HttpResponseAdapterImpl(httpObject, originalRequest, connectedUrl);
             trafficRecorder.recordResponse(entityConverter.fromResponseAdapter(responseAdapter));
             List<MoxProxyRule> result = matcher.match(responseAdapter, MoxProxyDirection.RESPONSE);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processResponse(result, httpObject);

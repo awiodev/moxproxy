@@ -2,7 +2,7 @@ package testing.database;
 
 import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
-import moxproxy.interfaces.IMoxProxyDatabase;
+import moxproxy.interfaces.MoxProxyDatabase;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DatabaseTest extends TestBase {
 
     @Autowired
-    private IMoxProxyDatabase database;
+    private MoxProxyDatabase database;
 
     @BeforeEach
     void beforeEachSetup(){

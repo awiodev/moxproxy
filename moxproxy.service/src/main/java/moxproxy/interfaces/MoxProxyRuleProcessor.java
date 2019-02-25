@@ -6,7 +6,7 @@ import moxproxy.rules.MoxProxyRuleProcessingResult;
 
 import java.util.List;
 
-public interface IMoxProxyRuleProcessor {
+public interface MoxProxyRuleProcessor {
 
     MoxProxyRuleProcessingResult processRequest(List<MoxProxyRule> rules, HttpObject request);
     MoxProxyRuleProcessingResult processResponse(List<MoxProxyRule> rules, HttpObject response);

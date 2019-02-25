@@ -6,7 +6,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import moxproxy.dto.MoxProxyHeader;
-import moxproxy.interfaces.IHttpTrafficAdapter;
+import moxproxy.interfaces.HttpTrafficAdapter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class BaseHttpTrafficAdapter implements IHttpTrafficAdapter {
+public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
 
     private HttpObject httpObject;
     private List<MoxProxyHeader> headers;
@@ -23,11 +23,11 @@ public abstract class BaseHttpTrafficAdapter implements IHttpTrafficAdapter {
     private String method;
     private String url;
     private String sessionId;
-    protected String connectedUrl;
+    String connectedUrl;
 
-    protected HttpRequest originalRequest;
+    HttpRequest originalRequest;
 
-    protected BaseHttpTrafficAdapter(HttpObject httpObject, HttpRequest originalRequest, String connectedUrl){
+    BaseHttpTrafficAdapter(HttpObject httpObject, HttpRequest originalRequest, String connectedUrl){
         this.httpObject = httpObject;
         this.originalRequest = originalRequest;
         this.connectedUrl = connectedUrl;
@@ -38,7 +38,7 @@ public abstract class BaseHttpTrafficAdapter implements IHttpTrafficAdapter {
         extractSessionId();
     }
 
-    protected HttpObject getHttpObject(){
+    HttpObject getHttpObject(){
         return httpObject;
     }
 

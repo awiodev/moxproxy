@@ -2,12 +2,12 @@ package moxproxy.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
-import moxproxy.configuration.IMoxProxyClientConfiguration;
+import moxproxy.configuration.MoxProxyClientConfiguration;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.consts.MoxProxyRoutes;
 import moxproxy.dto.*;
 import moxproxy.exceptions.MoxProxyClientException;
-import moxproxy.interfaces.IMoxProxyService;
+import moxproxy.interfaces.MoxProxyService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.cxf.jaxrs.client.WebClient;
 
@@ -16,12 +16,12 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoxProxyClient implements IMoxProxyService {
+public class MoxProxyClient implements MoxProxyService {
 
-    private final IMoxProxyClientConfiguration configuration;
+    private final MoxProxyClientConfiguration configuration;
     private final ObjectMapper objectMapper;
 
-    public MoxProxyClient(IMoxProxyClientConfiguration configuration){
+    public MoxProxyClient(MoxProxyClientConfiguration configuration){
         this.configuration = configuration;
         objectMapper = new ObjectMapper();
     }
@@ -29,29 +29,25 @@ public class MoxProxyClient implements IMoxProxyService {
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.REQUESTS_ROUTE_SESSION;
-        var result = (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route, sessionId).getCollection(MoxProxyProcessedTrafficEntry.class);
-        return result;
+        return (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route, sessionId).getCollection(MoxProxyProcessedTrafficEntry.class);
     }
 
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.REQUESTS_ROUTE;
-        var result = (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route).getCollection(MoxProxyProcessedTrafficEntry.class);
-        return result;
+        return (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route).getCollection(MoxProxyProcessedTrafficEntry.class);
     }
 
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RESPONSES_ROUTE_SESSION;
-        var result = (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route, sessionId).getCollection(MoxProxyProcessedTrafficEntry.class);
-        return result;
+        return (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route, sessionId).getCollection(MoxProxyProcessedTrafficEntry.class);
     }
 
     @Override
     public Iterable<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RESPONSES_ROUTE;
-        var result = (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route).getCollection(MoxProxyProcessedTrafficEntry.class);
-        return result;
+        return (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route).getCollection(MoxProxyProcessedTrafficEntry.class);
     }
 
     @Override
@@ -100,8 +96,7 @@ public class MoxProxyClient implements IMoxProxyService {
     @Override
     public MoxProxySessionIdMatchingStrategy getSessionMatchingStrategy() {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_MATCH_STRATEGY;
-        var result = createClient(route).get(MoxProxySessionIdMatchingStrategy.class);
-        return result;
+        return createClient(route).get(MoxProxySessionIdMatchingStrategy.class);
     }
 
     private WebClient createClient(String path, Object... values) {

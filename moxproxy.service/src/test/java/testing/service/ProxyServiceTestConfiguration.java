@@ -1,36 +1,36 @@
 package testing.service;
 
-import moxproxy.configuration.MoxProxyServiceConfiguration;
-import moxproxy.interfaces.IMoxProxyDatabase;
-import moxproxy.interfaces.IMoxProxyRulesMatcher;
-import moxproxy.interfaces.IMoxProxyService;
-import moxproxy.interfaces.IMoxProxyServiceConfiguration;
-import moxproxy.rules.MoxProxyRulesMatcher;
-import moxproxy.services.MoxProxyDatabase;
-import moxproxy.services.MoxProxyService;
+import moxproxy.configuration.MoxProxyServiceConfigurationImpl;
+import moxproxy.interfaces.MoxProxyDatabase;
+import moxproxy.interfaces.MoxProxyRulesMatcher;
+import moxproxy.interfaces.MoxProxyService;
+import moxproxy.interfaces.MoxProxyServiceConfiguration;
+import moxproxy.rules.MoxProxyRulesMatcherImpl;
+import moxproxy.services.MoxProxyDatabaseImpl;
+import moxproxy.services.MoxProxyServiceImpl;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 @TestConfiguration
-public class ProxyServiceTestConfiguration {
+class ProxyServiceTestConfiguration {
 
     @Bean
-    IMoxProxyDatabase moxProxyDatabase(){
-        return new MoxProxyDatabase();
+    MoxProxyDatabase moxProxyDatabase(){
+        return new MoxProxyDatabaseImpl();
     }
 
     @Bean
-    IMoxProxyService moxProxyService(){
-        return new MoxProxyService();
+    MoxProxyService moxProxyService(){
+        return new MoxProxyServiceImpl();
     }
 
     @Bean
-    IMoxProxyRulesMatcher moxProxyMatcher(){
-        return new MoxProxyRulesMatcher();
+    MoxProxyRulesMatcher moxProxyMatcher(){
+        return new MoxProxyRulesMatcherImpl();
     }
 
     @Bean
-    IMoxProxyServiceConfiguration moxProxyServiceConfiguration() {
-        return new MoxProxyServiceConfiguration();
+    MoxProxyServiceConfiguration moxProxyServiceConfiguration() {
+        return new MoxProxyServiceConfigurationImpl();
     }
 }

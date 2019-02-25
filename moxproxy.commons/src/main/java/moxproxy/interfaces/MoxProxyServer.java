@@ -1,6 +1,6 @@
 package moxproxy.interfaces;
 
-public interface IMoxProxyServer extends IMoxProxyService {
+public interface MoxProxyServer extends MoxProxyService {
 
     void startServer();
 
