@@ -4,15 +4,17 @@ import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
 import moxproxy.dto.MoxProxySessionIdMatchingStrategy;
 
+import java.util.List;
+
 public interface MoxProxyService {
 
-    Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId);
+    List<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId);
 
-    Iterable<MoxProxyProcessedTrafficEntry> getAllRequestTraffic();
+    List<MoxProxyProcessedTrafficEntry> getAllRequestTraffic();
 
-    Iterable<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId);
+    List<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId);
 
-    Iterable<MoxProxyProcessedTrafficEntry> getAllResponseTraffic();
+    List<MoxProxyProcessedTrafficEntry> getAllResponseTraffic();
 
     void cancelRule(String ruleId);
 

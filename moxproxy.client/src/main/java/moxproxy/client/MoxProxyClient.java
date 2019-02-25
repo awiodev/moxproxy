@@ -27,27 +27,27 @@ public class MoxProxyClient implements MoxProxyService {
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
+    public List<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.REQUESTS_ROUTE_SESSION;
-        return (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route, sessionId).getCollection(MoxProxyProcessedTrafficEntry.class);
+        return (List<MoxProxyProcessedTrafficEntry>)createClient(route, sessionId).getCollection(MoxProxyProcessedTrafficEntry.class);
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
+    public List<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.REQUESTS_ROUTE;
-        return (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route).getCollection(MoxProxyProcessedTrafficEntry.class);
+        return (List<MoxProxyProcessedTrafficEntry>)createClient(route).getCollection(MoxProxyProcessedTrafficEntry.class);
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
+    public List<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RESPONSES_ROUTE_SESSION;
-        return (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route, sessionId).getCollection(MoxProxyProcessedTrafficEntry.class);
+        return (List<MoxProxyProcessedTrafficEntry>)createClient(route, sessionId).getCollection(MoxProxyProcessedTrafficEntry.class);
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
+    public List<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RESPONSES_ROUTE;
-        return (Iterable<MoxProxyProcessedTrafficEntry>)createClient(route).getCollection(MoxProxyProcessedTrafficEntry.class);
+        return (List<MoxProxyProcessedTrafficEntry>)createClient(route).getCollection(MoxProxyProcessedTrafficEntry.class);
     }
 
     @Override

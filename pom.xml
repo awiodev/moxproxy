@@ -18,6 +18,9 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
+        <maven.relase.plugin.version>2.5.3</maven.relase.plugin.version>
+        <maven.scm.provider.version>1.9.5</maven.scm.provider.version>
         <guice.version>4.0</guice.version>
         <little.proxy.version>1.1.2</little.proxy.version>
         <little.proxy.mitm.version>1.1.0</little.proxy.mitm.version>
@@ -45,6 +48,19 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.3.RELEASE</version>
     </parent>
+
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
+            </url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -172,4 +188,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:git://github.com/lukasz-aw/moxproxy.git</connection>
+        <developerConnection>scm:git:git@github.com:lukasz-aw/moxproxy.git</developerConnection>
+        <url>https://github.com/lukasz-aw/moxproxy</url>
+        <tag>HEAD</tag>
+    </scm>
 </project>

@@ -35,7 +35,7 @@ public class WebServiceIntegrationTestClient implements MoxProxyService {
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
+    public List<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.REQUESTS_ROUTE_SESSION;
         try{
             MvcResult mockMvcResult = mockMvc.perform(get(route, sessionId).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
@@ -47,7 +47,7 @@ public class WebServiceIntegrationTestClient implements MoxProxyService {
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
+    public List<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.REQUESTS_ROUTE;
         try{
             MvcResult mockMvcResult = mockMvc.perform(get(route).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
@@ -59,7 +59,7 @@ public class WebServiceIntegrationTestClient implements MoxProxyService {
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
+    public List<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RESPONSES_ROUTE_SESSION;
         try{
             MvcResult mockMvcResult = mockMvc.perform(get(route, sessionId).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
@@ -71,7 +71,7 @@ public class WebServiceIntegrationTestClient implements MoxProxyService {
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
+    public List<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RESPONSES_ROUTE;
         try{
             MvcResult mockMvcResult = mockMvc.perform(get(route).contentType(MediaType.APPLICATION_JSON).header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();

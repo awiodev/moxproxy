@@ -4,6 +4,7 @@ import moxproxy.dto.MoxProxyProcessedTrafficEntry;
 import moxproxy.dto.MoxProxyRule;
 
 import java.util.Date;
+import java.util.List;
 
 public interface MoxProxyDatabase {
 
@@ -31,17 +32,17 @@ public interface MoxProxyDatabase {
 
     void addProcessedResponse(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry);
 
-    Iterable<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic();
+    List<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic();
 
-    Iterable<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic(String sessionId);
+    List<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic(String sessionId);
 
-    Iterable<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic();
+    List<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic();
 
-    Iterable<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic(String sessionId);
+    List<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic(String sessionId);
 
-    Iterable<MoxProxyRule> findRulesBySessionId(String sessionId);
+    List<MoxProxyRule> findRulesBySessionId(String sessionId);
 
-    Iterable<MoxProxyRule> getAllRules();
+    List<MoxProxyRule> getAllRules();
 
     MoxProxyRule findRuleByById(String id);
 }

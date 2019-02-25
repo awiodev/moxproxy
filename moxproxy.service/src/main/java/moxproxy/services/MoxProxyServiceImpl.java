@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFunctionService {
@@ -34,25 +35,25 @@ public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFun
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
+    public List<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
         LOG.info("Getting requests traffic for session id: {}", sessionId);
         return database.getProcessedRequestTraffic(sessionId);
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
+    public List<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
         LOG.info("Getting all requests traffic");
         return database.getProcessedRequestTraffic();
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
+    public List<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
         LOG.info("Getting responses traffic for session id: {}", sessionId);
         return database.getProcessedResponseTraffic(sessionId);
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
+    public List<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
         LOG.info("Getting all responses traffic");
         return database.getProcessedResponseTraffic();
     }

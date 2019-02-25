@@ -5,7 +5,9 @@ import moxproxy.interfaces.MoxProxyDatabase;
 import org.springframework.stereotype.Service;
 import moxproxy.dto.MoxProxyRule;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -87,33 +89,33 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic() {
-        return processedRequestDatabase.values();
+    public List<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic() {
+        return new ArrayList<>(processedRequestDatabase.values());
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic(String sessionId) {
+    public List<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic(String sessionId) {
         return processedRequestDatabase.values().stream().filter(p -> p.getSessionId().equals(sessionId)).collect(Collectors.toList());
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic() {
-        return processedResponseDatabase.values();
+    public List<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic() {
+        return new ArrayList<>(processedResponseDatabase.values());
     }
 
     @Override
-    public Iterable<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic(String sessionId) {
+    public List<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic(String sessionId) {
         return processedResponseDatabase.values().stream().filter(p -> p.getSessionId().equals(sessionId)).collect(Collectors.toList());
     }
 
     @Override
-    public Iterable<MoxProxyRule> findRulesBySessionId(String sessionId) {
+    public List<MoxProxyRule> findRulesBySessionId(String sessionId) {
         return rulesDatabase.values().stream().filter(p -> p.getSessionId().equals(sessionId)).collect(Collectors.toList());
     }
 
     @Override
-    public Iterable<MoxProxyRule> getAllRules() {
-        return rulesDatabase.values();
+    public List<MoxProxyRule> getAllRules() {
+        return new ArrayList<>(rulesDatabase.values());
     }
 
     @Override
