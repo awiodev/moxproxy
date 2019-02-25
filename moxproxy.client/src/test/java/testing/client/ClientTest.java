@@ -24,8 +24,7 @@ public class ClientTest {
         var list = Lists.newArrayList(traffic);
 
         int statusCode = 500;
-        var builder = new MoxProxyRuleBuilder();
-        MoxProxyRule actual = builder
+        MoxProxyRule actual = MoxProxyRuleBuilder.create()
                 .withDirection(MoxProxyDirection.REQUEST)
                 .withSessionId("qw")
                 .withAction(MoxProxyAction.RESPOND)

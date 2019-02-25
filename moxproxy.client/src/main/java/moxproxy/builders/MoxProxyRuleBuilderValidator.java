@@ -12,7 +12,7 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     public void performValidation(MoxProxyRuleBuilder builder) throws BuilderValidationException {
         validateBasics(builder);
         validateActions(builder);
-        //validateMatchingStrategy(builder);
+        //validateMatchingStrategy(create);
     }
 
     private void validateBasics(MoxProxyRuleBuilder builder) throws BuilderValidationException {
@@ -21,36 +21,36 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     }
 
     private void validateActions(MoxProxyRuleBuilder builder){
-        //validateHeaderActionsCollection(builder, MoxProxyAction.SET_HEADER);
-        //validateHeaderActionsCollection(builder, MoxProxyAction.SET_HEADER);
-        //validateHeaderActionsCollection(builder, MoxProxyAction.DELETE_HEADER);
-        //validateBodyActions(builder);
-        //validateHeaderNameForAction(builder, MoxProxyAction.SET_HEADER);
-        //validateHeaderNameForAction(builder, MoxProxyAction.DELETE_HEADER);
+        //validateHeaderActionsCollection(create, MoxProxyAction.SET_HEADER);
+        //validateHeaderActionsCollection(create, MoxProxyAction.SET_HEADER);
+        //validateHeaderActionsCollection(create, MoxProxyAction.DELETE_HEADER);
+        //validateBodyActions(create);
+        //validateHeaderNameForAction(create, MoxProxyAction.SET_HEADER);
+        //validateHeaderNameForAction(create, MoxProxyAction.DELETE_HEADER);
         validateRespondAction(builder);
         validateRequestStatusCode(builder);
     }
 
-/*    private void validateBodyActions(MoxProxyRuleBuilder builder){
+/*    private void validateBodyActions(MoxProxyRuleBuilder create){
         var action = MoxProxyAction.SET_BODY;
-        if(builder.getAction() == action){
-            MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
+        if(create.getAction() == action){
+            MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder = create.getHttpObjectBuilder();
             String body = httpObjectBuilder.getBody();
             notNull(body, getClassName(httpObjectBuilder), "BODY", "Set body when using action: " + action.name());
         }
     }*/
 
-/*    private void validateHeaderActionsCollection(MoxProxyRuleBuilder builder, MoxProxyAction action){
-        if(builder.getAction() == action){
-            MoxProxyHeadersCollectionBuilder headersBuilder = builder.getHttpObjectBuilder().getHeadersCollectionBuilder();
+/*    private void validateHeaderActionsCollection(MoxProxyRuleBuilder create, MoxProxyAction action){
+        if(create.getAction() == action){
+            MoxProxyHeadersCollectionBuilder headersBuilder = create.getHttpObjectBuilder().getHeadersCollectionBuilder();
             List<MoxProxyHeaderBuilder> items = headersBuilder.getItems();
             notEmpty(items.iterator(), getClassName(headersBuilder), "HEADERS", "Set at least one header when using action: " + action.name());
         }
     }*/
 
-/*    private void validateHeaderNameForAction(MoxProxyRuleBuilder builder, MoxProxyAction action){
-        if(builder.getAction() == action){
-            MoxProxyHeadersCollectionBuilder headersBuilder = builder.getHttpObjectBuilder().getHeadersCollectionBuilder();
+/*    private void validateHeaderNameForAction(MoxProxyRuleBuilder create, MoxProxyAction action){
+        if(create.getAction() == action){
+            MoxProxyHeadersCollectionBuilder headersBuilder = create.getHttpObjectBuilder().getHeadersCollectionBuilder();
             List<MoxProxyHeaderBuilder> items = headersBuilder.getItems();
             items.forEach(header -> notNull(header.getName(), getClassName(headersBuilder), "HEADER_NAME", "Header name cannot be null when using action: " + action.name()));
         }
@@ -77,9 +77,9 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
         }
     }
 
-/*    private void validateMatchingStrategy(MoxProxyRuleBuilder builder){
-        if(builder.getStrategyBuilder().isUseSessionId()){
-            notNull(builder.getSessionId(), getClassName(builder), "SESSION_ID", "Set session ID when using session id in matching strategy");
+/*    private void validateMatchingStrategy(MoxProxyRuleBuilder create){
+        if(create.getStrategyBuilder().isUseSessionId()){
+            notNull(create.getSessionId(), getClassName(create), "SESSION_ID", "Set session ID when using session id in matching strategy");
         }
     }*/
 }

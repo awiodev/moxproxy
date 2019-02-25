@@ -83,4 +83,8 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
     MoxProxyRuleBuilder getCurrentBuilder() {
         return this;
     }
+
+    public static MoxProxyRuleBuilder create(){
+        return new MoxProxyRuleBuilder();
+    }
 }
