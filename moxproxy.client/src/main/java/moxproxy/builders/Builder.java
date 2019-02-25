@@ -3,7 +3,7 @@ package moxproxy.builders;
 
 import moxproxy.exceptions.BuilderValidationException;
 
-interface IBuilder<ParentBuilder extends IBuilder, Model> {
+interface Builder<ParentBuilder extends Builder, Model> {
 
     ParentBuilder backToParent();
 

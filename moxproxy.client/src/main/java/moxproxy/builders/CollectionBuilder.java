@@ -3,7 +3,7 @@ package moxproxy.builders;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CollectionBuilder<Parent extends IBuilder, Builder extends IBuilder, ChildBuilder, Model, Validator extends IBuilderValidator> extends BaseBuilder<Parent, Builder, Model, Validator> {
+public abstract class CollectionBuilder<Parent extends Builder, BuilderImplementation extends Builder, ChildBuilder, Model, Validator extends BuilderValidator> extends BaseBuilder<Parent, BuilderImplementation, Model, Validator> {
 
     private List<ChildBuilder> items;
 

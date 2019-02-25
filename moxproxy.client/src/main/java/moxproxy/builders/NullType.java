@@ -1,9 +1,9 @@
 package moxproxy.builders;
 
-public class NullType implements IBuilder {
+public class NullType implements Builder {
 
     @Override
-    public IBuilder backToParent() {
+    public Builder backToParent() {
         return null;
     }
 

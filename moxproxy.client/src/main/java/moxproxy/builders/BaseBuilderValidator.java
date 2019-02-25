@@ -5,7 +5,7 @@ import moxproxy.exceptions.BuilderValidationException;
 
 import java.util.Iterator;
 
-abstract class BaseBuilderValidator<Builder extends IBuilder> implements IBuilderValidator<Builder> {
+abstract class BaseBuilderValidator<BuilderImplementation extends Builder> implements BuilderValidator<BuilderImplementation> {
 
     <T>void notValue(T obj, T notExpected, String objectClass, String field, String errorDescription) throws BuilderValidationException {
         if(obj == notExpected){
@@ -45,7 +45,7 @@ abstract class BaseBuilderValidator<Builder extends IBuilder> implements IBuilde
         }
     }
 
-    String getClassName(IBuilder builder) {
+    String getClassName(Builder builder) {
         return builder.getClass().getCanonicalName();
     }
 }

@@ -2,7 +2,7 @@ package moxproxy.builders;
 
 import moxproxy.exceptions.BuilderValidationException;
 
-public abstract class BaseBuilder<Parent extends IBuilder, Builder extends IBuilder, Model, Validator extends IBuilderValidator> implements IBuilder<Parent, Model> {
+public abstract class BaseBuilder<Parent extends Builder, BuilderImplementation extends Builder, Model, Validator extends BuilderValidator> implements Builder<Parent, Model> {
 
     private Parent parent;
     private Validator validator;
@@ -19,12 +19,12 @@ public abstract class BaseBuilder<Parent extends IBuilder, Builder extends IBuil
 
     @Override
     public Model build() throws BuilderValidationException {
-        Builder builder = getCurrentBuilder();
+        BuilderImplementation builder = getCurrentBuilder();
         validator.performValidation(builder);
         return performBuild();
     }
 
     abstract Model performBuild() throws BuilderValidationException;
 
-    abstract Builder getCurrentBuilder();
+    abstract BuilderImplementation getCurrentBuilder();
 }
