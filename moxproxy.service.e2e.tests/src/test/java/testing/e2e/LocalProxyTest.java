@@ -2,29 +2,30 @@ package testing.e2e;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import testing.builders.LocalMoxProxy;
-import moxproxy.model.MoxProxyProcessedTrafficEntry;
-import moxproxy.model.MoxProxyRule;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.MoxProxy;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import testing.builders.LocalMoxProxy;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LocalProxyTest {
 
@@ -112,7 +113,7 @@ class LocalProxyTest {
     }
 
     @Test
-    void whenResponseModified_thenModificationApplied(){
+    void whenResponseModified_thenModificationApplied() throws InterruptedException {
 
         String body = "[\"proxy\",[\"Only MoxProxy!\"],[\"https://moxproxy.com\"]]";
 
@@ -123,9 +124,8 @@ class LocalProxyTest {
                     .withGetMethod()
                     .withStatusCode(200)
                     .withBody(body)
-                    .withPathPattern("search\\=proxy")
+                    .withPathPattern("search=proxy")
                     .havingHeaders()
-                        .withHeader("content-type", "application/json; charset=utf-8")
                         .withHeader("content-length", body.length())
                         .backToParent()
                     .backToParent().build();
@@ -137,6 +137,11 @@ class LocalProxyTest {
         WebElement search = driver.findElement(By.name("search"));
         search.sendKeys("proxy");
 
-        System.out.println();
+        Thread.sleep(3000);
+
+        WebElement suggestions = driver.findElement(By.className("suggestions-result"));
+        String text = suggestions.getText();
+
+        assertEquals("Only MoxProxy!", text);
     }
 }
