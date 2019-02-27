@@ -1,7 +1,7 @@
 package moxproxy.webservice.controllers;
 
 import moxproxy.consts.MoxProxyRoutes;
-import moxproxy.dto.MoxProxySessionIdMatchingStrategy;
+import moxproxy.model.MoxProxySessionIdMatchingStrategy;
 import moxproxy.interfaces.MoxProxyService;
 import moxproxy.webservice.consts.ControllerConsts;
 import org.springframework.beans.factory.annotation.Autowired;

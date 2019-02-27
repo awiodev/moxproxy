@@ -20,7 +20,7 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.littleshoot</groupId>
+            <groupId>net.jockx</groupId>
             <artifactId>littleproxy</artifactId>
             <version>${little.proxy.version}</version>
         </dependency>

@@ -1,13 +1,12 @@
 package testing.client;
 
 import com.google.common.collect.Lists;
-import moxproxy.builders.MoxProxyRuleBuilder;
 import moxproxy.client.MoxProxyClient;
 import moxproxy.configuration.MoxProxyClientConfigurationImpl;
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.dto.MoxProxyRule;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyRule;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -23,30 +22,36 @@ public class ClientTest {
         Iterable<MoxProxyProcessedTrafficEntry> traffic =  client.getAllRequestTraffic();
         var list = Lists.newArrayList(traffic);
 
-        int statusCode = 500;
-        MoxProxyRule actual = MoxProxyRuleBuilder.create()
+        String body = "[\"proxy\",[\"Only MoxProxy!\"],[\"https://moxproxy.com\"]]";
+        int contentLen = body.length();
+
+        int statusCode = 200;
+        MoxProxyRule actual = MoxProxyRule.builder()
                 .withDirection(MoxProxyDirection.REQUEST)
                 .withSessionId("qw")
                 .withAction(MoxProxyAction.RESPOND)
                 /*.withMatchingStrategy()
                     .useMethod()
                     .backToParent()*/
-                .withHttpObjectDefinition()
+                .withHttpRuleDefinition()
                 .withMethod("Get")
-                .withPathPattern("dsadsad")
+                .withPathPattern("search=proxy")
                 .withStatusCode(statusCode)
-                .withBody("dupa")
+                .withBody(body)
                 .havingHeaders()
+/*                .addItem()
+                    .withHeader("Access-Control-Allow-Credentials", "true")
                 .addItem()
-                .withHeader("aaa", "ss")
-                .backToParent()
+                    .withHeader("Access-Control-Allow-Origin", "https://library.test.abb.com")*/
+                    .withHeader("Content-Type", "application/json; charset=utf-8")
+                    .withHeader("Content-Length", contentLen)
                 .backToParent()
                 .backToParent()
                 .build();
 
-        client.createRule(actual);
+        String ruleid = client.createRule(actual);
 
-        client.cancelRule(actual.getId());
+        //client.cancelRule(actual.getId());
     }
 
 }

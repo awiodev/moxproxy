@@ -1,7 +1,7 @@
 package testing;
 
 import client.WebServiceIntegrationTestClient;
-import moxproxy.dto.*;
+import moxproxy.model.*;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.MoxProxyDatabase;

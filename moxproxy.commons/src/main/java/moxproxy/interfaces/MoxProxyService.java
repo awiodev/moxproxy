@@ -1,8 +1,8 @@
 package moxproxy.interfaces;
 
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.dto.MoxProxyRule;
-import moxproxy.dto.MoxProxySessionIdMatchingStrategy;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyRule;
+import moxproxy.model.MoxProxySessionIdMatchingStrategy;
 
 import java.util.List;
 

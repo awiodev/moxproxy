@@ -1,6 +1,6 @@
 package moxproxy.interfaces;
 
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
 
 public interface EntityConverter {
 

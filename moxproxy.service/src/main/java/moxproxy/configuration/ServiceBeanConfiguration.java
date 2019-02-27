@@ -6,7 +6,7 @@ import moxproxy.interfaces.MoxProxyRulesMatcher;
 import moxproxy.rules.MoxProxyRuleProcessorImpl;
 import moxproxy.rules.MoxProxyRulesMatcherImpl;
 import moxproxy.services.*;
-import moxproxy.services.MoxProxyServerImpl;
+import moxproxy.services.MoxProxyImpl;
 import moxproxy.services.MoxProxyServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,11 +35,11 @@ public class ServiceBeanConfiguration {
     }
 
     @Bean
-    MoxProxyServer moxProxyServer(){
-        return new MoxProxyServerImpl();
+    MoxProxy moxProxyServer(){
+        return  new MoxProxyImpl();
     }
 
-    @Bean
+    @Bean(name = BeanNames.CONFIGURATION_BEAN_NAME)
     MoxProxyServiceConfiguration moxProxyServiceConfiguration(){
         return new MoxProxyServiceConfigurationImpl();
     }

@@ -7,7 +7,7 @@ import moxproxy.interfaces.*;
 import moxproxy.rules.MoxProxyRuleProcessorImpl;
 import moxproxy.rules.MoxProxyRulesMatcherImpl;
 import moxproxy.services.*;
-import moxproxy.services.MoxProxyServerImpl;
+import moxproxy.services.MoxProxyImpl;
 import moxproxy.services.MoxProxyServiceImpl;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
@@ -69,8 +69,8 @@ public class WebServiceBeanConfiguration {
     }
 
     @Bean(name = "moxProxyServer")
-    MoxProxyServer moxProxyServer(){
-        return new MoxProxyServerImpl();
+    MoxProxy moxProxyServer(){
+        return new MoxProxyImpl();
     }
 
     @Bean

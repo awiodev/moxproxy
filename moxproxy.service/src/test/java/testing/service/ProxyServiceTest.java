@@ -1,8 +1,8 @@
 package testing.service;
 
 import com.google.common.collect.Lists;
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.dto.MoxProxyRule;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyRule;
 import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.interfaces.MoxProxyService;
 import org.junit.jupiter.api.AfterEach;

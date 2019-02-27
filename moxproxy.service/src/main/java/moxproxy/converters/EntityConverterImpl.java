@@ -1,6 +1,6 @@
 package moxproxy.converters;
 
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.interfaces.EntityConverter;
 import moxproxy.interfaces.HttpRequestAdapter;
 import moxproxy.interfaces.HttpResponseAdapter;
