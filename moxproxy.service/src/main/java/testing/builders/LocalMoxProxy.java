@@ -1,5 +1,7 @@
 package testing.builders;
 
+import moxproxy.buildes.BaseBuilder;
+import moxproxy.buildes.NullType;
 import moxproxy.configuration.BeanNames;
 import moxproxy.configuration.MoxProxyServiceConfigurationImpl;
 import moxproxy.configuration.ServiceBeanConfiguration;
@@ -20,7 +22,7 @@ public class LocalMoxProxy extends BaseBuilder<NullType, LocalMoxProxy, MoxProxy
     private boolean sessionIdMatchStrategy;
     private List<String> recorderWhiteList;
 
-    LocalMoxProxy() {
+    private LocalMoxProxy() {
         super(null, new LocalMoxProxyServerBuilderValidator());
         recorderWhiteList = new ArrayList<>();
     }

@@ -1,6 +1,6 @@
 package moxproxy.model;
 
-import testing.builders.MoxProxyRuleBuilder;
+import moxproxy.buildes.MoxProxyRuleBuilder;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 

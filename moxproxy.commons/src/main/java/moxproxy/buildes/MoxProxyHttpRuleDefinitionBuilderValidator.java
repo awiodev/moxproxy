@@ -1,4 +1,4 @@
-package testing.builders;
+package moxproxy.buildes;
 
 class MoxProxyHttpRuleDefinitionBuilderValidator extends BaseBuilderValidator<MoxProxyHttpRuleDefinitionBuilder> {
 

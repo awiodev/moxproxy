@@ -1,4 +1,4 @@
-package testing.builders;
+package moxproxy.buildes;
 
 class MoxProxyHeaderBuilderValidator extends BaseBuilderValidator<MoxProxyHeaderBuilder> {
 

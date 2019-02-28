@@ -1,5 +1,7 @@
-package testing.builders;
+package moxproxy.builders;
 
+import moxproxy.buildes.BaseBuilder;
+import moxproxy.buildes.NullType;
 import moxproxy.client.MoxProxyClient;
 import moxproxy.configuration.MoxProxyClientConfiguration;
 import moxproxy.configuration.MoxProxyClientConfigurationImpl;

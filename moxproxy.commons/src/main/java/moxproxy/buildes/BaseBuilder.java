@@ -1,4 +1,4 @@
-package testing.builders;
+package moxproxy.buildes;
 
 import moxproxy.exceptions.BuilderValidationException;
 
@@ -7,7 +7,7 @@ public abstract class BaseBuilder<Parent extends Builder, BuilderImplementation 
     private Parent parent;
     private Validator validator;
 
-    BaseBuilder(Parent parent, Validator validator){
+    protected BaseBuilder(Parent parent, Validator validator){
         this.parent = parent;
         this.validator = validator;
     }

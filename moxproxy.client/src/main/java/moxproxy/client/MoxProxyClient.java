@@ -2,7 +2,7 @@ package moxproxy.client;
 
 import io.restassured.authentication.PreemptiveBasicAuthScheme;
 import io.restassured.http.ContentType;
-import testing.builders.MoxProxyClientBuilder;
+import moxproxy.builders.MoxProxyClientBuilder;
 import moxproxy.configuration.MoxProxyClientConfiguration;
 import moxproxy.consts.MoxProxyRoutes;
 import moxproxy.exceptions.MoxProxyClientException;

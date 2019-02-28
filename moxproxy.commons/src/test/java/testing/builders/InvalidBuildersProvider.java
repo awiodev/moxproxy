@@ -1,5 +1,6 @@
 package testing.builders;
 
+import moxproxy.buildes.MoxProxyRuleBuilder;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import org.junit.jupiter.api.extension.ExtensionContext;

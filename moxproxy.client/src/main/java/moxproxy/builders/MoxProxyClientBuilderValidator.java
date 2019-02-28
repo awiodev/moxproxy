@@ -1,5 +1,6 @@
-package testing.builders;
+package moxproxy.builders;
 
+import moxproxy.buildes.BaseBuilderValidator;
 import moxproxy.exceptions.BuilderValidationException;
 
 public class MoxProxyClientBuilderValidator extends BaseBuilderValidator<MoxProxyClientBuilder> {

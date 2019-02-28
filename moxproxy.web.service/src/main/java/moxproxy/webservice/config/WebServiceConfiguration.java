@@ -39,4 +39,32 @@ public class WebServiceConfiguration {
     boolean isSessionIdMatchStrategy() {
         return sessionIdMatchStrategy;
     }
+
+    void setProxyPort(int proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
+    void setWebServicePort(int webServicePort) {
+        this.webServicePort = webServicePort;
+    }
+
+    void setCleanupDelayInSeconds(int cleanupDelayInSeconds) {
+        this.cleanupDelayInSeconds = cleanupDelayInSeconds;
+    }
+
+    void setBasicAuthUserName(String basicAuthUserName) {
+        this.basicAuthUserName = basicAuthUserName;
+    }
+
+    void setBasicAuthPassword(String basicAuthPassword) {
+        this.basicAuthPassword = basicAuthPassword;
+    }
+
+    void setUrlWhiteListForTrafficRecorder(List<String> urlWhiteListForTrafficRecorder) {
+        this.urlWhiteListForTrafficRecorder = urlWhiteListForTrafficRecorder;
+    }
+
+    void setSessionIdMatchStrategy(boolean sessionIdMatchStrategy) {
+        this.sessionIdMatchStrategy = sessionIdMatchStrategy;
+    }
 }
