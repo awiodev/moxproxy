@@ -1,7 +1,7 @@
 package moxproxy.interfaces;
 
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.dto.MoxProxyRule;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyRule;
 
 import java.util.Date;
 import java.util.List;

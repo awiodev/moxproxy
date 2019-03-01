@@ -1,14 +1,16 @@
 package moxproxy.webservice.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import moxproxy.configuration.MoxProxyServiceConfigurationImpl;
 import moxproxy.converters.EntityConverterImpl;
 import moxproxy.interfaces.*;
 import moxproxy.rules.MoxProxyRuleProcessorImpl;
 import moxproxy.rules.MoxProxyRulesMatcherImpl;
-import moxproxy.services.*;
-import moxproxy.services.MoxProxyServerImpl;
+import moxproxy.services.MoxProxyDatabaseImpl;
+import moxproxy.services.MoxProxyImpl;
 import moxproxy.services.MoxProxyServiceImpl;
+import moxproxy.services.MoxProxyTrafficRecorderImpl;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -20,17 +22,32 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Objects;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
 
 @Configuration
 public class WebServiceBeanConfiguration {
 
+    private static final String CFG_FILE = "application.conf";
+
     private WebServiceConfiguration webServiceConfiguration;
 
     public WebServiceBeanConfiguration() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        File file = getConfigFile();
-        webServiceConfiguration = objectMapper.readValue(file, WebServiceConfiguration.class);
+        webServiceConfiguration = new WebServiceConfiguration();
+        File configFile = getConfigFile();
+        Config config = ConfigFactory.parseFile(configFile);
+        Config proxy = config.getConfig("proxy").resolve();
+        Config service = config.getConfig("web-service").resolve();
+        webServiceConfiguration.setProxyPort(proxy.getInt("proxy-port"));
+        webServiceConfiguration.setSessionIdMatchStrategy(proxy.getBoolean("use-proxy-session-id-matching-strat"));
+        webServiceConfiguration.setUrlWhiteListForTrafficRecorder(proxy.getStringList("proxy-white-list"));
+        webServiceConfiguration.setWebServicePort(service.getInt("service-port"));
+        webServiceConfiguration.setBasicAuthUserName(service.getString("service-auth-user"));
+        webServiceConfiguration.setBasicAuthPassword(service.getString("service-auth-password"));
+        webServiceConfiguration.setCleanupDelayInSeconds(service.getInt("service-cleanup-delay-in-seconds"));
     }
 
     @Bean
@@ -69,8 +86,8 @@ public class WebServiceBeanConfiguration {
     }
 
     @Bean(name = "moxProxyServer")
-    MoxProxyServer moxProxyServer(){
-        return new MoxProxyServerImpl();
+    MoxProxy moxProxyServer(){
+        return new MoxProxyImpl();
     }
 
     @Bean
@@ -95,18 +112,20 @@ public class WebServiceBeanConfiguration {
         return new AuthenticationEntryPoint();
     }
 
-    private File getConfigFile() throws FileNotFoundException {
-        File configFile;
-        String cfgFileName = "webServiceConfiguration.json";
-        configFile = new File(cfgFileName);
-        if(configFile.exists()){
-            return configFile;
+    private File getConfigFile() throws IOException {
+
+        URL resource = (getClass().getClassLoader().getResource(CFG_FILE));
+        if(null != resource){
+            return new File(resource.getFile());
         }
-        configFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(cfgFileName)).getFile());
-        if(configFile.exists()){
-            return configFile;
+
+        String workingDir = System.getProperty("user.dir");
+        Optional<Path> filePath = Files.walk(Paths.get(workingDir)).filter(x -> x.getFileName().endsWith(CFG_FILE)).findFirst();
+
+        if(filePath.isPresent()){
+            return new File(filePath.get().toString());
         }
-        throw new FileNotFoundException("Configuration file " + cfgFileName + " not found in working directory neither resource directory");
+        throw new FileNotFoundException("Configuration file " + CFG_FILE + " not found in working directory neither resource directory");
     }
 
     @Component

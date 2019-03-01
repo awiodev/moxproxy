@@ -1,7 +1,7 @@
 package moxproxy.webservice.controllers;
 
-import moxproxy.dto.MoxProxyStatusMessage;
-import moxproxy.dto.MoxProxyStatusResponse;
+import moxproxy.model.MoxProxyStatusMessage;
+import moxproxy.model.MoxProxyStatusResponse;
 
 class BaseController {
 

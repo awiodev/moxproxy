@@ -1,6 +1,6 @@
 package moxproxy.interfaces;
 
-import moxproxy.dto.MoxProxyRule;
+import moxproxy.model.MoxProxyRule;
 import moxproxy.enums.MoxProxyDirection;
 
 import java.util.List;

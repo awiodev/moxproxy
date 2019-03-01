@@ -1,7 +1,6 @@
 package moxproxy.services;
 
-import com.google.common.collect.Lists;
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.interfaces.MoxProxyServiceConfiguration;
 import moxproxy.interfaces.MoxProxyTrafficRecorder;
@@ -16,8 +15,6 @@ public class MoxProxyTrafficRecorderImpl implements MoxProxyTrafficRecorder {
 
     @Autowired
     MoxProxyDatabase database;
-
-    private List<String> whiteList;
 
     @Override
     public void recordRequest(MoxProxyProcessedTrafficEntry entry) {
@@ -34,11 +31,9 @@ public class MoxProxyTrafficRecorderImpl implements MoxProxyTrafficRecorder {
     }
 
     private boolean shouldBeRecorded(String url){
-        if(whiteList == null){
-            whiteList = Lists.newArrayList(configuration.getUrlWhiteListForTrafficRecorder());
-        }
-        if(whiteList.size() > 0){
-            return whiteList.parallelStream().anyMatch(url::contains);
+        List<String> configWhiteList = configuration.getUrlWhiteListForTrafficRecorder();
+        if(configWhiteList != null && !configWhiteList.isEmpty()){
+            return configWhiteList.stream().anyMatch(url::contains);
         }
         return true;
     }

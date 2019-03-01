@@ -1,5 +1,7 @@
 package moxproxy.webservice.config;
 
+import java.util.List;
+
 public class WebServiceConfiguration {
 
     private int proxyPort;
@@ -7,14 +9,14 @@ public class WebServiceConfiguration {
     private int cleanupDelayInSeconds;
     private String basicAuthUserName;
     private String basicAuthPassword;
-    private Iterable<String> urlWhiteListForTrafficRecorder;
+    private List<String> urlWhiteListForTrafficRecorder;
     private boolean sessionIdMatchStrategy;
 
-    public int getProxyPort() {
+    int getProxyPort() {
         return proxyPort;
     }
 
-    public int getWebServicePort() {
+    int getWebServicePort() {
         return webServicePort;
     }
 
@@ -22,19 +24,47 @@ public class WebServiceConfiguration {
         return cleanupDelayInSeconds;
     }
 
-    public String getBasicAuthUserName() {
+    String getBasicAuthUserName() {
         return basicAuthUserName;
     }
 
-    public String getBasicAuthPassword() {
+    String getBasicAuthPassword() {
         return basicAuthPassword;
     }
 
-    public Iterable<String> getUrlWhiteListForTrafficRecorder() {
+    List<String> getUrlWhiteListForTrafficRecorder() {
         return urlWhiteListForTrafficRecorder;
     }
 
-    public boolean isSessionIdMatchStrategy() {
+    boolean isSessionIdMatchStrategy() {
         return sessionIdMatchStrategy;
+    }
+
+    void setProxyPort(int proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
+    void setWebServicePort(int webServicePort) {
+        this.webServicePort = webServicePort;
+    }
+
+    void setCleanupDelayInSeconds(int cleanupDelayInSeconds) {
+        this.cleanupDelayInSeconds = cleanupDelayInSeconds;
+    }
+
+    void setBasicAuthUserName(String basicAuthUserName) {
+        this.basicAuthUserName = basicAuthUserName;
+    }
+
+    void setBasicAuthPassword(String basicAuthPassword) {
+        this.basicAuthPassword = basicAuthPassword;
+    }
+
+    void setUrlWhiteListForTrafficRecorder(List<String> urlWhiteListForTrafficRecorder) {
+        this.urlWhiteListForTrafficRecorder = urlWhiteListForTrafficRecorder;
+    }
+
+    void setSessionIdMatchStrategy(boolean sessionIdMatchStrategy) {
+        this.sessionIdMatchStrategy = sessionIdMatchStrategy;
     }
 }

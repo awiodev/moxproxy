@@ -1,8 +1,8 @@
 package moxproxy.services;
 
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.dto.MoxProxyRule;
-import moxproxy.dto.MoxProxySessionIdMatchingStrategy;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyRule;
+import moxproxy.model.MoxProxySessionIdMatchingStrategy;
 import moxproxy.interfaces.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
