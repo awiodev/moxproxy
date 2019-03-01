@@ -10,15 +10,15 @@ public class MoxProxyRuleProcessingResult {
     private HttpObject request;
     private MoxProxyProcessingResultType moxProxyProcessingResultType;
 
-    public MoxProxyRuleProcessingResult(){
-        moxProxyProcessingResultType = MoxProxyProcessingResultType.DO_NOTING;
+    MoxProxyRuleProcessingResult(){
+        moxProxyProcessingResultType = MoxProxyProcessingResultType.DO_NOTHING;
     }
 
     public MoxProxyProcessingResultType getMoxProxyProcessingResultType() {
         return moxProxyProcessingResultType;
     }
 
-    public void setMoxProxyProcessingResultType(MoxProxyProcessingResultType moxProxyProcessingResultType) {
+    void setMoxProxyProcessingResultType(MoxProxyProcessingResultType moxProxyProcessingResultType) {
         this.moxProxyProcessingResultType = moxProxyProcessingResultType;
     }
 
@@ -26,7 +26,7 @@ public class MoxProxyRuleProcessingResult {
         return response;
     }
 
-    public void setResponse(FullHttpResponse response) {
+    void setResponse(FullHttpResponse response) {
         this.response = response;
     }
 
@@ -34,7 +34,7 @@ public class MoxProxyRuleProcessingResult {
         return request;
     }
 
-    public void setRequest(HttpObject request) {
+    void setRequest(HttpObject request) {
         this.request = request;
     }
 

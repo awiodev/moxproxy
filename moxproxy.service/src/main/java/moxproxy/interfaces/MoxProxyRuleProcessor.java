@@ -1,7 +1,7 @@
 package moxproxy.interfaces;
 
 import io.netty.handler.codec.http.HttpObject;
-import moxproxy.dto.MoxProxyRule;
+import moxproxy.model.MoxProxyRule;
 import moxproxy.rules.MoxProxyRuleProcessingResult;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package moxproxy.rules;
 
 import com.google.common.collect.Lists;
-import moxproxy.dto.MoxProxyRule;
+import moxproxy.model.MoxProxyRule;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.HttpTrafficAdapter;
 import moxproxy.interfaces.MoxProxyDatabase;

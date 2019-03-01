@@ -6,7 +6,7 @@ import io.netty.util.AttributeKey;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.*;
-import moxproxy.dto.MoxProxyRule;
+import moxproxy.model.MoxProxyRule;
 import moxproxy.interfaces.MoxProxyRuleProcessor;
 import moxproxy.interfaces.MoxProxyRulesMatcher;
 import moxproxy.rules.MoxProxyProcessingResultType;

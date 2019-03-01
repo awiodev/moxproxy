@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import moxproxy.configuration.MoxProxyClientConfiguration;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.consts.MoxProxyRoutes;
-import moxproxy.dto.*;
+import moxproxy.model.*;
 import moxproxy.exceptions.MoxProxyClientException;
 import moxproxy.interfaces.MoxProxyService;
 import org.apache.commons.codec.binary.Base64;

@@ -5,7 +5,7 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
-import moxproxy.dto.MoxProxyHeader;
+import moxproxy.model.MoxProxyHeader;
 import moxproxy.interfaces.HttpTrafficAdapter;
 
 import java.nio.charset.StandardCharsets;

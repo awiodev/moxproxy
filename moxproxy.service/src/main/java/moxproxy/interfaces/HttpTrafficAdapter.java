@@ -1,6 +1,6 @@
 package moxproxy.interfaces;
 
-import moxproxy.dto.MoxProxyHeader;
+import moxproxy.model.MoxProxyHeader;
 
 import java.util.List;
 

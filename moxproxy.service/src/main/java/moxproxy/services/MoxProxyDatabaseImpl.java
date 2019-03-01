@@ -1,9 +1,9 @@
 package moxproxy.services;
 
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.interfaces.MoxProxyDatabase;
 import org.springframework.stereotype.Service;
-import moxproxy.dto.MoxProxyRule;
+import moxproxy.model.MoxProxyRule;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,6 +1,6 @@
 package moxproxy.webservice;
 
-import moxproxy.interfaces.MoxProxyServer;
+import moxproxy.interfaces.MoxProxy;
 import moxproxy.webservice.config.WebServiceBeanConfiguration;
 import moxproxy.webservice.config.WebServiceConfiguration;
 import moxproxy.webservice.config.WebServiceSecurityConfig;
@@ -25,7 +25,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
 
     @Autowired
     @Qualifier("moxProxyServer")
-    MoxProxyServer proxyServer;
+    MoxProxy proxyServer;
 
     @Autowired
     CleanupService cleanupService;

@@ -1,7 +1,7 @@
 package testing;
 
-import moxproxy.dto.MoxProxyProcessedTrafficEntry;
-import moxproxy.dto.MoxProxyRule;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyRule;
 
 public class TestBase {
 
