@@ -34,7 +34,6 @@ class LocalProxyTest {
     private static final int PROXY_PORT = 89;
     private WebDriver driver;
 
-    @Autowired
     private static MoxProxy proxy;
 
     @BeforeAll
