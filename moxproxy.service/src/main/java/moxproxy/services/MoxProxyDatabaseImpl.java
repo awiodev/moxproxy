@@ -35,8 +35,8 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public void cleanProcessedTraffic(String sessionId) {
-        processedRequestDatabase.entrySet().removeIf(p -> p.getValue().getSessionId().equals(sessionId));
-        processedResponseDatabase.entrySet().removeIf(p -> p.getValue().getSessionId().equals(sessionId));
+        processedRequestDatabase.entrySet().removeIf(p -> null != p.getValue().getSessionId() && p.getValue().getSessionId().equals(sessionId));
+        processedResponseDatabase.entrySet().removeIf(p -> null != p.getValue().getSessionId() && p.getValue().getSessionId().equals(sessionId));
     }
 
     @Override
@@ -95,7 +95,7 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic(String sessionId) {
-        return processedRequestDatabase.values().stream().filter(p -> p.getSessionId().equals(sessionId)).collect(Collectors.toList());
+        return processedRequestDatabase.values().stream().filter(p -> null != p.getSessionId() && p.getSessionId().equals(sessionId)).collect(Collectors.toList());
     }
 
     @Override
@@ -105,21 +105,12 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic(String sessionId) {
-        return processedResponseDatabase.values().stream().filter(p -> p.getSessionId().equals(sessionId)).collect(Collectors.toList());
+        return processedResponseDatabase.values().stream().filter(p -> null != p.getSessionId() && p.getSessionId().equals(sessionId)).collect(Collectors.toList());
     }
 
     @Override
     public List<MoxProxyRule> findRulesBySessionId(String sessionId) {
-        List<MoxProxyRule> rules = new ArrayList<>();
-        rulesDatabase.values().forEach(value -> {
-            String sId = value.getSessionId();
-            if (null != sId) {
-                if (sId.equals(sessionId)) {
-                    rules.add(value);
-                }
-            }
-        });
-        return rules;
+        return rulesDatabase.values().stream().filter(p -> null != p.getSessionId() && p.getSessionId().equals(sessionId)).collect(Collectors.toList());
     }
 
     @Override

@@ -7,8 +7,6 @@ import moxproxy.consts.MoxProxyConts;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.*;
 import moxproxy.model.MoxProxyRule;
-import moxproxy.interfaces.MoxProxyRuleProcessor;
-import moxproxy.interfaces.MoxProxyRulesMatcher;
 import moxproxy.rules.MoxProxyProcessingResultType;
 import moxproxy.rules.MoxProxyRuleProcessingResult;
 import org.littleshoot.proxy.HttpFiltersAdapter;
@@ -39,7 +37,7 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
         if(httpObject instanceof FullHttpRequest){
             handleConnectRequest();
             String connectedUrl = getConnectedUrl();
-            HttpRequestAdapter requestAdapter = new HttpRequestAdapterImpl(httpObject, originalRequest, connectedUrl);
+            HttpRequestAdapter requestAdapter = new HttpRequestAdapterImpl(httpObject, originalRequest, connectedUrl, matcher.getSessionIdMatchingStrategy());
             trafficRecorder.recordRequest(entityConverter.fromRequestAdapter(requestAdapter));
             List<MoxProxyRule> result = matcher.match(requestAdapter, MoxProxyDirection.REQUEST);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processRequest(result, httpObject);
@@ -58,7 +56,7 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
     public HttpObject proxyToClientResponse(HttpObject httpObject) {
         if(httpObject instanceof FullHttpResponse){
             String connectedUrl = getConnectedUrl();
-            HttpResponseAdapter responseAdapter = new HttpResponseAdapterImpl(httpObject, originalRequest, connectedUrl);
+            HttpResponseAdapter responseAdapter = new HttpResponseAdapterImpl(httpObject, originalRequest, connectedUrl, matcher.getSessionIdMatchingStrategy());
             trafficRecorder.recordResponse(entityConverter.fromResponseAdapter(responseAdapter));
             List<MoxProxyRule> result = matcher.match(responseAdapter, MoxProxyDirection.RESPONSE);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processResponse(result, httpObject);

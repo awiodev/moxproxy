@@ -25,18 +25,19 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
     private String url;
     private String sessionId;
     String connectedUrl;
-
     HttpRequest originalRequest;
+    boolean isSessionIdStrategy;
 
-    BaseHttpTrafficAdapter(HttpObject httpObject, HttpRequest originalRequest, String connectedUrl){
+    BaseHttpTrafficAdapter(HttpObject httpObject, HttpRequest originalRequest, String connectedUrl, boolean isSessionIdStrategy) {
         this.httpObject = httpObject;
         this.originalRequest = originalRequest;
         this.connectedUrl = connectedUrl;
+        this.isSessionIdStrategy = isSessionIdStrategy;
         headers = transformToProxyHeaders(getHeaders());
         body = readContent(getContent());
         method = getMethod().name();
         url = getUrl();
-        extractSessionId();
+        getSessionId();
     }
 
     HttpObject getHttpObject(){
@@ -47,6 +48,8 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
     protected abstract ByteBuf getContent();
     protected abstract HttpMethod getMethod();
     protected abstract String getUrl();
+
+    protected abstract void getSessionId();
 
     @Override
     public List<MoxProxyHeader> headers() {
@@ -73,7 +76,7 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
         return sessionId;
     }
 
-    private List<MoxProxyHeader> transformToProxyHeaders(HttpHeaders headers){
+    List<MoxProxyHeader> transformToProxyHeaders(HttpHeaders headers) {
 
         var transformed = new ArrayList<MoxProxyHeader>();
         headers.forEach(x -> transformed.add(transformToProxyHeader(x)));
@@ -93,11 +96,15 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
         return content.toString(0, content.readableBytes(), StandardCharsets.UTF_8);
     }
 
-    private void extractSessionId(){
+    void extractSessionId() {
+        extractSessionId(headers);
+    }
+
+    void extractSessionId(List<MoxProxyHeader> headers) {
         sessionId = headers.stream().map(header -> extractSessionId(header.getValue().toString())).filter(Objects::nonNull).findFirst().orElse(sessionId);
     }
 
-    private String extractSessionId(String value){
+    private String extractSessionId(String value) {
 
         String pattern = "MOXSESSIONID=(.*?)(;|$)";
         Pattern regexPattern = Pattern.compile(pattern);

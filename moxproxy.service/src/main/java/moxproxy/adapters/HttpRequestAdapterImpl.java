@@ -6,8 +6,8 @@ import moxproxy.interfaces.HttpRequestAdapter;
 
 public class HttpRequestAdapterImpl extends BaseHttpTrafficAdapter implements HttpRequestAdapter {
 
-    HttpRequestAdapterImpl(HttpObject request, HttpRequest originalRequest, String connectedUrl){
-        super(request, originalRequest, connectedUrl);
+    HttpRequestAdapterImpl(HttpObject request, HttpRequest originalRequest, String connectedUrl, boolean isSessionIdStrategy) {
+        super(request, originalRequest, connectedUrl, isSessionIdStrategy);
     }
 
     @Override
@@ -28,5 +28,12 @@ public class HttpRequestAdapterImpl extends BaseHttpTrafficAdapter implements Ht
     @Override
     protected String getUrl() {
         return connectedUrl + ((FullHttpRequest)getHttpObject()).uri();
+    }
+
+    @Override
+    protected void getSessionId() {
+        if (isSessionIdStrategy) {
+            extractSessionId();
+        }
     }
 }
