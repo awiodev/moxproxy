@@ -99,7 +99,7 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
 
     private String extractSessionId(String value){
 
-        String pattern = "MOXSESSIONID=(.*)(;|$)";
+        String pattern = "MOXSESSIONID=(.*?)(;|$)";
         Pattern regexPattern = Pattern.compile(pattern);
         Matcher matcher = regexPattern.matcher(value);
         if(matcher.find()){
