@@ -1,7 +1,6 @@
 package testing.e2e;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
+import moxproxy.builders.LocalMoxProxy;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.MoxProxy;
@@ -15,33 +14,22 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import testing.builders.LocalMoxProxy;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LocalProxyTest {
+class LocalProxyTest extends TestBase {
 
-    private static final String WIKI_URL = "https://en.wikipedia.org";
-    private static final String WIKIPEDIA = "wikipedia";
-    private static final int PROXY_PORT = 89;
     private WebDriver driver;
 
     private static MoxProxy proxy;
 
     @BeforeAll
     static void beforeAll(){
-
-        Logger root = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-        root.setLevel(Level.INFO);
-
         proxy = LocalMoxProxy.builder()
                 .withPort(PROXY_PORT)
                 .withRecorderWhiteList(Collections.singletonList(WIKIPEDIA))
@@ -52,20 +40,7 @@ class LocalProxyTest {
     @BeforeEach
     void before() {
         proxy.startServer();
-        System.setProperty("webdriver.gecko.driver","D:\\webdriver\\geckodriver.exe");
-        var profile = new FirefoxProfile();
-        profile.setPreference("network.proxy.type", 1);
-        profile.setPreference("network.proxy.http", "localhost");
-        profile.setPreference("network.proxy.http_port", PROXY_PORT);
-        profile.setPreference("network.proxy.ssl", "localhost");
-        profile.setPreference("network.proxy.ssl_port", PROXY_PORT);
-        profile.setPreference("network.proxy.socks", "localhost");
-        profile.setPreference("network.proxy.socks_port", PROXY_PORT);
-        profile.setAcceptUntrustedCertificates(true);
-        profile.setAssumeUntrustedCertificateIssuer(false);
-        var options = new FirefoxOptions();
-        options.setProfile(profile);
-        driver = new FirefoxDriver(options);
+        driver = new FirefoxDriver(setupFirefox());
     }
 
     @AfterEach
@@ -86,7 +61,7 @@ class LocalProxyTest {
     }
 
     @Test
-    void whenErrorResponseRule_thenErrorReturned(){
+    void whenErrorResponseRule_thenErrorReturned() throws InterruptedException {
 
         String body = "TEST_ERROR";
 
@@ -95,7 +70,7 @@ class LocalProxyTest {
                 .withAction(MoxProxyAction.RESPOND)
                 .withHttpRuleDefinition()
                     .withGetMethod()
-                    .withPathPattern("wikipedia\\.org")
+                .withPathPattern(WIKIPEDIA_ORG_PATTERN)
                     .withStatusCode(500)
                     .withBody(body)
                     .havingHeaders()
@@ -107,6 +82,8 @@ class LocalProxyTest {
         proxy.createRule(rule);
 
         driver.get(WIKI_URL);
+
+        Thread.sleep(1000);
 
         assertThat(driver.getPageSource()).contains(body);
     }
@@ -123,7 +100,7 @@ class LocalProxyTest {
                     .withGetMethod()
                     .withStatusCode(200)
                     .withBody(body)
-                    .withPathPattern("search=proxy")
+                .withPathPattern(SEARCH_PROXY)
                     .havingHeaders()
                         .withHeader("content-length", body.length())
                         .backToParent()
@@ -133,14 +110,41 @@ class LocalProxyTest {
 
         driver.get(WIKI_URL);
 
-        WebElement search = driver.findElement(By.name("search"));
-        search.sendKeys("proxy");
+        WebElement search = driver.findElement(BY_SEARCH);
+        search.sendKeys(PROXY_TXT);
 
-        Thread.sleep(3000);
+        Thread.sleep(1000);
 
         WebElement suggestions = driver.findElement(By.className("suggestions-result"));
         String text = suggestions.getText();
 
         assertEquals("Only MoxProxy!", text);
+    }
+
+    @Test
+    void whenRequestModified_thenModificationApplied() throws InterruptedException {
+
+        String ipadAgent = "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3";
+        String xpath = "//a[@href='/wiki/Special:MobileMenu']";
+
+        MoxProxyRule rule = MoxProxyRule.builder()
+                .withDirection(MoxProxyDirection.REQUEST)
+                .withAction(MoxProxyAction.MODIFY)
+                .withHttpRuleDefinition()
+                .withGetMethod()
+                .withPathPattern(WIKIPEDIA_ORG_PATTERN)
+                .havingHeaders()
+                .withHeader("User-Agent", ipadAgent).backToParent()
+                .backToParent().build();
+
+        proxy.createRule(rule);
+
+        driver.get(WIKI_URL);
+
+        Thread.sleep(1000);
+
+        WebElement mobileMenu = driver.findElement(By.xpath(xpath));
+
+        assertTrue(mobileMenu.isDisplayed());
     }
 }

@@ -1,4 +1,4 @@
-package testing.builders;
+package moxproxy.builders;
 
 import moxproxy.buildes.BaseBuilderValidator;
 import moxproxy.exceptions.BuilderValidationException;

@@ -5,13 +5,14 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
-import moxproxy.model.MoxProxyHeader;
 import moxproxy.interfaces.HttpTrafficAdapter;
+import moxproxy.model.MoxProxyHeader;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,18 +94,12 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
     }
 
     private void extractSessionId(){
-        for(MoxProxyHeader header : headers){
-            var extracted = extractSessionId(header.getValue().toString());
-            if(extracted != null){
-                sessionId = extracted;
-                break;
-            }
-        }
+        sessionId = headers.stream().map(header -> extractSessionId(header.getValue().toString())).filter(Objects::nonNull).findFirst().orElse(sessionId);
     }
 
     private String extractSessionId(String value){
 
-        String pattern = "MOXSESSIONID=(.*);|$";
+        String pattern = "MOXSESSIONID=(.*)(;|$)";
         Pattern regexPattern = Pattern.compile(pattern);
         Matcher matcher = regexPattern.matcher(value);
         if(matcher.find()){

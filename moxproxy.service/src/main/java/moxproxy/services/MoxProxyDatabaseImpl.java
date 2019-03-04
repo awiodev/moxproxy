@@ -1,9 +1,9 @@
 package moxproxy.services;
 
-import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.interfaces.MoxProxyDatabase;
-import org.springframework.stereotype.Service;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,7 +110,16 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public List<MoxProxyRule> findRulesBySessionId(String sessionId) {
-        return rulesDatabase.values().stream().filter(p -> p.getSessionId().equals(sessionId)).collect(Collectors.toList());
+        List<MoxProxyRule> rules = new ArrayList<>();
+        rulesDatabase.values().forEach(value -> {
+            String sId = value.getSessionId();
+            if (null != sId) {
+                if (sId.equals(sessionId)) {
+                    rules.add(value);
+                }
+            }
+        });
+        return rules;
     }
 
     @Override
