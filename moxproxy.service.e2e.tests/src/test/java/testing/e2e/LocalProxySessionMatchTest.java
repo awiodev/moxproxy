@@ -73,7 +73,7 @@ class LocalProxySessionMatchTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         assertThat(driver.getPageSource()).doesNotContain(MY_BODY);
     }
@@ -100,7 +100,7 @@ class LocalProxySessionMatchTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         assertThat(driver.getPageSource()).doesNotContain(MY_BODY);
     }
@@ -127,7 +127,7 @@ class LocalProxySessionMatchTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         assertThat(driver.getPageSource()).contains(MY_BODY);
     }
@@ -154,7 +154,7 @@ class LocalProxySessionMatchTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         assertThat(driver.getPageSource()).contains(MY_BODY);
 
@@ -162,7 +162,7 @@ class LocalProxySessionMatchTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         assertThat(driver.getPageSource()).doesNotContain(MY_BODY);
     }
@@ -189,7 +189,7 @@ class LocalProxySessionMatchTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         assertThat(driver.getPageSource()).contains(MY_BODY);
 
@@ -197,7 +197,7 @@ class LocalProxySessionMatchTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         assertThat(driver.getPageSource()).doesNotContain(MY_BODY);
     }
@@ -206,7 +206,7 @@ class LocalProxySessionMatchTest extends TestBase {
     void whenCollectTraffic_thenSessionTrafficCollected() throws InterruptedException {
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         List<MoxProxyProcessedTrafficEntry> requestTraffic = proxy.getSessionRequestTraffic(sessionId);
         List<MoxProxyProcessedTrafficEntry> responseTraffic = proxy.getSessionResponseTraffic(sessionId);
@@ -221,7 +221,7 @@ class LocalProxySessionMatchTest extends TestBase {
     void whenClearSessionTraffic_thenNoEntries() throws InterruptedException {
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         List<MoxProxyProcessedTrafficEntry> requestTraffic = proxy.getSessionRequestTraffic(sessionId);
         List<MoxProxyProcessedTrafficEntry> responseTraffic = proxy.getSessionResponseTraffic(sessionId);
@@ -260,7 +260,7 @@ class LocalProxySessionMatchTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         List<MoxProxyProcessedTrafficEntry> requestTraffic = proxy.getSessionRequestTraffic(sessionId);
         List<MoxProxyProcessedTrafficEntry> responseTraffic = proxy.getSessionResponseTraffic(sessionId);
@@ -278,7 +278,7 @@ class LocalProxySessionMatchTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         assertThat(driver.getPageSource()).doesNotContain(MY_BODY);
     }

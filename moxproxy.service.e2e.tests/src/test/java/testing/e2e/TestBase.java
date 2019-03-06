@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 class TestBase {
 
+    static final int SLEEP_TIME = 2000;
     static final int PROXY_PORT = 89;
     static final String WIKI_URL = "https://en.wikipedia.org";
     static final String WIKIPEDIA = "wikipedia";

@@ -83,7 +83,7 @@ class LocalProxyTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         assertThat(driver.getPageSource()).contains(body);
     }
@@ -110,10 +110,12 @@ class LocalProxyTest extends TestBase {
 
         driver.get(WIKI_URL);
 
+        Thread.sleep(SLEEP_TIME);
+
         WebElement search = driver.findElement(BY_SEARCH);
         search.sendKeys(PROXY_TXT);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         WebElement suggestions = driver.findElement(By.className("suggestions-result"));
         String text = suggestions.getText();
@@ -141,7 +143,7 @@ class LocalProxyTest extends TestBase {
 
         driver.get(WIKI_URL);
 
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_TIME);
 
         WebElement mobileMenu = driver.findElement(By.xpath(xpath));
 

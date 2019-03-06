@@ -18,7 +18,7 @@ public abstract class BaseBuilder<Parent extends Builder, BuilderImplementation 
     }
 
     @Override
-    public Model build() throws BuilderValidationException {
+    public Model build() {
         BuilderImplementation builder = getCurrentBuilder();
         validator.performValidation(builder);
         return performBuild();

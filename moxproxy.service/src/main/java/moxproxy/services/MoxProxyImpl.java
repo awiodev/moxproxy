@@ -45,23 +45,22 @@ public final class MoxProxyImpl extends MoxProxyServiceImpl implements MoxProxy 
 
     private void startProxyServer(){
 
-        CertificateSniffingMitmManager mitm = null;
         try {
-            mitm = new CertificateSniffingMitmManager();
+            CertificateSniffingMitmManager mitm = new CertificateSniffingMitmManager();
+            LOG.info("Starting MoxProxy on port {}", configuration.getProxyPort());
+
+            proxyServer = DefaultHttpProxyServer.bootstrap()
+                    .withPort(configuration.getProxyPort())
+                    .withAllowLocalOnly(false)
+                    .withFiltersSource(getFiltersSource())
+                    .withManInTheMiddle(mitm)
+                    .start();
+
+            LOG.info("MoxProxy server started");
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Failed to start proxy", e);
+            throw new RuntimeException(e);
         }
-
-        LOG.info("Starting MoxProxy on port {}", configuration.getProxyPort());
-
-        proxyServer = DefaultHttpProxyServer.bootstrap()
-                .withPort(configuration.getProxyPort())
-                .withAllowLocalOnly(false)
-                .withFiltersSource(getFiltersSource())
-                .withManInTheMiddle(mitm)
-                .start();
-
-        LOG.info("MoxProxy server started");
     }
 
     @Override
