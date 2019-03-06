@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>moxproxy.service.e2e.tests</artifactId>
+    <artifactId>moxproxy.local.examples</artifactId>
 
     <dependencies>
         <dependency>
@@ -22,20 +22,19 @@
 
         <dependency>
             <groupId>com.moxproxy</groupId>
-            <artifactId>moxproxy.service</artifactId>
+            <artifactId>moxproxy.core</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.moxproxy</groupId>
             <artifactId>moxproxy.client</artifactId>
             <version>${parent.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.directory.studio/org.apache.commons.io -->
-        <dependency>
+        </dependency>        
+<!--        <dependency>
             <groupId>org.apache.directory.studio</groupId>
             <artifactId>org.apache.commons.io</artifactId>
             <version>2.4</version>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 

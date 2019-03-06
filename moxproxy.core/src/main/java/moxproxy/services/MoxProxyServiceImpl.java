@@ -21,10 +21,10 @@ public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFun
     private static final Logger LOG = LoggerFactory.getLogger(MoxProxyServiceImpl.class);
 
     @Autowired
-    protected MoxProxyDatabase database;
+    MoxProxyDatabase database;
 
     @Autowired
-    protected MoxProxyRulesMatcher matcher;
+    MoxProxyRulesMatcher matcher;
 
     @Autowired
     protected MoxProxyServiceConfiguration configuration;

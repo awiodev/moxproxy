@@ -11,10 +11,10 @@ import java.util.List;
 public class MoxProxyTrafficRecorderImpl implements MoxProxyTrafficRecorder {
 
     @Autowired
-    MoxProxyServiceConfiguration configuration;
+    private MoxProxyServiceConfiguration configuration;
 
     @Autowired
-    MoxProxyDatabase database;
+    private MoxProxyDatabase database;
 
     @Override
     public void recordRequest(MoxProxyProcessedTrafficEntry entry) {

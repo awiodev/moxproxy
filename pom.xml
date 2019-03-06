@@ -11,10 +11,10 @@
     <modules>
         <module>moxproxy.commons</module>
         <module>moxproxy.client</module>
-        <module>moxproxy.service</module>
+        <module>moxproxy.core</module>
         <module>moxproxy.web.service</module>
-        <module>moxproxy.service.e2e.tests</module>
-        <module>moxproxy.web.service.e2e.tests</module>
+        <module>moxproxy.local.examples</module>
+        <module>moxproxy.web.service.examples</module>
     </modules>
 
     <properties>
