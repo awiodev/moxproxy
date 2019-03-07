@@ -1,16 +1,16 @@
 package testing.database;
 
+import com.google.common.collect.Lists;
+import moxproxy.configuration.MoxProxyServiceConfigurationImpl;
+import moxproxy.di.DaggerServiceComponent;
+import moxproxy.di.ServiceModule;
+import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
-import moxproxy.interfaces.MoxProxyDatabase;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import testing.TestBase;
 
 import java.util.Calendar;
@@ -19,15 +19,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@Import(DatabaseTestConfiguration.class)
 class DatabaseTest extends TestBase {
 
-    @Autowired
     private MoxProxyDatabase database;
 
     @BeforeEach
     void beforeEachSetup(){
+        database = DaggerServiceComponent.builder().serviceModule(new ServiceModule(new MoxProxyServiceConfigurationImpl())).build().getMoxProxyDatabase();
         database.startDatabase();
     }
 

@@ -1,17 +1,16 @@
 package testing.service;
 
 import com.google.common.collect.Lists;
-import moxproxy.model.MoxProxyProcessedTrafficEntry;
-import moxproxy.model.MoxProxyRule;
+import moxproxy.configuration.MoxProxyServiceConfigurationImpl;
+import moxproxy.di.DaggerServiceComponent;
+import moxproxy.di.ServiceModule;
 import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.interfaces.MoxProxyService;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import testing.TestBase;
 
 import java.util.ArrayList;
@@ -19,18 +18,17 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@ExtendWith(SpringExtension.class)
-@Import(ProxyServiceTestConfiguration.class)
 class ProxyServiceTest extends TestBase {
 
-    @Autowired
     private MoxProxyDatabase database;
 
-    @Autowired
     private MoxProxyService service;
 
     @BeforeEach
     void beforeEachSetup(){
+        var component = DaggerServiceComponent.builder().serviceModule(new ServiceModule(new MoxProxyServiceConfigurationImpl())).build();
+        database = component.getMoxProxyDatabase();
+        service = component.getMoxProxyService();
         database.startDatabase();
     }
 

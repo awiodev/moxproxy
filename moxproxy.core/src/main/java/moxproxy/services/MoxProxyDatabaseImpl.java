@@ -3,7 +3,6 @@ package moxproxy.services;
 import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-@Service
 public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     private ConcurrentMap<String, MoxProxyRule> rulesDatabase;

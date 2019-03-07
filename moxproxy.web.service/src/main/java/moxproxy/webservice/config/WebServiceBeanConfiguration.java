@@ -55,46 +55,16 @@ public class WebServiceBeanConfiguration {
         return webServiceConfiguration;
     }
 
-    @Bean(name = "moxProxyScheduleService")
-    MoxProxyScheduleFunctionService moxProxyScheduleService(){
-        return new MoxProxyServiceImpl();
-    }
-
-    @Bean
-    TaskScheduler taskScheduler(){
-        return new ConcurrentTaskScheduler();
-    }
-
-    @Bean
-    MoxProxyDatabase moxProxyDatabase(){
-        return new MoxProxyDatabaseImpl();
-    }
-
-    @Bean(name = "moxProxyService")
-    MoxProxyService moxProxyService(){
-        return new MoxProxyServiceImpl();
-    }
-
-    @Bean
-    MoxProxyRulesMatcher moxProxyRules(){
-        return new MoxProxyRulesMatcherImpl();
-    }
-
-    @Bean
-    MoxProxyTrafficRecorder moxProxyTrafficRecorder(){
-        return new MoxProxyTrafficRecorderImpl();
-    }
-
-    @Bean(name = "moxProxyServer")
-    MoxProxy moxProxyServer(){
-        return new MoxProxyImpl();
-    }
-
     @Bean
     MoxProxyServiceConfiguration moxProxyServiceConfiguration(){
         return new MoxProxyServiceConfigurationImpl(webServiceConfiguration.getProxyPort(),
                 webServiceConfiguration.getUrlWhiteListForTrafficRecorder(),
                 webServiceConfiguration.isSessionIdMatchStrategy());
+    }
+
+    @Bean
+    MoxProxyDatabase moxProxyDatabase(){
+        return new MoxProxyDatabaseImpl();
     }
 
     @Bean
@@ -105,6 +75,37 @@ public class WebServiceBeanConfiguration {
     @Bean
     MoxProxyRuleProcessor moxProxyRuleProcessor(){
         return new MoxProxyRuleProcessorImpl();
+    }
+
+    @Bean
+    TaskScheduler taskScheduler(){
+        return new ConcurrentTaskScheduler();
+    }
+
+    @Bean
+    MoxProxyRulesMatcher moxProxyRules(MoxProxyDatabase database){
+        return new MoxProxyRulesMatcherImpl(database);
+    }
+
+    @Bean
+    MoxProxyTrafficRecorder moxProxyTrafficRecorder(MoxProxyServiceConfiguration moxProxyServiceConfiguration, MoxProxyDatabase moxProxyDatabase){
+        return new MoxProxyTrafficRecorderImpl(moxProxyServiceConfiguration, moxProxyDatabase);
+    }
+
+    @Bean(name = "moxProxyScheduleService")
+    MoxProxyScheduleFunctionService moxProxyScheduleService(MoxProxyDatabase database, MoxProxyRulesMatcher matcher, MoxProxyServiceConfiguration configuration){
+        return new MoxProxyServiceImpl(database, matcher, configuration);
+    }
+
+    @Bean(name = "moxProxyService")
+    MoxProxyService moxProxyService(MoxProxyDatabase moxProxyDatabase, MoxProxyRulesMatcher matcher, MoxProxyServiceConfiguration configuration){
+        return new MoxProxyServiceImpl(moxProxyDatabase, matcher, configuration);
+    }
+
+    @Bean(name = "moxProxyServer")
+    MoxProxy moxProxyServer(MoxProxyServiceConfiguration configuration, MoxProxyTrafficRecorder trafficRecorder, EntityConverter converter,
+                            MoxProxyRuleProcessor processor, MoxProxyDatabase database, MoxProxyRulesMatcher matcher){
+        return new MoxProxyImpl(configuration, trafficRecorder, converter, processor, database, matcher);
     }
 
     @Bean

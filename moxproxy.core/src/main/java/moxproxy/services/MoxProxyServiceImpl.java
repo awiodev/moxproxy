@@ -1,37 +1,32 @@
 package moxproxy.services;
 
+import moxproxy.interfaces.*;
 import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
 import moxproxy.model.MoxProxySessionIdMatchingStrategy;
-import moxproxy.interfaces.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Service
 public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFunctionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MoxProxyServiceImpl.class);
 
-    @Autowired
     MoxProxyDatabase database;
 
-    @Autowired
     MoxProxyRulesMatcher matcher;
 
-    @Autowired
     protected MoxProxyServiceConfiguration configuration;
 
-    @PostConstruct
-    public void init(){
-        matcher.useSessionIdMatchingStrategy(configuration.isMatchSessionIdStrategy());
+    public MoxProxyServiceImpl(MoxProxyDatabase database, MoxProxyRulesMatcher matcher, MoxProxyServiceConfiguration configuration){
+        this.database = database;
+        this.matcher = matcher;
+        this.configuration = configuration;
+        this.matcher.useSessionIdMatchingStrategy(configuration.isMatchSessionIdStrategy());
     }
 
     @Override

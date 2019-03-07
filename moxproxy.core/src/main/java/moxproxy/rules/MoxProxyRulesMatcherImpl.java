@@ -1,27 +1,29 @@
 package moxproxy.rules;
 
 import com.google.common.collect.Lists;
-import moxproxy.model.MoxProxyRule;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.HttpTrafficAdapter;
 import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.interfaces.MoxProxyRulesMatcher;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import moxproxy.model.MoxProxyRule;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@Component
 public class MoxProxyRulesMatcherImpl implements MoxProxyRulesMatcher {
 
-    @Autowired
     private MoxProxyDatabase database;
 
     private boolean matchSessionId;
+
+    @Inject
+    public MoxProxyRulesMatcherImpl(MoxProxyDatabase database){
+        this.database = database;
+    }
 
     @Override
     public void useSessionIdMatchingStrategy(boolean value) {

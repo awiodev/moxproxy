@@ -1,20 +1,23 @@
 package moxproxy.services;
 
-import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.interfaces.MoxProxyServiceConfiguration;
 import moxproxy.interfaces.MoxProxyTrafficRecorder;
-import org.springframework.beans.factory.annotation.Autowired;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class MoxProxyTrafficRecorderImpl implements MoxProxyTrafficRecorder {
 
-    @Autowired
     private MoxProxyServiceConfiguration configuration;
-
-    @Autowired
     private MoxProxyDatabase database;
+
+    @Inject
+    public MoxProxyTrafficRecorderImpl(MoxProxyServiceConfiguration configuration, MoxProxyDatabase database){
+        this.configuration = configuration;
+        this.database = database;
+    }
 
     @Override
     public void recordRequest(MoxProxyProcessedTrafficEntry entry) {

@@ -11,27 +11,32 @@ import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 import org.littleshoot.proxy.mitm.CertificateSniffingMitmManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
+import javax.inject.Inject;
+
 public final class MoxProxyImpl extends MoxProxyServiceImpl implements MoxProxy {
 
     private static final Logger LOG = LoggerFactory.getLogger(MoxProxyImpl.class);
 
     private HttpProxyServer proxyServer;
 
-    @Autowired
     private MoxProxyServiceConfiguration configuration;
 
-    @Autowired
     private MoxProxyTrafficRecorder recorder;
 
-    @Autowired
     private EntityConverter converter;
 
-    @Autowired
     private MoxProxyRuleProcessor processor;
+
+    @Inject
+    public MoxProxyImpl(MoxProxyServiceConfiguration configuration, MoxProxyTrafficRecorder recorder, EntityConverter converter, MoxProxyRuleProcessor processor,
+                        MoxProxyDatabase database, MoxProxyRulesMatcher matcher){
+        super(database, matcher, configuration);
+        this.configuration = configuration;
+        this.recorder = recorder;
+        this.converter = converter;
+        this.processor = processor;
+    }
 
     @Override
     public void startServer() {

@@ -50,7 +50,7 @@ class LocalProxyTest extends TestBase {
     }
 
     @Test
-    void whenActionsPerformed_thenTrafficRecorded(){
+    void whenActionsPerformed_thenTrafficRecorded() {
         driver.get(WIKI_URL);
         List<MoxProxyProcessedTrafficEntry> requestTraffic = proxy.getAllRequestTraffic();
         List<MoxProxyProcessedTrafficEntry> responseTraffic = proxy.getAllResponseTraffic();
