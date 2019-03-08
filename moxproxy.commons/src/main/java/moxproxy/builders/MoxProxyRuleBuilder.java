@@ -1,4 +1,4 @@
-package moxproxy.buildes;
+package moxproxy.builders;
 
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;

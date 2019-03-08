@@ -1,7 +1,5 @@
 package moxproxy.builders;
 
-import moxproxy.buildes.BaseBuilder;
-import moxproxy.buildes.NullType;
 import moxproxy.configuration.MoxProxyServiceConfigurationImpl;
 import moxproxy.di.DaggerServiceComponent;
 import moxproxy.di.ServiceComponent;

@@ -1,7 +1,7 @@
 package testing.builders;
 
-import moxproxy.buildes.MoxProxyHttpRuleDefinitionBuilder;
-import moxproxy.buildes.MoxProxyRuleBuilder;
+import moxproxy.builders.MoxProxyHttpRuleDefinitionBuilder;
+import moxproxy.builders.MoxProxyRuleBuilder;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;

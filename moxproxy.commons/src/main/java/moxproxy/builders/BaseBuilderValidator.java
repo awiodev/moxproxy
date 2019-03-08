@@ -1,4 +1,4 @@
-package moxproxy.buildes;
+package moxproxy.builders;
 
 import com.google.common.collect.Iterators;
 import moxproxy.exceptions.BuilderValidationException;
@@ -31,7 +31,7 @@ public abstract class BaseBuilderValidator<BuilderImplementation extends Builder
         }
     }
 
-    protected <T>void notNull(T obj, String objectClass, String field) throws BuilderValidationException {
+    <T>void notNull(T obj, String objectClass, String field) throws BuilderValidationException {
         notNull(obj, objectClass, field, "");
     }
 
@@ -45,7 +45,7 @@ public abstract class BaseBuilderValidator<BuilderImplementation extends Builder
         }
     }
 
-    protected String getClassName(Builder builder) {
+    String getClassName(Builder builder) {
         return builder.getClass().getCanonicalName();
     }
 }

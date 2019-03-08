@@ -1,4 +1,4 @@
-package moxproxy.buildes;
+package moxproxy.builders;
 
 public class NullType implements Builder {
 

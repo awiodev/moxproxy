@@ -1,0 +1,15 @@
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.*: ERROR
+server:
+  port: 8081
+service:
+  proxyPort : 89
+  sessionIdMatchStrategy : true
+  urlWhiteListForTrafficRecorder : []
+  cleanupDelayInSeconds : 300
+  basicAuthUserName : change-user
+  basicAuthPassword : change-password
+
+

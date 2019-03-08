@@ -5,7 +5,6 @@ import java.util.List;
 public class WebServiceConfiguration {
 
     private int proxyPort;
-    private int webServicePort;
     private int cleanupDelayInSeconds;
     private String basicAuthUserName;
     private String basicAuthPassword;
@@ -14,10 +13,6 @@ public class WebServiceConfiguration {
 
     int getProxyPort() {
         return proxyPort;
-    }
-
-    int getWebServicePort() {
-        return webServicePort;
     }
 
     public int getCleanupDelayInSeconds() {
@@ -42,10 +37,6 @@ public class WebServiceConfiguration {
 
     void setProxyPort(int proxyPort) {
         this.proxyPort = proxyPort;
-    }
-
-    void setWebServicePort(int webServicePort) {
-        this.webServicePort = webServicePort;
     }
 
     void setCleanupDelayInSeconds(int cleanupDelayInSeconds) {
