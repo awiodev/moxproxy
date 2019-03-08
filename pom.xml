@@ -42,7 +42,6 @@
         <jaxb.api.version>2.1</jaxb.api.version>
         <jackson.jaxrs.json.provider.version>2.9.7</jackson.jaxrs.json.provider.version>
         <rest.assured.version>3.3.0</rest.assured.version>
-        <typesafe.version>1.2.1</typesafe.version>
         <selenium.version>3.14.0</selenium.version>
         <logback.version>1.2.3</logback.version>
         <dagger.version>2.21</dagger.version>
@@ -149,11 +148,6 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j</artifactId>
                 <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.typesafe</groupId>
-                <artifactId>config</artifactId>
-                <version>${typesafe.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>

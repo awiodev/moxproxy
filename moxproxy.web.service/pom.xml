@@ -18,6 +18,12 @@
             <groupId>com.moxproxy</groupId>
             <artifactId>moxproxy.core</artifactId>
             <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.dagger</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.moxproxy</groupId>
@@ -47,10 +53,6 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.typesafe</groupId>
-            <artifactId>config</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -123,6 +125,9 @@
                                 <resource>
                                     <directory>src/main/resources</directory>
                                     <filtering>true</filtering>
+                                    <excludes>
+                                        <exclude>banner.txt</exclude>
+                                    </excludes>
                                 </resource>
                             </resources>
                         </configuration>
