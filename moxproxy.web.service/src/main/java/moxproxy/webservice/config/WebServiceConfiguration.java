@@ -1,19 +1,10 @@
 package moxproxy.webservice.config;
 
-import java.util.List;
-
 public class WebServiceConfiguration {
 
-    private int proxyPort;
     private int cleanupDelayInSeconds;
     private String basicAuthUserName;
     private String basicAuthPassword;
-    private List<String> urlWhiteListForTrafficRecorder;
-    private boolean sessionIdMatchStrategy;
-
-    int getProxyPort() {
-        return proxyPort;
-    }
 
     public int getCleanupDelayInSeconds() {
         return cleanupDelayInSeconds;
@@ -27,18 +18,6 @@ public class WebServiceConfiguration {
         return basicAuthPassword;
     }
 
-    List<String> getUrlWhiteListForTrafficRecorder() {
-        return urlWhiteListForTrafficRecorder;
-    }
-
-    boolean isSessionIdMatchStrategy() {
-        return sessionIdMatchStrategy;
-    }
-
-    void setProxyPort(int proxyPort) {
-        this.proxyPort = proxyPort;
-    }
-
     void setCleanupDelayInSeconds(int cleanupDelayInSeconds) {
         this.cleanupDelayInSeconds = cleanupDelayInSeconds;
     }
@@ -49,13 +28,5 @@ public class WebServiceConfiguration {
 
     void setBasicAuthPassword(String basicAuthPassword) {
         this.basicAuthPassword = basicAuthPassword;
-    }
-
-    void setUrlWhiteListForTrafficRecorder(List<String> urlWhiteListForTrafficRecorder) {
-        this.urlWhiteListForTrafficRecorder = urlWhiteListForTrafficRecorder;
-    }
-
-    void setSessionIdMatchStrategy(boolean sessionIdMatchStrategy) {
-        this.sessionIdMatchStrategy = sessionIdMatchStrategy;
     }
 }

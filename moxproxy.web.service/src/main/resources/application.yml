@@ -1,15 +1,25 @@
 logging:
   level:
     ROOT: INFO
-    org.springframework.*: ERROR
 server:
   port: 8081
+proxy:
+  proxyPort: 89
+  sessionIdMatchStrategy: true
+  urlWhiteListForTrafficRecorder: []
+mitm:
+  createOwn: false
+  keyStoreDir: .
+  alias: moxproxy-mitm
+  password: doItOnlyForTesting
+  organization: MoxProxy-mitm
+  commonName: MoxProxy-mitm, test proxy
+  organizationalUnitName: Certificate Authority
+  certOrganization: MoxProxy-mitm
+  certOrganizationalUnitName:  MoxProxy-mitm, test automation purpose
 service:
-  proxyPort : 89
-  sessionIdMatchStrategy : true
-  urlWhiteListForTrafficRecorder : []
   cleanupDelayInSeconds : 300
-  basicAuthUserName : change-user
-  basicAuthPassword : change-password
+  basicAuthUserName: change-user
+  basicAuthPassword: change-password
 
 

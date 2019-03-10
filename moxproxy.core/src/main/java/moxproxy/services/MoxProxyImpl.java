@@ -51,7 +51,7 @@ public final class MoxProxyImpl extends MoxProxyServiceImpl implements MoxProxy 
     private void startProxyServer(){
 
         try {
-            CertificateSniffingMitmManager mitm = new CertificateSniffingMitmManager();
+            CertificateSniffingMitmManager mitm = new CertificateSniffingMitmManager(configuration.getAuthority());
             LOG.info("Starting MoxProxy on port {}", configuration.getProxyPort());
 
             proxyServer = DefaultHttpProxyServer.bootstrap()

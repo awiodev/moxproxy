@@ -7,6 +7,7 @@ import moxproxy.di.ServiceModule;
 import moxproxy.exceptions.BuilderValidationException;
 import moxproxy.interfaces.MoxProxy;
 import moxproxy.interfaces.MoxProxyServiceConfiguration;
+import org.littleshoot.proxy.mitm.Authority;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +17,20 @@ public class LocalMoxProxy extends BaseBuilder<NullType, LocalMoxProxy, MoxProxy
     private int port;
     private boolean sessionIdMatchStrategy;
     private List<String> recorderWhiteList;
+    private AuthorityBuilder authorityBuilder;
+
 
     private LocalMoxProxy() {
         super(null, new LocalMoxProxyServerBuilderValidator());
         recorderWhiteList = new ArrayList<>();
+        authorityBuilder = new AuthorityBuilder(this);
     }
 
     @Override
     protected MoxProxy performBuild() throws BuilderValidationException {
-        MoxProxyServiceConfiguration configuration = new MoxProxyServiceConfigurationImpl(port, recorderWhiteList, sessionIdMatchStrategy);
+        Authority authority = authorityBuilder.build();
+        MoxProxyServiceConfiguration configuration =
+                new MoxProxyServiceConfigurationImpl(port, recorderWhiteList, sessionIdMatchStrategy, authority);
         ServiceComponent component = DaggerServiceComponent.builder().serviceModule(new ServiceModule(configuration)).build();
         return component.getMoxProxy();
     }
@@ -51,6 +57,10 @@ public class LocalMoxProxy extends BaseBuilder<NullType, LocalMoxProxy, MoxProxy
     public LocalMoxProxy withRecorderWhiteList(List<String> recorderWhiteList){
         this.recorderWhiteList = recorderWhiteList;
         return this;
+    }
+
+    public AuthorityBuilder withAuthority(){
+        return authorityBuilder;
     }
 
     int getPort() {

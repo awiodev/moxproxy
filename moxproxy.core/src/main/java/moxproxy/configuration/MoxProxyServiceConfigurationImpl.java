@@ -1,6 +1,7 @@
 package moxproxy.configuration;
 
 import moxproxy.interfaces.MoxProxyServiceConfiguration;
+import org.littleshoot.proxy.mitm.Authority;
 
 import java.util.List;
 
@@ -8,15 +9,19 @@ public class MoxProxyServiceConfigurationImpl implements MoxProxyServiceConfigur
 
     private int port = 89;
     private List<String> urlWhiteListForTrafficRecorder;
-    private boolean matchSessionIdStrategy = false;
+    private boolean matchSessionIdStrategy;
+    private Authority authority;
+
 
     public MoxProxyServiceConfigurationImpl(){
     }
 
-    public MoxProxyServiceConfigurationImpl(int port, List<String> urlWhiteListForTrafficRecorder, boolean matchSessionIdStrategy){
+    public MoxProxyServiceConfigurationImpl(int port, List<String> urlWhiteListForTrafficRecorder, boolean matchSessionIdStrategy,
+                                            Authority authority){
         this.port = port;
         this.urlWhiteListForTrafficRecorder = urlWhiteListForTrafficRecorder;
         this.matchSessionIdStrategy = matchSessionIdStrategy;
+        this.authority = authority;
     }
 
     @Override
@@ -33,4 +38,10 @@ public class MoxProxyServiceConfigurationImpl implements MoxProxyServiceConfigur
     public boolean isMatchSessionIdStrategy() {
         return matchSessionIdStrategy;
     }
+
+    @Override
+    public Authority getAuthority() {
+        return authority;
+    }
+
 }
