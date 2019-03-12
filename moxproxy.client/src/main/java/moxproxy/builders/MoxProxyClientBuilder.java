@@ -28,20 +28,24 @@ public class MoxProxyClientBuilder extends BaseBuilder<NullType, MoxProxyClientB
         return this;
     }
 
-    public void withBaseUrl(String baseUrl){
+    public MoxProxyClientBuilder withBaseUrl(String baseUrl){
         this.baseUrl = baseUrl;
+        return this;
     }
 
-    public void withBasicAuth(){
+    public MoxProxyClientBuilder withBasicAuth(){
         useBasicAuth = true;
+        return this;
     }
 
-    public void withUser(String user){
+    public MoxProxyClientBuilder withUser(String user){
         this.user = user;
+        return this;
     }
 
-    public void withPassword(String password){
+    public MoxProxyClientBuilder withPassword(String password){
         this.password = password;
+        return this;
     }
 
     String getBaseUrl() {

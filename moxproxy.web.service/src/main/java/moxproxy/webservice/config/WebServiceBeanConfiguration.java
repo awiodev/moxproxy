@@ -10,6 +10,7 @@ import moxproxy.services.MoxProxyDatabaseImpl;
 import moxproxy.services.MoxProxyImpl;
 import moxproxy.services.MoxProxyServiceImpl;
 import moxproxy.services.MoxProxyTrafficRecorderImpl;
+import moxproxy.webservice.ApplicationShutdown;
 import org.littleshoot.proxy.mitm.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,12 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 public class WebServiceBeanConfiguration {
 
     @Autowired
-    WebServiceConfiguration webServiceConfiguration;
+    private WebServiceConfiguration webServiceConfiguration;
+
+    @Bean
+    ApplicationShutdown applicationShutdown(){
+        return new ApplicationShutdown();
+    }
 
     @Bean
     MoxProxyServiceConfiguration moxProxyServiceConfiguration(){

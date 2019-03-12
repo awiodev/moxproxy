@@ -14,7 +14,6 @@
         <module>moxproxy.core</module>
         <module>moxproxy.web.service</module>
         <module>moxproxy.local.examples</module>
-        <module>moxproxy.web.service.examples</module>
     </modules>
 
     <properties>

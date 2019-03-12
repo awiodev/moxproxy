@@ -71,7 +71,7 @@ public class MoxProxyClient implements MoxProxyService {
 
         return Arrays.asList(
                 when()
-                    .get(route, sessionId)
+                    .get(route)
                 .then()
                     .statusCode(200)
                     .extract()
@@ -144,7 +144,7 @@ public class MoxProxyClient implements MoxProxyService {
                     .body(moxProxyRule)
                     .post(route)
                 .then()
-                    .statusCode(200)
+                    .statusCode(201)
                     .extract()
                         .as(MoxProxyStatusResponse.class);
 

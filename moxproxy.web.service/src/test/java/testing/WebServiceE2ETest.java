@@ -1,65 +1,76 @@
-package testing.e2e;
+package testing;
 
-import moxproxy.builders.LocalMoxProxy;
+import moxproxy.client.MoxProxyClient;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
-import moxproxy.interfaces.MoxProxy;
+import moxproxy.interfaces.MoxProxyService;
 import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import moxproxy.webservice.ApplicationShutdown;
+import moxproxy.webservice.MoxProxyWebService;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LocalProxyTest extends TestBase {
+class WebServiceE2ETest extends TestBase {
+
+    private static MoxProxyService moxProxyClient;
+    private static ConfigurableApplicationContext ctx;
 
     private WebDriver driver;
-
-    private static MoxProxy proxy;
+    private String sessionId;
 
     @BeforeAll
     static void beforeAll(){
-        proxy = LocalMoxProxy.builder()
-                .withPort(PROXY_PORT)
-                .withRecorderWhiteList(Collections.singletonList(WIKIPEDIA))
-                .build();
+        moxProxyClient = MoxProxyClient.builder()
+                .withBaseUrl("http://localhost:8081")
+                .withBasicAuth()
+                .withUser("change-user")
+                .withPassword("change-password").build();
+
+        ctx = SpringApplication.run(MoxProxyWebService.class);
     }
 
+    @AfterAll
+    static void afterAll(){
+        ctx.getBean(ApplicationShutdown.class);
+        ctx.close();
+    }
 
     @BeforeEach
     void before() {
-        proxy.startServer();
         driver = new FirefoxDriver(setupFirefox());
+        driver.get(WIKI_URL);
+        sessionId = UUID.randomUUID().toString();
+        Cookie cookie = new Cookie("MOXSESSIONID", sessionId);
+        driver.manage().addCookie(cookie);
     }
 
     @AfterEach
     void after(){
+        moxProxyClient.clearAllSessionEntries();
         driver.quit();
-        proxy.stopServer();
     }
 
     @Test
-    void whenActionsPerformed_thenTrafficRecorded() {
+    void whenActionsPerformed_thenTrafficRecorded(){
         driver.get(WIKI_URL);
-        List<MoxProxyProcessedTrafficEntry> requestTraffic = proxy.getAllRequestTraffic();
-        List<MoxProxyProcessedTrafficEntry> responseTraffic = proxy.getAllResponseTraffic();
+        List<MoxProxyProcessedTrafficEntry> requestTraffic = moxProxyClient.getAllRequestTraffic();
+        List<MoxProxyProcessedTrafficEntry> responseTraffic = moxProxyClient.getAllResponseTraffic();
         assertThat(requestTraffic).isNotEmpty();
         assertThat(responseTraffic).isNotEmpty();
-        assertThat(requestTraffic.stream().allMatch(x -> x.getUrl().contains(WIKIPEDIA))).isTrue();
-        assertThat(responseTraffic.stream().allMatch(x -> x.getUrl().contains(WIKIPEDIA))).isTrue();
-        assertThat(requestTraffic.stream().allMatch(x -> x.getBody() == null)).isTrue();
-        assertThat(responseTraffic.stream().allMatch(x -> x.getBody() == null)).isTrue();
     }
 
     @Test
@@ -68,20 +79,21 @@ class LocalProxyTest extends TestBase {
         String body = "TEST_ERROR";
 
         MoxProxyRule rule = MoxProxyRule.builder()
+                .withSessionId(sessionId)
                 .withDirection(MoxProxyDirection.REQUEST)
                 .withAction(MoxProxyAction.RESPOND)
                 .withHttpRuleDefinition()
-                    .withGetMethod()
+                .withGetMethod()
                 .withPathPattern(WIKIPEDIA_ORG_PATTERN)
-                    .withStatusCode(500)
-                    .withBody(body)
-                    .havingHeaders()
-                        .withHeader("content-type", "text/html; charset=utf-8")
-                        .withHeader("content-length", body.length())
-                        .backToParent()
+                .withStatusCode(500)
+                .withBody(body)
+                .havingHeaders()
+                .withHeader("content-type", "text/html; charset=utf-8")
+                .withHeader("content-length", body.length())
+                .backToParent()
                 .backToParent().build();
 
-        proxy.createRule(rule);
+        moxProxyClient.createRule(rule);
 
         driver.get(WIKI_URL);
 
@@ -96,19 +108,20 @@ class LocalProxyTest extends TestBase {
         String body = "[\"proxy\",[\"Only MoxProxy!\"],[\"https://moxproxy.com\"]]";
 
         MoxProxyRule rule = MoxProxyRule.builder()
+                .withSessionId(sessionId)
                 .withDirection(MoxProxyDirection.RESPONSE)
                 .withAction(MoxProxyAction.MODIFY)
                 .withHttpRuleDefinition()
-                    .withGetMethod()
-                    .withStatusCode(200)
-                    .withBody(body)
+                .withGetMethod()
+                .withStatusCode(200)
+                .withBody(body)
                 .withPathPattern(SEARCH_PROXY)
-                    .havingHeaders()
-                        .withHeader("content-length", body.length())
-                        .backToParent()
-                    .backToParent().build();
+                .havingHeaders()
+                .withHeader("content-length", body.length())
+                .backToParent()
+                .backToParent().build();
 
-        proxy.createRule(rule);
+        moxProxyClient.createRule(rule);
 
         driver.get(WIKI_URL);
 
@@ -132,6 +145,7 @@ class LocalProxyTest extends TestBase {
         String xpath = "//a[@href='/wiki/Special:MobileMenu']";
 
         MoxProxyRule rule = MoxProxyRule.builder()
+                .withSessionId(sessionId)
                 .withDirection(MoxProxyDirection.REQUEST)
                 .withAction(MoxProxyAction.MODIFY)
                 .withHttpRuleDefinition()
@@ -141,7 +155,7 @@ class LocalProxyTest extends TestBase {
                 .withHeader("User-Agent", ipadAgent).backToParent()
                 .backToParent().build();
 
-        proxy.createRule(rule);
+        moxProxyClient.createRule(rule);
 
         driver.get(WIKI_URL);
 
