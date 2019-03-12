@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LocalProxyRecordingBodyTest extends TestBase {
+class LocalProxyRecordingBodyTest extends TestBase {
 
     private WebDriver driver;
 
