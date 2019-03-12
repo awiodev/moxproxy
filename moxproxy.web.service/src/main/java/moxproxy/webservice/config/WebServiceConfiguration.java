@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties
@@ -19,11 +20,11 @@ public class WebServiceConfiguration {
         return service;
     }
 
-    public Proxy getProxy(){
+    Proxy getProxy(){
         return proxy;
     }
 
-    public Mitm getMitm() {
+    Mitm getMitm() {
         return mitm;
     }
 
@@ -73,7 +74,7 @@ public class WebServiceConfiguration {
         private boolean sessionIdMatchStrategy;
         private boolean recordBodies;
 
-        public int getProxyPort() {
+        int getProxyPort() {
             return proxyPort;
         }
 
@@ -81,7 +82,7 @@ public class WebServiceConfiguration {
             this.proxyPort = proxyPort;
         }
 
-        public List<String> getUrlWhiteListForTrafficRecorder() {
+        List<String> getUrlWhiteListForTrafficRecorder() {
             return urlWhiteListForTrafficRecorder;
         }
 
@@ -89,7 +90,7 @@ public class WebServiceConfiguration {
             this.urlWhiteListForTrafficRecorder = urlWhiteListForTrafficRecorder;
         }
 
-        public boolean isSessionIdMatchStrategy() {
+        boolean isSessionIdMatchStrategy() {
             return sessionIdMatchStrategy;
         }
 
@@ -97,7 +98,7 @@ public class WebServiceConfiguration {
             this.sessionIdMatchStrategy = sessionIdMatchStrategy;
         }
 
-        public boolean isRecordBodies() {
+        boolean isRecordBodies() {
             return recordBodies;
         }
 
@@ -117,7 +118,7 @@ public class WebServiceConfiguration {
         private String certOrganization;
         private String certOrganizationalUnitName;
 
-        public boolean getCreateOwn() {
+        boolean getCreateOwn() {
             return createOwn;
         }
 
@@ -125,7 +126,7 @@ public class WebServiceConfiguration {
             this.createOwn = createOwn;
         }
 
-        public String getKeyStoreDir() {
+        String getKeyStoreDir() {
             return keyStoreDir;
         }
 
@@ -133,7 +134,7 @@ public class WebServiceConfiguration {
             this.keyStoreDir = keyStoreDir;
         }
 
-        public String getAlias() {
+        String getAlias() {
             return alias;
         }
 
@@ -141,7 +142,7 @@ public class WebServiceConfiguration {
             this.alias = alias;
         }
 
-        public String getPassword() {
+        String getPassword() {
             return password;
         }
 
@@ -149,7 +150,7 @@ public class WebServiceConfiguration {
             this.password = password;
         }
 
-        public String getOrganization() {
+        String getOrganization() {
             return organization;
         }
 
@@ -157,7 +158,7 @@ public class WebServiceConfiguration {
             this.organization = organization;
         }
 
-        public String getCommonName() {
+        String getCommonName() {
             return commonName;
         }
 
@@ -165,7 +166,7 @@ public class WebServiceConfiguration {
             this.commonName = commonName;
         }
 
-        public String getOrganizationalUnitName() {
+        String getOrganizationalUnitName() {
             return organizationalUnitName;
         }
 
@@ -173,7 +174,7 @@ public class WebServiceConfiguration {
             this.organizationalUnitName = organizationalUnitName;
         }
 
-        public String getCertOrganization() {
+        String getCertOrganization() {
             return certOrganization;
         }
 
@@ -181,7 +182,7 @@ public class WebServiceConfiguration {
             this.certOrganization = certOrganization;
         }
 
-        public String getCertOrganizationalUnitName() {
+        String getCertOrganizationalUnitName() {
             return certOrganizationalUnitName;
         }
 
