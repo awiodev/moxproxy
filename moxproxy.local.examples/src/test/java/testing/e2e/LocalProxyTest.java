@@ -58,6 +58,9 @@ class LocalProxyTest extends TestBase {
         assertThat(responseTraffic).isNotEmpty();
         assertThat(requestTraffic.stream().allMatch(x -> x.getUrl().contains(WIKIPEDIA))).isTrue();
         assertThat(responseTraffic.stream().allMatch(x -> x.getUrl().contains(WIKIPEDIA))).isTrue();
+        assertThat(requestTraffic.stream().allMatch(x -> x.getBody() == null)).isTrue();
+        assertThat(responseTraffic.stream().allMatch(x -> x.getBody() == null)).isTrue();
+
     }
 
     @Test

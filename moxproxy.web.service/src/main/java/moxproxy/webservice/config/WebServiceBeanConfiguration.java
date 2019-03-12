@@ -28,6 +28,9 @@ public class WebServiceBeanConfiguration {
     @Value("${proxy.sessionIdMatchStrategy}")
     private boolean sessionIdStrategEnabled;
 
+    @Value("${proxy.recordBodies}")
+    private boolean recordbodies;
+
     @Value("${proxy.urlWhiteListForTrafficRecorder}")
     private String[] urlWhiteList;
 
@@ -96,7 +99,7 @@ public class WebServiceBeanConfiguration {
 
         return new MoxProxyServiceConfigurationImpl(proxyPort,
                 Arrays.asList(urlWhiteList),
-                sessionIdStrategEnabled, authority);
+                sessionIdStrategEnabled, recordbodies, authority);
     }
 
     @Bean

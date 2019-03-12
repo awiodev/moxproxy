@@ -6,6 +6,7 @@ server:
 proxy:
   proxyPort: 89
   sessionIdMatchStrategy: true
+  recordBodies: false
   urlWhiteListForTrafficRecorder: []
 mitm:
   createOwn: false

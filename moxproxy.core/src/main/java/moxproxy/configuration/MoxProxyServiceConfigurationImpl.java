@@ -10,17 +10,19 @@ public class MoxProxyServiceConfigurationImpl implements MoxProxyServiceConfigur
     private int port = 89;
     private List<String> urlWhiteListForTrafficRecorder;
     private boolean matchSessionIdStrategy;
+    private boolean recordBodies;
     private Authority authority;
 
 
     public MoxProxyServiceConfigurationImpl(){
     }
 
-    public MoxProxyServiceConfigurationImpl(int port, List<String> urlWhiteListForTrafficRecorder, boolean matchSessionIdStrategy,
+    public MoxProxyServiceConfigurationImpl(int port, List<String> urlWhiteListForTrafficRecorder, boolean matchSessionIdStrategy, boolean recordbodies,
                                             Authority authority){
         this.port = port;
         this.urlWhiteListForTrafficRecorder = urlWhiteListForTrafficRecorder;
         this.matchSessionIdStrategy = matchSessionIdStrategy;
+        this.recordBodies = recordbodies;
         this.authority = authority;
     }
 
@@ -37,6 +39,11 @@ public class MoxProxyServiceConfigurationImpl implements MoxProxyServiceConfigur
     @Override
     public boolean isMatchSessionIdStrategy() {
         return matchSessionIdStrategy;
+    }
+
+    @Override
+    public boolean isRecordBodies() {
+        return recordBodies;
     }
 
     @Override

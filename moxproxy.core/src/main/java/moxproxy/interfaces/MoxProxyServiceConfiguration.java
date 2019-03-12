@@ -9,5 +9,6 @@ public interface MoxProxyServiceConfiguration {
     int getProxyPort();
     List<String> getUrlWhiteListForTrafficRecorder();
     boolean isMatchSessionIdStrategy();
+    boolean isRecordBodies();
     Authority getAuthority();
 }

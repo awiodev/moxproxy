@@ -16,6 +16,7 @@ public class LocalMoxProxy extends BaseBuilder<NullType, LocalMoxProxy, MoxProxy
 
     private int port;
     private boolean sessionIdMatchStrategy;
+    private boolean bodyRecording;
     private List<String> recorderWhiteList;
     private AuthorityBuilder authorityBuilder;
 
@@ -30,7 +31,7 @@ public class LocalMoxProxy extends BaseBuilder<NullType, LocalMoxProxy, MoxProxy
     protected MoxProxy performBuild() throws BuilderValidationException {
         Authority authority = authorityBuilder.build();
         MoxProxyServiceConfiguration configuration =
-                new MoxProxyServiceConfigurationImpl(port, recorderWhiteList, sessionIdMatchStrategy, authority);
+                new MoxProxyServiceConfigurationImpl(port, recorderWhiteList, sessionIdMatchStrategy, bodyRecording, authority);
         ServiceComponent component = DaggerServiceComponent.builder().serviceModule(new ServiceModule(configuration)).build();
         return component.getMoxProxy();
     }
@@ -56,6 +57,11 @@ public class LocalMoxProxy extends BaseBuilder<NullType, LocalMoxProxy, MoxProxy
 
     public LocalMoxProxy withRecorderWhiteList(List<String> recorderWhiteList){
         this.recorderWhiteList = recorderWhiteList;
+        return this;
+    }
+
+    public LocalMoxProxy withRecordBodies(){
+        bodyRecording = true;
         return this;
     }
 
