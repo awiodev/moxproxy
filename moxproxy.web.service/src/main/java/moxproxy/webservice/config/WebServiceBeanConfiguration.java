@@ -11,95 +11,40 @@ import moxproxy.services.MoxProxyImpl;
 import moxproxy.services.MoxProxyServiceImpl;
 import moxproxy.services.MoxProxyTrafficRecorderImpl;
 import org.littleshoot.proxy.mitm.Authority;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 
-import java.util.Arrays;
-
 @Configuration
 public class WebServiceBeanConfiguration {
 
-    @Value("${proxy.proxyPort}")
-    private int proxyPort;
-
-    @Value("${proxy.sessionIdMatchStrategy}")
-    private boolean sessionIdStrategEnabled;
-
-    @Value("${proxy.recordBodies}")
-    private boolean recordbodies;
-
-    @Value("${proxy.urlWhiteListForTrafficRecorder}")
-    private String[] urlWhiteList;
-
-    @Value("${service.cleanupDelayInSeconds}")
-    private int cleanupDelay;
-
-    @Value("${service.basicAuthUserName}")
-    private String basicAuthUserName;
-
-    @Value("${service.basicAuthPassword}")
-    private String basicAuthPassword;
-
-    @Value("${mitm.createOwn}")
-    private boolean createOwn;
-
-    @Value("${mitm.keyStoreDir}")
-    private String keyStoreDir;
-
-    @Value("${mitm.alias}")
-    private String alias;
-
-    @Value("${mitm.password}")
-    private String password;
-
-    @Value("${mitm.organization}")
-    private String organization;
-
-    @Value("${mitm.commonName}")
-    private String commonName;
-
-    @Value("${mitm.organizationalUnitName}")
-    private String organizationalUnitName;
-
-    @Value("${mitm.certOrganization}")
-    private String certOrganization;
-
-    @Value("${mitm.certOrganizationalUnitName}")
-    private String certOrganizationalUnitName;
-
-    @Bean
-    WebServiceConfiguration webServiceConfiguration(){
-        var webserviceConfiguration = new WebServiceConfiguration();
-        webserviceConfiguration.setCleanupDelayInSeconds(cleanupDelay);
-        webserviceConfiguration.setBasicAuthUserName(basicAuthUserName);
-        webserviceConfiguration.setBasicAuthPassword(basicAuthPassword);
-        return webserviceConfiguration;
-    }
+    @Autowired
+    WebServiceConfiguration webServiceConfiguration;
 
     @Bean
     MoxProxyServiceConfiguration moxProxyServiceConfiguration(){
 
         Authority authority;
 
-        if(createOwn){
-            authority = AuthorityBuilder.create().withKeyStoreDir(keyStoreDir)
-                    .withAlias(alias)
-                    .withPassword(password)
-                    .withOrganization(organization)
-                    .withCommonName(commonName)
-                    .withOrganizationalUnitName(organizationalUnitName)
-                    .withCertOrganization(certOrganization)
-                    .withCertOrganizationalUnitName(certOrganizationalUnitName).build();
+        if(webServiceConfiguration.getMitm().getCreateOwn()){
+            authority = AuthorityBuilder.create().withKeyStoreDir(webServiceConfiguration.getMitm().getKeyStoreDir())
+                    .withAlias(webServiceConfiguration.getMitm().getAlias())
+                    .withPassword(webServiceConfiguration.getMitm().getPassword())
+                    .withOrganization(webServiceConfiguration.getMitm().getOrganization())
+                    .withCommonName(webServiceConfiguration.getMitm().getCommonName())
+                    .withOrganizationalUnitName(webServiceConfiguration.getMitm().getOrganizationalUnitName())
+                    .withCertOrganization(webServiceConfiguration.getMitm().getCertOrganization())
+                    .withCertOrganizationalUnitName(webServiceConfiguration.getMitm().getCertOrganizationalUnitName()).build();
         }else {
             authority = AuthorityBuilder.create().build();
         }
 
-        return new MoxProxyServiceConfigurationImpl(proxyPort,
-                Arrays.asList(urlWhiteList),
-                sessionIdStrategEnabled, recordbodies, authority);
+        return new MoxProxyServiceConfigurationImpl(webServiceConfiguration.getProxy().getProxyPort(),
+                webServiceConfiguration.getProxy().getUrlWhiteListForTrafficRecorder(),
+                webServiceConfiguration.getProxy().isSessionIdMatchStrategy(),
+                webServiceConfiguration.getProxy().isRecordBodies(), authority);
     }
 
     @Bean

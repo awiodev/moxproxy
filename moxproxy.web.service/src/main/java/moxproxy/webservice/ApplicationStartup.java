@@ -41,7 +41,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         try {
             proxyServer.startServer();
-            int delay = webServiceConfiguration.getCleanupDelayInSeconds();
+            int delay = webServiceConfiguration.getService().getCleanupDelayInSeconds();
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.SECOND, delay);
             long millis = TimeUnit.SECONDS.toMillis(delay);
