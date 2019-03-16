@@ -4,7 +4,7 @@
 
     <groupId>com.moxproxy</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -298,10 +298,25 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven.deploy.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -336,5 +351,12 @@
             </build>
         </profile>
     </profiles>
+
+    <scm>
+        <connection>scm:git:git://github.com/lukasz-aw/moxproxy.git</connection>
+        <developerConnection>scm:git:git@github.com:lukasz-aw/moxproxy.git</developerConnection>
+        <url>https://github.com/lukasz-aw/moxproxy</url>
+        <tag>HEAD</tag>
+    </scm>
 
 </project>
