@@ -19,13 +19,13 @@ Examples can be found in [mox.proxy.local.examples](https://github.com/lukasz-aw
 <dependency>
   <groupId>com.moxproxy</groupId>
   <artifactId>moxproxy.core</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
-Standalone MoxProxy webservice binary can be downloaded from [here](https://github.com/lukasz-aw/moxproxy/releases/download/moxproxy-1.0.0/moxproxy.web.service-1.0.0.zip) and started with following command:
+Standalone MoxProxy webservice binary can be downloaded from [here](https://github.com/lukasz-aw/moxproxy/releases/download/moxproxy-1.0.1/moxproxy.web.service-1.0.1.zip) and started with following command:
 ```sh
-$ java -jar moxproxy.web.service-1.0.0.jar
+$ java -jar moxproxy.web.service-1.0.1.jar
 ```
 Application can be configured with **application.yml** file distributed with binary
 
@@ -36,7 +36,7 @@ Examples can be found in [moxproxy.web.service](https://github.com/lukasz-aw/mox
 <dependency>
   <groupId>com.moxproxy</groupId>
   <artifactId>moxproxy.client</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
