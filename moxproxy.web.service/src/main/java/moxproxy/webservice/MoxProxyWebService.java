@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MoxProxyWebService {
 
     public static void main(String[] args) {
-        SpringApplication.run(MoxProxyWebService.class, args);
+        SpringApplication app = new SpringApplication(MoxProxyWebService.class);
+        app.run();
     }
 }
