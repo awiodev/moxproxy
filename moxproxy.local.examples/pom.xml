@@ -8,7 +8,6 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>moxproxy.local.examples</artifactId>
-  <version>1.0.2</version>
 
     <dependencies>
         <dependency>
@@ -69,8 +68,4 @@
         </plugins>
     </build>
 
-
-  <scm>
-    <tag>moxproxy-1.0.2</tag>
-  </scm>
 </project>

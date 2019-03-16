@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>moxproxy</artifactId>
-  <version>1.0.2</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -20,8 +19,4 @@
         <module>moxproxy.local.examples</module>
     </modules>
 
-
-  <scm>
-    <tag>moxproxy-1.0.2</tag>
-  </scm>
 </project>
