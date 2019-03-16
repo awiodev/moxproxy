@@ -1,10 +1,10 @@
 package testing;
 
 import client.WebServiceIntegrationTestClient;
-import moxproxy.model.*;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.MoxProxyDatabase;
+import moxproxy.model.*;
 import moxproxy.webservice.MoxProxyWebService;
 import moxproxy.webservice.config.WebServiceBeanConfiguration;
 import org.assertj.core.util.Lists;
@@ -49,48 +49,48 @@ class WebServiceIntegrationTest {
 
     @Test
     void givenRequestTraffic_whenGetAll_ThenTrafficReturned(){
-        var traffic1 = createDefaultFullyFilledTrafficEntity();
-        var traffic2 = createDefaultFullyFilledTrafficEntity();
-        var traffic3 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
         traffic3.setSessionId(unknown);
 
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
         database.addProcessedRequest(traffic3);
 
-        var results = Lists.newArrayList(client.getAllRequestTraffic());
+        ArrayList<MoxProxyProcessedTrafficEntry> results = Lists.newArrayList(client.getAllRequestTraffic());
 
         assertEquals(results.size(), 3, "Number of all returned requests should be correct");
     }
 
     @Test
     void givenResponsesTraffic_whenGetAll_ThenTrafficReturned(){
-        var traffic1 = createDefaultFullyFilledTrafficEntity();
-        var traffic2 = createDefaultFullyFilledTrafficEntity();
-        var traffic3 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
         traffic3.setSessionId(unknown);
 
         database.addProcessedResponse(traffic1);
         database.addProcessedResponse(traffic2);
         database.addProcessedResponse(traffic3);
 
-        var results = Lists.newArrayList(client.getAllResponseTraffic());
+        ArrayList<MoxProxyProcessedTrafficEntry> results = Lists.newArrayList(client.getAllResponseTraffic());
 
         assertEquals(results.size(), 3, "Number of all returned responses should be correct");
     }
 
     @Test
     void givenRequestTraffic_whenBySessionId_ThenTrafficReturned(){
-        var traffic1 = createDefaultFullyFilledTrafficEntity();
-        var traffic2 = createDefaultFullyFilledTrafficEntity();
-        var traffic3 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
         traffic3.setSessionId(unknown);
 
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
         database.addProcessedRequest(traffic3);
 
-        var results = Lists.newArrayList(client.getSessionRequestTraffic(unknown));
+        ArrayList<MoxProxyProcessedTrafficEntry> results = Lists.newArrayList(client.getSessionRequestTraffic(unknown));
 
         assertEquals(results.size(), 1, "Number of returned requests should be correct");
         assertThat(results.get(0)).isEqualToComparingFieldByFieldRecursively(traffic3);
@@ -98,16 +98,16 @@ class WebServiceIntegrationTest {
 
     @Test
     void givenResponseTraffic_whenBySessionId_ThenTrafficReturned(){
-        var traffic1 = createDefaultFullyFilledTrafficEntity();
-        var traffic2 = createDefaultFullyFilledTrafficEntity();
-        var traffic3 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
         traffic3.setSessionId(unknown);
 
         database.addProcessedResponse(traffic1);
         database.addProcessedResponse(traffic2);
         database.addProcessedResponse(traffic3);
 
-        var results = Lists.newArrayList(client.getSessionResponseTraffic(unknown));
+        ArrayList<MoxProxyProcessedTrafficEntry> results = Lists.newArrayList(client.getSessionResponseTraffic(unknown));
 
         assertEquals(results.size(), 1, "Number of returned responses should be correct");
         assertThat(results.get(0)).isEqualToComparingFieldByFieldRecursively(traffic3);
@@ -115,7 +115,7 @@ class WebServiceIntegrationTest {
 
     @Test
     void givenRule_whenCreate_thenRuleCreated(){
-        var rule = createDefaultFullyFilledRule();
+        MoxProxyRule rule = createDefaultFullyFilledRule();
 
         client.createRule(rule);
 
@@ -135,9 +135,9 @@ class WebServiceIntegrationTest {
 
         client.clearAllSessionEntries();
 
-        var requests = Lists.newArrayList(database.getProcessedRequestTraffic());
-        var responses = Lists.newArrayList(database.getProcessedResponseTraffic());
-        var rules = Lists.newArrayList(database.getAllRules());
+        ArrayList<MoxProxyProcessedTrafficEntry> requests = Lists.newArrayList(database.getProcessedRequestTraffic());
+        ArrayList<MoxProxyProcessedTrafficEntry> responses = Lists.newArrayList(database.getProcessedResponseTraffic());
+        ArrayList<MoxProxyRule> rules = Lists.newArrayList(database.getAllRules());
 
         assertEquals(0, requests.size());
         assertEquals(0, responses.size());
@@ -147,23 +147,23 @@ class WebServiceIntegrationTest {
     @Test
     void givenTrafficAnRules_whenClearBySession_thenSessionEntriesCleared(){
         database.addProcessedRequest(createDefaultFullyFilledTrafficEntity());
-        var request = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry request = createDefaultFullyFilledTrafficEntity();
         request.setSessionId(unknown);
         database.addProcessedRequest(request);
         database.addProcessedResponse(createDefaultFullyFilledTrafficEntity());
-        var response = createDefaultFullyFilledTrafficEntity();
+        MoxProxyProcessedTrafficEntry response = createDefaultFullyFilledTrafficEntity();
         response.setSessionId(unknown);
         database.addProcessedResponse(response);
         database.addRule(createDefaultFullyFilledRule());
-        var rule = createDefaultFullyFilledRule();
+        MoxProxyRule rule = createDefaultFullyFilledRule();
         rule.setSessionId(unknown);
         database.addRule(rule);
 
         client.clearSessionEntries(defaultId);
 
-        var requests = Lists.newArrayList(database.getProcessedRequestTraffic());
-        var responses = Lists.newArrayList(database.getProcessedResponseTraffic());
-        var rules = Lists.newArrayList(database.getAllRules());
+        ArrayList<MoxProxyProcessedTrafficEntry> requests = Lists.newArrayList(database.getProcessedRequestTraffic());
+        ArrayList<MoxProxyProcessedTrafficEntry> responses = Lists.newArrayList(database.getProcessedResponseTraffic());
+        ArrayList<MoxProxyRule> rules = Lists.newArrayList(database.getAllRules());
 
         assertEquals(1, requests.size());
         assertEquals(1, responses.size());
@@ -176,8 +176,8 @@ class WebServiceIntegrationTest {
 
     @Test
     void givenRule_whenCancel_thenRuleRemoved(){
-        var rule1 = createDefaultFullyFilledRule();
-        var rule2 = createDefaultFullyFilledRule();
+        MoxProxyRule rule1 = createDefaultFullyFilledRule();
+        MoxProxyRule rule2 = createDefaultFullyFilledRule();
         rule2.setSessionId(unknown);
 
         database.addRule(rule1);
@@ -185,16 +185,16 @@ class WebServiceIntegrationTest {
 
         client.cancelRule(rule1.getId());
 
-        var rulesList = Lists.newArrayList(database.getAllRules());
+        ArrayList<MoxProxyRule> rulesList = Lists.newArrayList(database.getAllRules());
         assertEquals(1, rulesList.size(), "Number of rules should be correct");
         assertThat(rulesList.get(0)).isEqualToComparingFieldByFieldRecursively(rule2);
     }
 
     @Test
     void givenRules_whenClearBySessionId_thenRulesRemoved(){
-        var rule1 = createDefaultFullyFilledRule();
-        var rule2 = createDefaultFullyFilledRule();
-        var rule3 = createDefaultFullyFilledRule();
+        MoxProxyRule rule1 = createDefaultFullyFilledRule();
+        MoxProxyRule rule2 = createDefaultFullyFilledRule();
+        MoxProxyRule rule3 = createDefaultFullyFilledRule();
         rule3.setSessionId(unknown);
 
         database.addRule(rule1);
@@ -203,7 +203,7 @@ class WebServiceIntegrationTest {
 
         client.clearSessionRules(rule1.getSessionId());
 
-        var rulesList = Lists.newArrayList(database.getAllRules());
+        ArrayList<MoxProxyRule> rulesList = Lists.newArrayList(database.getAllRules());
         assertEquals(1, rulesList.size(), "Number of rules should be correct");
         assertThat(rulesList.get(0)).isEqualToComparingFieldByFieldRecursively(rule3);
     }
@@ -211,11 +211,11 @@ class WebServiceIntegrationTest {
     @Test
     void givenSessionIdStrategy_whenTurnOn_thenStrategyModified(){
 
-        var strategy = new MoxProxySessionIdMatchingStrategy();
+        MoxProxySessionIdMatchingStrategy strategy = new MoxProxySessionIdMatchingStrategy();
         strategy.setIncludeSessionIdMatch(true);
         client.modifySessionMatchingStrategy(strategy);
 
-        var actual =  client.getSessionMatchingStrategy();
+        MoxProxySessionIdMatchingStrategy actual =  client.getSessionMatchingStrategy();
 
         assertThat(actual).isEqualToComparingFieldByField(strategy);
     }
@@ -223,7 +223,7 @@ class WebServiceIntegrationTest {
 
 
     private MoxProxyProcessedTrafficEntry createDefaultFullyFilledTrafficEntity(){
-        var entity = new MoxProxyProcessedTrafficEntry();
+        MoxProxyProcessedTrafficEntry entity = new MoxProxyProcessedTrafficEntry();
         entity.setSessionId(defaultId);
         entity.setStatusCode(defaultStatusCode);
         entity.setBody(defaultBody);
@@ -235,12 +235,12 @@ class WebServiceIntegrationTest {
     }
 
     private MoxProxyRule createDefaultFullyFilledRule(){
-        var rule = new MoxProxyRule();
+        MoxProxyRule rule = new MoxProxyRule();
         rule.setSessionId(defaultId);
         rule.setHttpDirection(MoxProxyDirection.REQUEST);
         rule.setAction(MoxProxyAction.RESPOND);
 
-        var definition = new MoxProxyHttpRuleDefinition();
+        MoxProxyHttpRuleDefinition definition = new MoxProxyHttpRuleDefinition();
         definition.setBody(defaultBody);
         String defaultPathPattern = "hello\\.world";
         definition.setPathPattern(defaultPathPattern);
@@ -253,11 +253,11 @@ class WebServiceIntegrationTest {
     }
 
     private List<MoxProxyHeader> defaultHeaders(){
-        var headers = new ArrayList<MoxProxyHeader>();
-        var header1 = new MoxProxyHeader();
+        ArrayList<MoxProxyHeader> headers = new ArrayList<MoxProxyHeader>();
+        MoxProxyHeader header1 = new MoxProxyHeader();
         header1.setName("first-header");
         header1.setValue("firstValue");
-        var header2 = new MoxProxyHeader();
+        MoxProxyHeader header2 = new MoxProxyHeader();
         header2.setName("second header");
         header2.setValue("second value");
 
