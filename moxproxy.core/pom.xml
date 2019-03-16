@@ -3,11 +3,12 @@
     <parent>
         <groupId>com.moxproxy</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>moxproxy.core</artifactId>
+  <version>1.0.2</version>
 
     <dependencies>
         <dependency>
@@ -107,4 +108,8 @@
         </profile>
     </profiles>
 
+
+  <scm>
+    <tag>moxproxy-1.0.2</tag>
+  </scm>
 </project>

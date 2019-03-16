@@ -5,10 +5,11 @@
     <parent>
         <groupId>com.moxproxy</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.2</version>
     </parent>
 
     <artifactId>moxproxy</artifactId>
+  <version>1.0.2</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -17,7 +18,10 @@
         <module>moxproxy.core</module>
         <module>moxproxy.web.service</module>
         <module>moxproxy.local.examples</module>
-        <module>parent</module>
     </modules>
 
+
+  <scm>
+    <tag>moxproxy-1.0.2</tag>
+  </scm>
 </project>
