@@ -9,7 +9,7 @@
         <relativePath>./parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>moxproxy-artifacts</artifactId>
+    <artifactId>moxproxy</artifactId>
     <packaging>pom</packaging>
 
     <modules>
