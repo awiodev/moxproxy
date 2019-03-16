@@ -16,4 +16,11 @@
         <module>parent</module>
     </modules>
 
+    <scm>
+        <connection>scm:git:git://github.com/lukasz-aw/moxproxy.git</connection>
+        <developerConnection>scm:git:git@github.com:lukasz-aw/moxproxy.git</developerConnection>
+        <url>https://github.com/lukasz-aw/moxproxy</url>
+        <tag>HEAD</tag>
+    </scm>
+
 </project>
