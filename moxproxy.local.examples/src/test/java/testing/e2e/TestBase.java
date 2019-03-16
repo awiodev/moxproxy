@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.By;
+import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,12 @@ class TestBase {
 
     @BeforeAll
     static void beforeAllTests() {
-        Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-        root.setLevel(Level.INFO);
+        Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+        root.setLevel(Level.ERROR);
+        ((Logger)LoggerFactory.getLogger("org.littleshoot")).setLevel(Level.OFF);
+        ((Logger)LoggerFactory.getLogger("org.bouncycastle")).setLevel(Level.OFF);
+        ((Logger)LoggerFactory.getLogger("org.openqa.selenium")).setLevel(Level.OFF);
+        ((Logger)LoggerFactory.getLogger("addons")).setLevel(Level.OFF);
         System.setProperty("webdriver.gecko.driver", "D:\\webdriver\\geckodriver.exe");
     }
 
@@ -38,6 +43,7 @@ class TestBase {
         profile.setAcceptUntrustedCertificates(true);
         profile.setAssumeUntrustedCertificateIssuer(false);
         var options = new FirefoxOptions();
+        options.setLogLevel(FirefoxDriverLogLevel.FATAL);
         options.setProfile(profile);
         return options;
     }
