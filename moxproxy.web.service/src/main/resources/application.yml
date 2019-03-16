@@ -1,0 +1,33 @@
+logging:
+  file: logs/app.log
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+    file: "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    ROOT: INFO
+    org.springframework: ERROR
+    org.littleshoot: FATAL
+    org.bouncycastle: FATAL
+server:
+  port: 8081
+proxy:
+  proxyPort: 89
+  sessionIdMatchStrategy: true
+  recordBodies: false
+  urlWhiteListForTrafficRecorder: []
+mitm:
+  createOwn: false
+  keyStoreDir: .
+  alias: moxproxy-mitm
+  password: doItOnlyForTesting
+  organization: MoxProxy-mitm
+  commonName: MoxProxy-mitm, test proxy
+  organizationalUnitName: Certificate Authority
+  certOrganization: MoxProxy-mitm
+  certOrganizationalUnitName:  MoxProxy-mitm, test automation purpose
+service:
+  cleanupDelayInSeconds : 300
+  basicAuthUserName: change-user
+  basicAuthPassword: change-password
+
+

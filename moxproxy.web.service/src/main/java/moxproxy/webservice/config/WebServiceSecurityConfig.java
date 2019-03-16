@@ -30,8 +30,8 @@ public class WebServiceSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-        var user = webServiceConfiguration.getBasicAuthUserName();
-        var password = "{noop}" + webServiceConfiguration.getBasicAuthPassword();
+        String user = webServiceConfiguration.getService().getBasicAuthUserName();
+        String password = "{noop}" + webServiceConfiguration.getService().getBasicAuthPassword();
 
         auth.inMemoryAuthentication()
                 .withUser(user)

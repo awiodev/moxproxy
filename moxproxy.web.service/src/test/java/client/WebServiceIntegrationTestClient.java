@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import moxproxy.configuration.MoxProxyClientConfiguration;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.consts.MoxProxyRoutes;
-import moxproxy.model.*;
 import moxproxy.exceptions.MoxProxyClientException;
 import moxproxy.interfaces.MoxProxyService;
+import moxproxy.model.*;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -142,7 +142,7 @@ public class WebServiceIntegrationTestClient implements MoxProxyService {
             String payload = mapper.writeValueAsString(moxProxyRule);
             MvcResult mockMvcResult = mockMvc.perform(post(route).contentType(MediaType.APPLICATION_JSON)
                     .content(payload)
-                    .header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isOk()).andReturn();
+                    .header(MoxProxyConts.AUTH_HEADER, authHeaderValue())).andExpect(status().isCreated()).andReturn();
             String json = mockMvcResult.getResponse().getContentAsString();
             MoxProxyStatusResponse proxyResponse = mapper.readValue(json, MoxProxyStatusResponse.class);
             proxyStatusMessageShouldBe(proxyResponse, MoxProxyStatusMessage.CREATED);
@@ -185,7 +185,7 @@ public class WebServiceIntegrationTestClient implements MoxProxyService {
     }
 
     private String encodeAuth(){
-        var base64 = new Base64();
+        Base64 base64 = new Base64();
         String before = configuration.getUserName()+":"+configuration.getPassword();
         return new String(base64.encode(before.getBytes()));
     }
