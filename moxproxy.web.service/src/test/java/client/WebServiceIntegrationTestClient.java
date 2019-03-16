@@ -185,7 +185,7 @@ public class WebServiceIntegrationTestClient implements MoxProxyService {
     }
 
     private String encodeAuth(){
-        var base64 = new Base64();
+        Base64 base64 = new Base64();
         String before = configuration.getUserName()+":"+configuration.getPassword();
         return new String(base64.encode(before.getBytes()));
     }

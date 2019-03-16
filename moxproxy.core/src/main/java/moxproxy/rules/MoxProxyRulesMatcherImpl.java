@@ -37,18 +37,14 @@ public class MoxProxyRulesMatcherImpl implements MoxProxyRulesMatcher {
 
     @Override
     public List<MoxProxyRule> match(HttpTrafficAdapter adapter, MoxProxyDirection moxProxyDirection) {
-        var matched = new ArrayList<MoxProxyRule>();
-        for(var rule : getRules(adapter, moxProxyDirection)){
-            if(match(rule, adapter)){
-                matched.add(rule);
-            }
-        }
+        ArrayList<MoxProxyRule> matched = getRules(adapter, moxProxyDirection)
+                .stream().filter(rule -> match(rule, adapter)).collect(Collectors.toCollection(ArrayList::new));
 
         return matched;
     }
 
     private List<MoxProxyRule> getRules(HttpTrafficAdapter adapter, MoxProxyDirection moxProxyDirection){
-        var result = matchSessionId ? Lists.newArrayList(database.findRulesBySessionId(adapter.sessionId()))
+        ArrayList<MoxProxyRule> result = matchSessionId ? Lists.newArrayList(database.findRulesBySessionId(adapter.sessionId()))
                 : Lists.newArrayList(database.getAllRules());
         return result.stream().filter(x -> x.getHttpDirection() == moxProxyDirection).collect(Collectors.toList());
     }

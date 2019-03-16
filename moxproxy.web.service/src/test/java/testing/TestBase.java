@@ -30,7 +30,7 @@ class TestBase {
     }
 
     FirefoxOptions setupFirefox() {
-        var profile = new FirefoxProfile();
+        FirefoxProfile profile = new FirefoxProfile();
         profile.setPreference("network.proxy.type", 1);
         profile.setPreference("network.proxy.http", "localhost");
         profile.setPreference("network.proxy.http_port", PROXY_PORT);
@@ -40,7 +40,7 @@ class TestBase {
         profile.setPreference("network.proxy.socks_port", PROXY_PORT);
         profile.setAcceptUntrustedCertificates(true);
         profile.setAssumeUntrustedCertificateIssuer(false);
-        var options = new FirefoxOptions();
+        FirefoxOptions options = new FirefoxOptions();
         options.setProfile(profile);
         options.setLogLevel(FirefoxDriverLogLevel.FATAL);
         return options;

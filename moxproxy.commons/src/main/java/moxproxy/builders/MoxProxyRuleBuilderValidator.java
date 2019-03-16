@@ -23,7 +23,7 @@ class MoxProxyRuleBuilderValidator extends BaseBuilderValidator<MoxProxyRuleBuil
     }
 
     private void validateRespondAction(MoxProxyRuleBuilder builder){
-        var action = MoxProxyAction.RESPOND;
+        MoxProxyAction action = MoxProxyAction.RESPOND;
         if(builder.getAction() == action){
             MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder = builder.getHttpObjectBuilder();
             int statusCode = httpObjectBuilder.getStatusCode();

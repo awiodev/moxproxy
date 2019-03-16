@@ -4,11 +4,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
 import moxproxy.consts.MoxProxyConts;
+import moxproxy.enums.MoxProxyAction;
+import moxproxy.interfaces.MoxProxyRuleProcessor;
 import moxproxy.model.MoxProxyHeader;
 import moxproxy.model.MoxProxyHttpRuleDefinition;
 import moxproxy.model.MoxProxyRule;
-import moxproxy.enums.MoxProxyAction;
-import moxproxy.interfaces.MoxProxyRuleProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
     @Override
     public MoxProxyRuleProcessingResult processRequest(List<MoxProxyRule> rules, HttpObject request) {
 
-        var ruleProcessingResult = new MoxProxyRuleProcessingResult();
+        MoxProxyRuleProcessingResult ruleProcessingResult = new MoxProxyRuleProcessingResult();
 
         List<MoxProxyRule> respondRules = getResponseRules(rules);
         if(respondRules.size() > 0){
@@ -34,7 +34,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
             return ruleProcessingResult;
         }
 
-        var modificationRules = getModificationRules(rules);
+        List<MoxProxyRule> modificationRules = getModificationRules(rules);
 
         for(MoxProxyRule rule : modificationRules){
             request = modifyRequest(rule, request);
@@ -43,7 +43,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
             LOG.info("Processed request modification");
         }
 
-        var deleteRules = getDeleteRules(rules);
+        List<MoxProxyRule> deleteRules = getDeleteRules(rules);
 
         for(MoxProxyRule rule : deleteRules){
             request = deleteFromRequest(rule, request);
@@ -56,7 +56,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
     }
 
     private HttpObject modifyRequest(MoxProxyRule rule, HttpObject request) {
-        var httpRequest = (FullHttpRequest)request;
+        FullHttpRequest httpRequest = (FullHttpRequest)request;
         MoxProxyHttpRuleDefinition ruleDefinition = rule.getMoxProxyHttpObject();
 
         if(ruleDefinition.getHeaders() != null && !ruleDefinition.getHeaders().isEmpty()){
@@ -80,7 +80,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
     }
 
     private HttpObject deleteFromRequest(MoxProxyRule rule, HttpObject request){
-        var httpRequest = (FullHttpRequest)request;
+        FullHttpRequest httpRequest = (FullHttpRequest)request;
         MoxProxyHttpRuleDefinition ruleDefinition = rule.getMoxProxyHttpObject();
 
         if(ruleDefinition.getHeaders() != null && !ruleDefinition.getHeaders().isEmpty()){
@@ -125,9 +125,9 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
     public MoxProxyRuleProcessingResult processResponse(List<MoxProxyRule> rules, HttpObject response) {
 
         FullHttpResponse fullHttpResponse = (FullHttpResponse)response;
-        var ruleProcessingResult = new MoxProxyRuleProcessingResult();
+        MoxProxyRuleProcessingResult ruleProcessingResult = new MoxProxyRuleProcessingResult();
 
-        var modificationRules = getModificationRules(rules);
+        List<MoxProxyRule> modificationRules = getModificationRules(rules);
 
         for(MoxProxyRule rule : modificationRules){
             fullHttpResponse = modifyResponse(rule, fullHttpResponse);
@@ -136,7 +136,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
             LOG.info("Processed response modification");
         }
 
-        var deleteRules = getDeleteRules(rules);
+        List<MoxProxyRule> deleteRules = getDeleteRules(rules);
 
         for(MoxProxyRule rule : deleteRules){
             fullHttpResponse = deleteFromResponse(rule, fullHttpResponse);

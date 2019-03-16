@@ -91,7 +91,7 @@ public class MoxProxyHttpRuleDefinitionBuilder extends BaseBuilder<MoxProxyRuleB
     @Override
     protected MoxProxyHttpRuleDefinition performBuild() {
         List<MoxProxyHeader> headers = headersCollectionBuilder.build();
-        var httpObject = new MoxProxyHttpRuleDefinition();
+        MoxProxyHttpRuleDefinition httpObject = new MoxProxyHttpRuleDefinition();
         httpObject.setMethod(method);
         httpObject.setPathPattern(pathPattern);
         httpObject.setStatusCode(statusCode);

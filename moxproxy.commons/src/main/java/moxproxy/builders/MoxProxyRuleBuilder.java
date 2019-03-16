@@ -55,7 +55,7 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
     @Override
     protected MoxProxyRule performBuild() {
         MoxProxyHttpRuleDefinition httpObject = httpObjectBuilder.build();
-        var rule = new MoxProxyRule();
+        MoxProxyRule rule = new MoxProxyRule();
         rule.setAction(action);
         rule.setSessionId(sessionId);
         rule.setHttpDirection(direction);

@@ -28,7 +28,7 @@ class MoxProxyRuleBuilderTest {
     @Test
     void givenChildBuilder_whenBackToParent_thenParentReturned(){
 
-        var builder = new MoxProxyRuleBuilder();
+        MoxProxyRuleBuilder builder = new MoxProxyRuleBuilder();
         builder.withDirection(MoxProxyDirection.REQUEST)
                 .withSessionId(DEFAULT_SESSION_ID);
 
@@ -41,7 +41,7 @@ class MoxProxyRuleBuilderTest {
     @Test
     void givenBuilder_whenBuild_thenAllBuilt() throws BuilderValidationException {
         int statusCode = 500;
-        var builder = new MoxProxyRuleBuilder();
+        MoxProxyRuleBuilder builder = new MoxProxyRuleBuilder();
         MoxProxyRule actual = builder
             .withDirection(MoxProxyDirection.REQUEST)
             .withSessionId(DEFAULT_SESSION_ID)
@@ -78,7 +78,7 @@ class MoxProxyRuleBuilderTest {
     @Test
     void givenBuilderWithDeleteBody_whenBuild_thenIndicatorSet() throws BuilderValidationException {
         int statusCode = 500;
-        var builder = new MoxProxyRuleBuilder();
+        MoxProxyRuleBuilder builder = new MoxProxyRuleBuilder();
         MoxProxyRule actual = builder
                 .withDirection(MoxProxyDirection.RESPONSE)
                 .withSessionId(DEFAULT_SESSION_ID)

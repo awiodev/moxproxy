@@ -94,7 +94,7 @@ public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFun
 
     @Override
     public MoxProxySessionIdMatchingStrategy getSessionMatchingStrategy() {
-        var strat = new MoxProxySessionIdMatchingStrategy();
+        MoxProxySessionIdMatchingStrategy strat = new MoxProxySessionIdMatchingStrategy();
         strat.setIncludeSessionIdMatch(matcher.getSessionIdMatchingStrategy());
         return strat;
     }

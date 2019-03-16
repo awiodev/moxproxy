@@ -1,10 +1,10 @@
 package moxproxy.converters;
 
-import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.interfaces.EntityConverter;
 import moxproxy.interfaces.HttpRequestAdapter;
 import moxproxy.interfaces.HttpResponseAdapter;
 import moxproxy.interfaces.HttpTrafficAdapter;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
 
 public class EntityConverterImpl implements EntityConverter {
 
@@ -16,13 +16,13 @@ public class EntityConverterImpl implements EntityConverter {
 
     @Override
     public MoxProxyProcessedTrafficEntry fromResponseAdapter(HttpResponseAdapter adapter) {
-        var fromAdapter = convertFromHttpTrafficAdapter(adapter);
+        MoxProxyProcessedTrafficEntry fromAdapter = convertFromHttpTrafficAdapter(adapter);
         fromAdapter.setStatusCode(adapter.statusCode());
         return fromAdapter;
     }
 
     private MoxProxyProcessedTrafficEntry convertFromHttpTrafficAdapter(HttpTrafficAdapter adapter){
-        var processedRequest = new MoxProxyProcessedTrafficEntry();
+        MoxProxyProcessedTrafficEntry processedRequest = new MoxProxyProcessedTrafficEntry();
         processedRequest.setSessionId(adapter.sessionId());
         processedRequest.setMethod(adapter.method());
         processedRequest.setUrl(adapter.url());

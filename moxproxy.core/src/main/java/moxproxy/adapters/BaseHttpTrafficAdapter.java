@@ -78,14 +78,14 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
 
     List<MoxProxyHeader> transformToProxyHeaders(HttpHeaders headers) {
 
-        var transformed = new ArrayList<MoxProxyHeader>();
+        ArrayList<MoxProxyHeader> transformed = new ArrayList<MoxProxyHeader>();
         headers.forEach(x -> transformed.add(transformToProxyHeader(x)));
         return transformed;
     }
 
     private MoxProxyHeader transformToProxyHeader(Map.Entry<String, String> header){
 
-        var transformed = new MoxProxyHeader();
+        MoxProxyHeader transformed = new MoxProxyHeader();
         transformed.setName(header.getKey());
         transformed.setValue(header.getValue());
 
