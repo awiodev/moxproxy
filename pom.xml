@@ -5,7 +5,7 @@
     <groupId>com.moxproxy</groupId>
     <artifactId>moxproxy</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <modules>
         <module>moxproxy.commons</module>
         <module>moxproxy.client</module>
@@ -234,6 +234,6 @@
         <connection>scm:git:git://github.com/lukasz-aw/moxproxy.git</connection>
         <developerConnection>scm:git:git@github.com:lukasz-aw/moxproxy.git</developerConnection>
         <url>https://github.com/lukasz-aw/moxproxy</url>
-        <tag>1.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
