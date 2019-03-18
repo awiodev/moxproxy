@@ -46,15 +46,15 @@
         <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
         <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
         <javax.annotation.api.version>1.3.2</javax.annotation.api.version>
-        <little.proxy.version>1.1.3</little.proxy.version>
+        <little.proxy.version>2.0.0-beta-1</little.proxy.version>
         <little.proxy.mitm.version>1.1.0</little.proxy.mitm.version>
-        <junit.version>5.2.0</junit.version>
-        <junit.platform.version>1.2.0</junit.platform.version>
-        <junit.engine.version>5.2.0</junit.engine.version>
-        <spring.boot.version>2.0.3.RELEASE</spring.boot.version>
-        <spring.version>5.0.7.RELEASE</spring.version>
+        <junit.version>5.4.1</junit.version>
+        <junit.platform.version>1.3.2</junit.platform.version>
+        <junit.engine.version>5.4.1</junit.engine.version>
+        <spring.boot.version>2.1.3.RELEASE</spring.boot.version>
+        <spring.version>5.1.5.RELEASE</spring.version>
         <hamcrest.version>2.1</hamcrest.version>
-        <guava.version>25.0-jre</guava.version>
+        <guava.version>27.0.1-jre</guava.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <assertj.version>3.11.1</assertj.version>
@@ -64,7 +64,7 @@
         <selenium.version>3.14.0</selenium.version>
         <logback.version>1.2.3</logback.version>
         <dagger.version>2.21</dagger.version>
-        <netty.version>4.1.33.Final</netty.version>
+        <netty.version>4.1.34.Final</netty.version>
     </properties>
 
     <distributionManagement>
@@ -204,7 +204,7 @@
                 <version>${rest.assured.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.jockx</groupId>
+                <groupId>xyz.rogfam</groupId>
                 <artifactId>littleproxy</artifactId>
                 <version>${little.proxy.version}</version>
             </dependency>
@@ -316,6 +316,20 @@
                             <version>${junit.engine.version}</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven.gpg.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -21,7 +21,7 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>net.jockx</groupId>
+            <groupId>xyz.rogfam</groupId>
             <artifactId>littleproxy</artifactId>
         </dependency>
         <dependency>
