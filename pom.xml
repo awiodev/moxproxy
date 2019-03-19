@@ -37,12 +37,11 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
         <maven.relase.plugin.version>2.5.3</maven.relase.plugin.version>
-        <maven.scm.provider.version>1.9.5</maven.scm.provider.version>
         <maven.surfire.plugin.version>2.22.0</maven.surfire.plugin.version>
-        <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+        <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
         <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
-        <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+        <maven.javadoc.plugin.version>3.1.0</maven.javadoc.plugin.version>
         <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
         <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
         <javax.annotation.api.version>1.3.2</javax.annotation.api.version>
@@ -55,11 +54,9 @@
         <spring.version>5.1.5.RELEASE</spring.version>
         <hamcrest.version>2.1</hamcrest.version>
         <guava.version>27.0.1-jre</guava.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>1.2.17</log4j.version>
-        <assertj.version>3.11.1</assertj.version>
-        <jaxb.api.version>2.1</jaxb.api.version>
-        <jackson.jaxrs.json.provider.version>2.9.7</jackson.jaxrs.json.provider.version>
+        <slf4j.version>1.7.26</slf4j.version>
+        <assertj.version>3.12.2</assertj.version>
+        <jackson.jaxrs.json.provider.version>2.9.8</jackson.jaxrs.json.provider.version>
         <rest.assured.version>3.3.0</rest.assured.version>
         <selenium.version>3.14.0</selenium.version>
         <logback.version>1.2.3</logback.version>
@@ -187,11 +184,6 @@
                 <artifactId>dagger-compiler</artifactId>
                 <version>${dagger.version}</version>
                 <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>javax.xml</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${jaxb.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.jaxrs</groupId>
