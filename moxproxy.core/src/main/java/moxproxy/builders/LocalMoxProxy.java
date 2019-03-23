@@ -60,7 +60,7 @@ public class LocalMoxProxy extends BaseBuilder<NullType, LocalMoxProxy, MoxProxy
         return this;
     }
 
-    public LocalMoxProxy withRecordBodies(){
+    public LocalMoxProxy withContentRecording(){
         bodyRecording = true;
         return this;
     }

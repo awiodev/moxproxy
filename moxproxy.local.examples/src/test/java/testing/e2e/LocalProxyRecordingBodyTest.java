@@ -26,7 +26,7 @@ class LocalProxyRecordingBodyTest extends TestBase {
         proxy = LocalMoxProxy.builder()
                 .withPort(PROXY_PORT)
                 .withRecorderWhiteList(Collections.singletonList(WIKIPEDIA))
-                .withRecordBodies()
+                .withContentRecording()
                 .build();
     }
 
