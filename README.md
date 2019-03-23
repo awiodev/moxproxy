@@ -17,8 +17,7 @@ It supports:
 * [Http client setup](#client-setup)
     * [Session matching strategy](#session-matching)
 * [Traffic recording](#traffic-recording)
-    * [Retrieving recorded requests](#get-requests)
-    * [Retrieving recorded responses](#get-responses)
+    * [Retrieving recorded traffic](#get-traffic)    
 * [Request/Response modification](#traffic-modification)
     * [Responding](#responding)
     * [Request header modification](#request-header-mod)
@@ -46,27 +45,34 @@ Builder provides setup for:
 * **authority** to specify custom **man in the middle** authority (if not specified then default certificate and keystore will be generated on first proxy startup) 
 
 ```java
-MoxProxy proxy = LocalMoxProxy.builder()
-                .withPort(89)
-                .withRecorderWhiteList(Collections.singletonList("wikipedia.org"))
-                .withContentRecording()
-                .withSessionIdMatchStrategy()
-                .withAuthority()
-                    .withAlias("your-alias")
-                    .withKeyStoreDir(".")
-                    .withPassword("your-password")
-                    .withOrganization("your-organization")
-                    .withCommonName("your-mitm, test proxy")
-                    .withOrganizationalUnitName("Certificate Authority")
-                    .withCertOrganization("your-mitm")
-                    .withCertOrganizationalUnitName("MoxProxy-mitm, test automation purpose").backToParent()
-                .build();
-
-proxy.startServer();
-
-...
-
-proxy.stopServer();
+public class LocalProxyExample {
+     
+    public static void main(String[] args) {
+         
+         MoxProxy proxy = LocalMoxProxy.builder()
+                         .withPort(89)
+                         .withRecorderWhiteList(Collections.singletonList("wikipedia.org"))
+                         .withContentRecording()
+                         .withSessionIdMatchStrategy()
+                         .withAuthority()
+                             .withAlias("your-alias")
+                             .withKeyStoreDir(".")
+                             .withPassword("your-password")
+                             .withOrganization("your-organization")
+                             .withCommonName("your-mitm, test proxy")
+                             .withOrganizationalUnitName("Certificate Authority")
+                             .withCertOrganization("your-mitm")
+                             .withCertOrganizationalUnitName("MoxProxy-mitm, test automation purpose").backToParent()
+                         .build();
+         
+         proxy.startServer();
+         
+         ...
+         
+         proxy.stopServer();
+         
+     }   
+}
 ```
 
 
