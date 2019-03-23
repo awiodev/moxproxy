@@ -10,7 +10,7 @@ It supports:
     * status codes
     * contents
     
-#Lets start!
+# Lets start!
 
 * [Local proxy](#local-proxy)
 * [Standalone proxy](#standalone-proxy)
@@ -45,7 +45,7 @@ Builder provides setup for:
 * **session matching strategy** to enable http clients session identification (useful for concurrent tests execution)
 * **authority** to specify custom **man in the middle** authority (if not specified then default certificate and keystore will be generated on first proxy startup) 
 
-```
+```java
 MoxProxy proxy = LocalMoxProxy.builder()
                 .withPort(89)
                 .withRecorderWhiteList(Collections.singletonList("wikipedia.org"))
