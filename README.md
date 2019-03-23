@@ -328,6 +328,62 @@ class ExampleTest {
 
 ### <a name="#clean-traffic"></a>Recorded traffic cleanup
 
+Recorded traffic and rules cleanup for all sessions.
+```java
+class ExampleTest {
+    
+    //...
+    
+    //local proxy
+    @Test
+    void whenLocalProxyCollectTraffic_thenSessionTrafficCollected() {        
+        proxy.clearAllSessionEntries();
+
+        assertThat(requestTraffic).isEmpty();
+        assertThat(responseTraffic).isEmpty(); 
+    }
+    
+    //remote proxy
+    @Test
+    void whenRemoteProxyCollectTraffic_thenSessionTrafficCollected() {        
+        moxProxyClient.clearAllSessionEntries();
+        
+        assertThat(requestTraffic).isEmpty();
+        assertThat(responseTraffic).isEmpty();           
+    }
+}
+```
+Recorded traffic and rules cleanup for specific session.
+```java
+class ExampleTest {
+    
+    //...
+    
+    //local proxy
+    @Test
+    void whenLocalProxyCollectTraffic_thenSessionTrafficCollected() {        
+        //...
+        
+        proxy.clearSessionEntries(sessionId);
+
+        assertThat(requestTraffic).isEmpty();
+        assertThat(responseTraffic).isEmpty(); 
+    }
+    
+    //remote proxy
+    @Test
+    void whenRemoteProxyCollectTraffic_thenSessionTrafficCollected() {        
+        //...
+        
+        moxProxyClient.clearSessionEntries(sessionId);        
+        
+        assertThat(requestTraffic).isEmpty();
+        assertThat(responseTraffic).isEmpty();           
+    }
+}
+```
+
+Standalone proxy also performs automated cleanups - see [standalone proxy](#standalone-proxy)
 
 
 Examples can be found in [moxproxy.web.service](https://github.com/lukasz-aw/moxproxy/blob/master/moxproxy.web.service/src/test/java/testing/WebServiceE2ETest.java) end to end test.
