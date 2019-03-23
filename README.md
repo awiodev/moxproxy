@@ -20,6 +20,7 @@ It supports:
     * [Session matching strategy](#session-matching)
 * [Traffic recording](#traffic-recording)
     * [Retrieving recorded traffic](#get-traffic)    
+    * [Recorded traffic cleanup](#clean-traffic)
 * [Request/Response modification](#traffic-modification)
     * [Responding](#responding)
     * [Request header modification](#request-header-mod)
@@ -70,7 +71,7 @@ public class LocalProxyExample {
          
          proxy.startServer();
          
-         ...
+         //...
          
          proxy.stopServer();
          
@@ -217,7 +218,41 @@ public class FirefoxExample {
 
 ### <a name="session-matching"></a>Session matching strategy
 
+Session id matching strategy has been implemented to identify http client instance (e.g. browser) traffic and rules (modifications). 
+It is very useful when several http clients are using one proxy instance. It is recommended to always use session id matching strategy when using standalone proxy. 
 
+MoxProxy identifies session by request header value. It means that http client (e.g. browser) should have MOXSESSIONID=UNIQUE_SESSIONID in any header value (e.g. MOXSESSIONID=3db357b0-b149-4569-be1e-1728e14f0cde).
+
+It can be simply achieved in Selenium Webdriver by setting cookie. Generated session id will be used later to collect network traffic and creating rules for http client instance.
+
+```java
+public class FirefoxExample {
+     
+    public static void main(String[] args) {
+         
+        FirefoxProfile profile = new FirefoxProfile();
+        profile.setPreference("network.proxy.type", 1);
+        profile.setPreference("network.proxy.http", "localhost");
+        profile.setPreference("network.proxy.http_port", 89);
+        profile.setPreference("network.proxy.ssl", "localhost");
+        profile.setPreference("network.proxy.ssl_port", 89);
+        profile.setPreference("network.proxy.socks", "localhost");
+        profile.setPreference("network.proxy.socks_port", 89);
+        profile.setAcceptUntrustedCertificates(true);
+        profile.setAssumeUntrustedCertificateIssuer(false);
+        FirefoxOptions options = new FirefoxOptions();
+        options.setProfile(profile);        
+        
+        WebDriver driver = new FirefoxDriver(options);
+        
+        driver.get("https://en.wikipedia.org");
+        
+        String sessionId = UUID.randomUUID().toString();
+        Cookie cookie = new Cookie("MOXSESSIONID", sessionId);
+        driver.manage().addCookie(cookie);
+     }   
+}
+```  
 
 Examples can be found in [moxproxy.web.service](https://github.com/lukasz-aw/moxproxy/blob/master/moxproxy.web.service/src/test/java/testing/WebServiceE2ETest.java) end to end test.
 
