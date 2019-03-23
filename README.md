@@ -22,6 +22,7 @@ It supports:
     * [Retrieving recorded traffic](#get-traffic)    
     * [Recorded traffic cleanup](#clean-traffic)
 * [Request/Response modification](#traffic-modification)
+    * [Proxy rules](#proxy-rules)
     * [Responding](#responding)
     * [Request header modification](#request-header-mod)
     * [Request header removal](#request-header-rem)
@@ -253,6 +254,81 @@ public class FirefoxExample {
      }   
 }
 ```  
+
+# <a name="traffic-recording"></a>Traffic recording
+
+MoxProxy records everything that goes through it (or according to whitelist) so after http client setup every request and response will be stored separately in service storage.
+By default MoxProxy is not recording traffic content (bodies) but it can be set up - see [local proxy](#local-proxy) and [standalone proxy](#standalone-proxy).
+
+### <a name="#get-traffic"></a>Retrieving recorded traffic
+
+To retrieve recorded traffic use local proxy service or standalone proxy client (both are implementing the same interface).
+
+```java
+class ExampleTest {
+    
+    //...
+    
+    //local proxy
+    @Test
+    void whenLocalProxyActionsPerformed_thenTrafficRecorded() {
+        driver.get(WIKI_URL);
+        List<MoxProxyProcessedTrafficEntry> requestTraffic = proxy.getAllRequestTraffic();
+        List<MoxProxyProcessedTrafficEntry> responseTraffic = proxy.getAllResponseTraffic();
+        
+        assertThat(requestTraffic).isNotEmpty();
+        assertThat(responseTraffic).isNotEmpty();
+    }
+    
+    //remote proxy
+    @Test
+    void whenRemoteProxyActionsPerformed_thenTrafficRecorded(){
+        driver.get(WIKI_URL);
+        List<MoxProxyProcessedTrafficEntry> requestTraffic = moxProxyClient.getAllRequestTraffic();
+        List<MoxProxyProcessedTrafficEntry> responseTraffic = moxProxyClient.getAllResponseTraffic();
+        
+        assertThat(requestTraffic).isNotEmpty();
+        assertThat(responseTraffic).isNotEmpty();
+    }
+}
+```
+
+When session id matching strategy is enabled (see [session matching strategy](#session-matching)) then recorded traffic can be retrieved for specific session id.
+
+```java
+class ExampleTest {
+    
+    //...
+    
+    //local proxy
+    @Test
+    void whenLocalProxyCollectTraffic_thenSessionTrafficCollected() {
+        driver.get(WIKI_URL);
+        
+        List<MoxProxyProcessedTrafficEntry> requestTraffic = proxy.getSessionRequestTraffic(sessionId);
+        List<MoxProxyProcessedTrafficEntry> responseTraffic = proxy.getSessionResponseTraffic(sessionId);
+
+        assertThat(requestTraffic).isNotEmpty();
+        assertThat(responseTraffic).isNotEmpty();        
+    }
+    
+    //remote proxy
+    @Test
+    void whenRemoteProxyCollectTraffic_thenSessionTrafficCollected() {
+        driver.get(WIKI_URL);
+        
+        List<MoxProxyProcessedTrafficEntry> requestTraffic = moxProxyClient.getSessionRequestTraffic(sessionId);
+        List<MoxProxyProcessedTrafficEntry> responseTraffic = moxProxyClient.getSessionResponseTraffic(sessionId);
+
+        assertThat(requestTraffic).isNotEmpty();
+        assertThat(responseTraffic).isNotEmpty();        
+    }
+}
+```
+
+### <a name="#clean-traffic"></a>Recorded traffic cleanup
+
+
 
 Examples can be found in [moxproxy.web.service](https://github.com/lukasz-aw/moxproxy/blob/master/moxproxy.web.service/src/test/java/testing/WebServiceE2ETest.java) end to end test.
 
