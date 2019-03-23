@@ -9,7 +9,6 @@ import moxproxy.interfaces.MoxProxyService;
 public class MoxProxyClientBuilder extends BaseBuilder<NullType, MoxProxyClientBuilder, MoxProxyService, MoxProxyClientBuilderValidator> {
 
     private String baseUrl;
-    private boolean useBasicAuth;
     private String user;
     private String password;
 
@@ -19,7 +18,7 @@ public class MoxProxyClientBuilder extends BaseBuilder<NullType, MoxProxyClientB
 
     @Override
     protected MoxProxyService performBuild() throws BuilderValidationException {
-        MoxProxyClientConfiguration clientConfiguration = new MoxProxyClientConfigurationImpl(baseUrl, useBasicAuth, user, password);
+        MoxProxyClientConfiguration clientConfiguration = new MoxProxyClientConfigurationImpl(baseUrl, user, password);
         return new MoxProxyClient(clientConfiguration);
     }
 
@@ -30,11 +29,6 @@ public class MoxProxyClientBuilder extends BaseBuilder<NullType, MoxProxyClientB
 
     public MoxProxyClientBuilder withBaseUrl(String baseUrl){
         this.baseUrl = baseUrl;
-        return this;
-    }
-
-    public MoxProxyClientBuilder withBasicAuth(){
-        useBasicAuth = true;
         return this;
     }
 
@@ -50,10 +44,6 @@ public class MoxProxyClientBuilder extends BaseBuilder<NullType, MoxProxyClientB
 
     String getBaseUrl() {
         return baseUrl;
-    }
-
-    boolean isUseBasicAuth() {
-        return useBasicAuth;
     }
 
     String getUser() {

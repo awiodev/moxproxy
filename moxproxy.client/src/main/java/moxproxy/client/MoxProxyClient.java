@@ -18,12 +18,12 @@ public class MoxProxyClient implements MoxProxyService {
 
     public MoxProxyClient(MoxProxyClientConfiguration configuration){
         baseURI = configuration.getBaseUrl();
-        if(configuration.useBasicAuth()){
-            PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
-            authScheme.setUserName(configuration.getUserName());
-            authScheme.setPassword(configuration.getPassword());
-            authentication = authScheme;
-        }
+
+        PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
+        authScheme.setUserName(configuration.getUserName());
+        authScheme.setPassword(configuration.getPassword());
+        authentication = authScheme;
+
     }
 
     @Override

@@ -16,7 +16,7 @@ It supports:
 * [Standalone proxy](#standalone-proxy)
     * [Configuration](#standalone-configuration)
     * [Webservice client](#standalone-client)
-* [Http client setup](#client-setup)
+* [Http client setup example](#client-setup)
     * [Session matching strategy](#session-matching)
 * [Traffic recording](#traffic-recording)
     * [Retrieving recorded traffic](#get-traffic)    
@@ -34,7 +34,7 @@ To start local MoxProxy service, add **moxproxy.core** dependecy to your pom.xml
 <dependency>
   <groupId>com.moxproxy</groupId>
   <artifactId>moxproxy.core</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.2,)</version>
 </dependency>
 ```
 Setup proxy using LocalMoxProxy builder.
@@ -91,7 +91,14 @@ $ java -jar moxproxy.web.service-1.0.2.jar
 
 Webservice is configured through **application.yml** file distributed with binary.
 
-
+It provides configuration for:
+* **logging** - see [spring](https://springframework.guru/using-yaml-in-spring-boot-to-configure-logback/) logging configuration
+* **server** to configure webservice port - see [spring](https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html) properties configuration  
+* **proxy** as described in [Local proxy](#local-proxy) section
+* **mitm** as described in [Local proxy](#local-proxy) section
+* **service** 
+    * **cleanupDelayInSeconds** to configure proxy to clean old traffic and rules (modifications) after specified time
+    * **basicAuthUserName** and **basicAuthPassword** to set basic authentication username and password for the webservice. Basic authentication is **required**
 
 ```yaml
 logging:
@@ -127,16 +134,91 @@ service:
   basicAuthPassword: change-password
 ```
 
+During startup standalone proxy will display MoxProxy banner and information about proxy port.
+
+```sh
+ ______                 ______
+|  ___ \               (_____ \
+| | _ | |  ___   _   _  _____) )  ____   ___   _   _  _   _
+| || || | / _ \ ( \ / )|  ____/  / ___) / _ \ ( \ / )| | | |
+| || || || |_| | ) X ( | |      | |    | |_| | ) X ( | |_| |
+|_||_||_| \___/ (_/ \_)|_|      |_|     \___/ (_/ \_) \__  |
+                                                     (____/
+2019-03-23 20:25:53,482 INFO  moxproxy.webservice.MoxProxyWebService : Starting MoxProxyWebService on MACHINE with PID 2780 
+2019-03-23 20:25:55,619 INFO  org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2019-03-23 20:25:55,619 INFO  org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.16]
+2019-03-23 20:25:56,499 INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2019-03-23 20:25:57,332 INFO  moxproxy.webservice.MoxProxyWebService : Started MoxProxyWebService in 4.453 seconds (JVM running for 5.561)
+2019-03-23 20:25:58,651 INFO  moxproxy.services.MoxProxyImpl : Starting MoxProxy on port 89
+2019-03-23 20:25:58,917 INFO  moxproxy.services.MoxProxyImpl : MoxProxy server started
+```
+
+### <a name="standalone-client"></a>Webservice client
+
 To communicate with webservice add **moxproxy.client** dependency to your pom.xml.
-Examples can be found in [moxproxy.web.service](https://github.com/lukasz-aw/moxproxy/blob/master/moxproxy.web.service/src/test/java/testing/WebServiceE2ETest.java) end to end test.
 
 ```xml
 <dependency>
   <groupId>com.moxproxy</groupId>
   <artifactId>moxproxy.client</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.2,)</version>
 </dependency>
 ```
+Setup proxy client using MoxProxyClient builder.
 
-**Documentation will be updated as soon as possible...**
+Builder provides setup for:
+* **base url** - standalone proxy ip or domain with webservice port
+* **basic authentication** credentials set up for standalone proxy - see [configuration](#standalone-configuration) section 
+
+```java
+public class StandaloneProxyExample {
+     
+    public static void main(String[] args) {
+         
+          MoxProxyService moxProxyClient = MoxProxyClient.builder()
+                         .withBaseUrl("http://localhost:8081")                         
+                         .withUser("change-user")
+                         .withPassword("change-password").build();
+         
+     }   
+}
+```
+
+# <a name="client-setup"></a>Http client setup example
+
+In this example we will set up Selenium Webdriver (FirefoxDriver) to use MoxProxy. **Please be aware that other browsers setup may look different.**
+
+Driver should be set up to accept **untrusted certificates** otherwise browser will block traffic through proxy. Generated mitm certificate may also be added to trusted authorities.
+
+```java
+public class FirefoxExample {
+     
+    public static void main(String[] args) {
+         
+        FirefoxProfile profile = new FirefoxProfile();
+        profile.setPreference("network.proxy.type", 1);
+        profile.setPreference("network.proxy.http", "localhost");
+        profile.setPreference("network.proxy.http_port", 89);
+        profile.setPreference("network.proxy.ssl", "localhost");
+        profile.setPreference("network.proxy.ssl_port", 89);
+        profile.setPreference("network.proxy.socks", "localhost");
+        profile.setPreference("network.proxy.socks_port", 89);
+        profile.setAcceptUntrustedCertificates(true);
+        profile.setAssumeUntrustedCertificateIssuer(false);
+        FirefoxOptions options = new FirefoxOptions();
+        options.setProfile(profile);        
+        
+        WebDriver driver = new FirefoxDriver(options);
+        
+        driver.get("https://en.wikipedia.org");
+     }   
+}
+```
+
+### <a name="session-matching"></a>Session matching strategy
+
+
+
+Examples can be found in [moxproxy.web.service](https://github.com/lukasz-aw/moxproxy/blob/master/moxproxy.web.service/src/test/java/testing/WebServiceE2ETest.java) end to end test.
+
 

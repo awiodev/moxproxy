@@ -36,7 +36,6 @@ class WebServiceE2ETest extends TestBase {
     static void beforeAll(){
         moxProxyClient = MoxProxyClient.builder()
                 .withBaseUrl("http://localhost:8081")
-                .withBasicAuth()
                 .withUser("change-user")
                 .withPassword("change-password").build();
 
