@@ -91,6 +91,8 @@ $ java -jar moxproxy.web.service-1.0.2.jar
 
 Webservice is configured through **application.yml** file distributed with binary.
 
+
+
 ```yaml
 logging:
   file: logs/app.log
@@ -107,7 +109,7 @@ server:
 proxy:
   proxyPort: 89
   sessionIdMatchStrategy: true
-  recordBodies: false
+  recordContent: false
   urlWhiteListForTrafficRecorder: []
 mitm:
   createOwn: false

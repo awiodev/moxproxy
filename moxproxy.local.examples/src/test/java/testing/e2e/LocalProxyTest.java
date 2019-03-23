@@ -33,8 +33,6 @@ class LocalProxyTest extends TestBase {
         proxy = LocalMoxProxy.builder()
                 .withPort(PROXY_PORT)
                 .withRecorderWhiteList(Collections.singletonList(WIKIPEDIA))
-                .withContentRecording()
-                .withSessionIdMatchStrategy()
                 .build();
     }
 
