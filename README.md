@@ -20,13 +20,11 @@ It supports:
     * [Session matching strategy](#session-matching)
 * [Traffic recording](#traffic-recording)
     * [Retrieving recorded traffic](#get-traffic)    
-    * [Recorded traffic cleanup](#clean-traffic)
-* [Request/Response modification](#traffic-modification)
-    * [Proxy rules](#proxy-rules)
+    * [Recorded traffic and rules cleanup](#clean-traffic)
+* [Request/Response modification](#traffic-modification)    
     * [Responding](#responding)
-    * [Request header modification](#request-header-mod)
-    * [Request header removal](#request-header-rem)
-    * [Request body modification](#request-body-mod)
+    * [Modifications](#modifications)
+    * [Fields removal](#removal)    
 
 
 # <a name="local-proxy"></a>Local proxy
@@ -394,8 +392,8 @@ Rules are matched against traffic by:
 * path regular expression
 
 Builder provides setup for:
-* **direction** (Request/Response)
-* **action** to instruct proxy what it should do with the traffic item (RESPOND, MODIFY or DELETE)
+* **direction** (Request/Response) - required
+* **action** to instruct proxy what it should do with the traffic item (RESPOND, MODIFY or DELETE) - required
     
     **Rule Actions are processed in order.**
      
@@ -409,15 +407,17 @@ Builder provides setup for:
     * DELETE 
 
     **RESPOND rule for direction = REQUEST is processed always in the first place.** It means that if we have two rules set up for the request (MODIFY and RESPOND) then RESPOND rule will be processed only!  
-
-* **Http rule definition**
-    * method (required)
-    * status code (applicable only when direction = REQUEST)
+* **session id** to instruct proxy to identify http client session (session id matching strategy should be turned on on the proxy service)
+* **Http rule definition** - required
+    * method - required
+    * status code
     * body 
-    * path pattern (required) regular expression
+    * delete body applicable to DELETE action
+    * path pattern regular expression - required
     * headers 
 
 Proxy service returns **Rule id** after proxy rule is applied. This id can be used later to instruct proxy to cancel the rule. 
+Canceling rule removes it from proxy rules storage.
 
 ```java
 class ExampleTest {
@@ -431,6 +431,7 @@ class ExampleTest {
                 MoxProxyRule rule = MoxProxyRule.builder()
                         .withDirection(MoxProxyDirection.RESPONSE)
                         .withAction(MoxProxyAction.MODIFY)
+                        .withSessionId(sessionId)
                         .withHttpRuleDefinition()
                             .withGetMethod()
                             .withStatusCode(200)
@@ -448,9 +449,151 @@ class ExampleTest {
                 proxy.cancelRule(ruleId);
     }
 }
+```
 
+### <a name="responding"></a>Responding
 
+Respond action is applicable only to REQUEST direction. It instructs proxy to respond immediately with specifies status code, headers and content. It's kind of mock.
 
+```java
+class ExampleTest {
+    
+    //...
+              
+    @Test
+    void whenErrorResponseRule_thenErrorReturned() {
+
+        String body = "TEST_ERROR";
+
+        MoxProxyRule rule = MoxProxyRule.builder()
+                .withDirection(MoxProxyDirection.REQUEST)
+                .withAction(MoxProxyAction.RESPOND)
+                .withHttpRuleDefinition()
+                    .withGetMethod()
+                    .withPathPattern(WIKIPEDIA_ORG_PATTERN)
+                    .withStatusCode(500)
+                    .withBody(body)
+                    .havingHeaders()
+                        .withHeader("content-type", "text/html; charset=utf-8")
+                        .withHeader("content-length", body.length())
+                        .backToParent()
+                .backToParent().build();
+
+        proxy.createRule(rule);
+
+        driver.get(WIKI_URL);                
+
+        assertThat(driver.getPageSource()).contains(body);
+    }
+    
+}
+```
+
+### <a name="modifications"></a>Modifications
+
+Modifications can be applied for both directions. For requests it is possible to modify headers and request body (if exists) and for responses headers, body and status code.
+
+```java
+class ExampleTest {
+    
+    //...
+              
+    @Test
+    void whenRequestModified_thenModificationApplied() {
+
+        String ipadAgent = "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3";
+        String xpath = "//a[@href='/wiki/Special:MobileMenu']";
+
+        MoxProxyRule rule = MoxProxyRule.builder()
+                .withDirection(MoxProxyDirection.REQUEST)
+                .withAction(MoxProxyAction.MODIFY)
+                .withHttpRuleDefinition()
+                .withGetMethod()
+                .withPathPattern(WIKIPEDIA_ORG_PATTERN)
+                .havingHeaders()
+                .withHeader("User-Agent", ipadAgent).backToParent()
+                .backToParent().build();
+
+        proxy.createRule(rule);
+
+        driver.get(WIKI_URL);        
+
+        WebElement mobileMenu = driver.findElement(By.xpath(xpath));
+
+        assertTrue(mobileMenu.isDisplayed());
+    }
+    
+    @Test
+    void whenResponseModified_thenModificationApplied() throws InterruptedException {
+
+        String body = "[\"proxy\",[\"Only MoxProxy!\"],[\"https://moxproxy.com\"]]";
+
+        MoxProxyRule rule = MoxProxyRule.builder()
+                .withDirection(MoxProxyDirection.RESPONSE)
+                .withAction(MoxProxyAction.MODIFY)
+                .withHttpRuleDefinition()
+                    .withGetMethod()
+                    .withStatusCode(200)
+                    .withBody(body)
+                    .withPathPattern(SEARCH_PROXY)
+                    .havingHeaders()
+                        .withHeader("content-length", body.length())
+                        .backToParent()
+                    .backToParent().build();
+
+        proxy.createRule(rule);
+
+        driver.get(WIKI_URL);        
+
+        WebElement search = driver.findElement(BY_SEARCH);
+        search.sendKeys(PROXY_TXT);        
+
+        WebElement suggestions = driver.findElement(By.className("suggestions-result"));
+        String text = suggestions.getText();
+
+        assertEquals("Only MoxProxy!", text);
+    }
+}
+```
+
+### <a name="removal"></a>Fields removal
+
+Fields removal applies for both directions to headers and body. To remove header simply specify header name with any value. To remove body use **withDeleteBody()** builder method.
+
+```java
+class ExampleTest {
+    
+    //...
+                    
+    @Test
+    void whenBodyRemoved_thenNoResultsReturned() throws InterruptedException {
+
+        MoxProxyRule rule = MoxProxyRule.builder()
+                .withDirection(MoxProxyDirection.RESPONSE)
+                .withAction(MoxProxyAction.DELETE)
+                .withHttpRuleDefinition()
+                .withGetMethod()
+                .withStatusCode(200)
+                .withDeleteBody()
+                .havingHeaders()
+                    .withHeader("content-type", "header-will-be-removed")
+                    .withHeader("content-length", "header-will-be-removed")
+                    .backToParent()
+                .withPathPattern(SEARCH_PROXY)
+                .backToParent().build();
+
+        proxy.createRule(rule);
+
+        driver.get(WIKI_URL);        
+
+        WebElement search = driver.findElement(BY_SEARCH);
+        search.sendKeys(PROXY_TXT);        
+
+        List<WebElement> suggestions = driver.findElements(By.className("suggestions-result"));
+
+        assertEquals(0, suggestions.size());
+    }
+}
 ```
 
 Examples can be found in [moxproxy.web.service](https://github.com/lukasz-aw/moxproxy/blob/master/moxproxy.web.service/src/test/java/testing/WebServiceE2ETest.java) end to end test.

@@ -126,6 +126,39 @@ class LocalProxyTest extends TestBase {
     }
 
     @Test
+    void whenBodyRemoved_thenNoResultsReturned() throws InterruptedException {
+
+        MoxProxyRule rule = MoxProxyRule.builder()
+                .withDirection(MoxProxyDirection.RESPONSE)
+                .withAction(MoxProxyAction.DELETE)
+                .withHttpRuleDefinition()
+                .withGetMethod()
+                .withStatusCode(200)
+                .withDeleteBody()
+                .havingHeaders()
+                    .withHeader("content-type", "header-will-be-removed")
+                    .withHeader("content-length", "header-will-be-removed")
+                    .backToParent()
+                .withPathPattern(SEARCH_PROXY)
+                .backToParent().build();
+
+        proxy.createRule(rule);
+
+        driver.get(WIKI_URL);
+
+        Thread.sleep(SLEEP_TIME);
+
+        WebElement search = driver.findElement(BY_SEARCH);
+        search.sendKeys(PROXY_TXT);
+
+        Thread.sleep(SLEEP_TIME);
+
+        List<WebElement> suggestions = driver.findElements(By.className("suggestions-result"));
+
+        assertEquals(0, suggestions.size());
+    }
+
+    @Test
     void whenRequestModified_thenModificationApplied() throws InterruptedException {
 
         String ipadAgent = "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3";
