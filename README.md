@@ -324,7 +324,7 @@ class ExampleTest {
 }
 ```
 
-### <a name="clean-traffic"></a>Recorded traffic cleanup
+### <a name="clean-traffic"></a>Recorded traffic and rules cleanup
 
 Recorded traffic and rules cleanup for all sessions.
 ```java
@@ -524,7 +524,7 @@ class ExampleTest {
     }
     
     @Test
-    void whenResponseModified_thenModificationApplied() throws InterruptedException {
+    void whenResponseModified_thenModificationApplied() {
 
         String body = "[\"proxy\",[\"Only MoxProxy!\"],[\"https://moxproxy.com\"]]";
 
@@ -566,7 +566,7 @@ class ExampleTest {
     //...
                     
     @Test
-    void whenBodyRemoved_thenNoResultsReturned() throws InterruptedException {
+    void whenBodyRemoved_thenNoResultsReturned() {
 
         MoxProxyRule rule = MoxProxyRule.builder()
                 .withDirection(MoxProxyDirection.RESPONSE)
