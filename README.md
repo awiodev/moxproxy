@@ -35,7 +35,7 @@ To start local MoxProxy service, add **moxproxy.core** dependecy to your pom.xml
 <dependency>
   <groupId>com.moxproxy</groupId>
   <artifactId>moxproxy.core</artifactId>
-  <version>1.0.2,)</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 Setup proxy using LocalMoxProxy builder.
@@ -162,7 +162,7 @@ To communicate with webservice add **moxproxy.client** dependency to your pom.xm
 <dependency>
   <groupId>com.moxproxy</groupId>
   <artifactId>moxproxy.client</artifactId>
-  <version>1.0.2,)</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 Setup proxy client using MoxProxyClient builder.
