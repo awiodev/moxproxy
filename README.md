@@ -260,7 +260,7 @@ public class FirefoxExample {
 MoxProxy records everything that goes through it (or according to whitelist) so after http client setup every request and response will be stored separately in service storage.
 By default MoxProxy is not recording traffic content (bodies) but it can be set up - see [local proxy](#local-proxy) and [standalone proxy](#standalone-proxy).
 
-### <a name="#get-traffic"></a>Retrieving recorded traffic
+### <a name="get-traffic"></a>Retrieving recorded traffic
 
 To retrieve recorded traffic use local proxy service or standalone proxy client (both are implementing the same interface).
 
@@ -326,7 +326,7 @@ class ExampleTest {
 }
 ```
 
-### <a name="#clean-traffic"></a>Recorded traffic cleanup
+### <a name="clean-traffic"></a>Recorded traffic cleanup
 
 Recorded traffic and rules cleanup for all sessions.
 ```java
@@ -385,6 +385,73 @@ class ExampleTest {
 
 Standalone proxy also performs automated cleanups - see [standalone proxy](#standalone-proxy)
 
+# <a name="traffic-modification"></a>Request/response modification
+
+Traffic modification is possible through **MoxProxyRule** setup. 
+
+Rules are matched against traffic by:
+* method (GET,POST,PUT,DELETE)
+* path regular expression
+
+Builder provides setup for:
+* **direction** (Request/Response)
+* **action** to instruct proxy what it should do with the traffic item (RESPOND, MODIFY or DELETE)
+    
+    **Rule Actions are processed in order.**
+     
+     for direction = REQUEST:
+    * RESPOND (instructing proxy to immediately respond to request)
+    * MODIFY (header, body modification)
+    * DELETE (removal of header or body)
+    
+    And for direction = RESPONSE:
+    * MODIFY
+    * DELETE 
+
+    **RESPOND rule for direction = REQUEST is processed always in the first place.** It means that if we have two rules set up for the request (MODIFY and RESPOND) then RESPOND rule will be processed only!  
+
+* **Http rule definition**
+    * method (required)
+    * status code (applicable only when direction = REQUEST)
+    * body 
+    * path pattern (required) regular expression
+    * headers 
+
+Proxy service returns **Rule id** after proxy rule is applied. This id can be used later to instruct proxy to cancel the rule. 
+
+```java
+class ExampleTest {
+    
+    //...
+    
+    void whenResponseModified_thenModificationApplied() {
+        
+        String body = "[\"proxy\",[\"Only MoxProxy!\"],[\"https://moxproxy.com\"]]";
+        
+                MoxProxyRule rule = MoxProxyRule.builder()
+                        .withDirection(MoxProxyDirection.RESPONSE)
+                        .withAction(MoxProxyAction.MODIFY)
+                        .withHttpRuleDefinition()
+                            .withGetMethod()
+                            .withStatusCode(200)
+                            .withBody(body)
+                            .withPathPattern("search=proxy")
+                            .havingHeaders()
+                                .withHeader("content-length", body.length())
+                                .backToParent()
+                            .backToParent().build();
+        
+                String ruleId = proxy.createRule(rule);
+                
+                //...
+                
+                proxy.cancelRule(ruleId);
+    }
+}
+
+
+
+```
 
 Examples can be found in [moxproxy.web.service](https://github.com/lukasz-aw/moxproxy/blob/master/moxproxy.web.service/src/test/java/testing/WebServiceE2ETest.java) end to end test.
 

@@ -102,7 +102,7 @@ class LocalProxyTest extends TestBase {
                     .withGetMethod()
                     .withStatusCode(200)
                     .withBody(body)
-                .withPathPattern(SEARCH_PROXY)
+                    .withPathPattern(SEARCH_PROXY)
                     .havingHeaders()
                         .withHeader("content-length", body.length())
                         .backToParent()
