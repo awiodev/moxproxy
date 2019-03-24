@@ -7,9 +7,7 @@ public class MoxProxyClientBuilderValidator extends BaseBuilderValidator<MoxProx
     @Override
     public void performValidation(MoxProxyClientBuilder builder) throws BuilderValidationException {
         notNull(builder.getBaseUrl(), getClassName(builder), "BASE_URL");
-        if(builder.isUseBasicAuth()){
-            notNull(builder.getUser(), getClassName(builder), "USER");
-            notNull(builder.getPassword(), getClassName(builder), "PASSWORD");
-        }
+        notNull(builder.getUser(), getClassName(builder), "USER");
+        notNull(builder.getPassword(), getClassName(builder), "PASSWORD");
     }
 }

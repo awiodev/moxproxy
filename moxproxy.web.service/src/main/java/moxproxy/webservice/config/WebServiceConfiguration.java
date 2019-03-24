@@ -72,7 +72,7 @@ public class WebServiceConfiguration {
         private int proxyPort;
         private List<String> urlWhiteListForTrafficRecorder;
         private boolean sessionIdMatchStrategy;
-        private boolean recordBodies;
+        private boolean recordContent;
 
         int getProxyPort() {
             return proxyPort;
@@ -98,12 +98,12 @@ public class WebServiceConfiguration {
             this.sessionIdMatchStrategy = sessionIdMatchStrategy;
         }
 
-        boolean isRecordBodies() {
-            return recordBodies;
+        boolean isRecordContent() {
+            return recordContent;
         }
 
-        public void setRecordBodies(boolean recordBodies) {
-            this.recordBodies = recordBodies;
+        public void setRecordContent(boolean recordContent) {
+            this.recordContent = recordContent;
         }
     }
 

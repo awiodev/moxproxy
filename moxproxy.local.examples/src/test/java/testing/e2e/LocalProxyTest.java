@@ -102,7 +102,7 @@ class LocalProxyTest extends TestBase {
                     .withGetMethod()
                     .withStatusCode(200)
                     .withBody(body)
-                .withPathPattern(SEARCH_PROXY)
+                    .withPathPattern(SEARCH_PROXY)
                     .havingHeaders()
                         .withHeader("content-length", body.length())
                         .backToParent()
@@ -123,6 +123,39 @@ class LocalProxyTest extends TestBase {
         String text = suggestions.getText();
 
         assertEquals("Only MoxProxy!", text);
+    }
+
+    @Test
+    void whenBodyRemoved_thenNoResultsReturned() throws InterruptedException {
+
+        MoxProxyRule rule = MoxProxyRule.builder()
+                .withDirection(MoxProxyDirection.RESPONSE)
+                .withAction(MoxProxyAction.DELETE)
+                .withHttpRuleDefinition()
+                .withGetMethod()
+                .withStatusCode(200)
+                .withDeleteBody()
+                .havingHeaders()
+                    .withHeader("content-type", "header-will-be-removed")
+                    .withHeader("content-length", "header-will-be-removed")
+                    .backToParent()
+                .withPathPattern(SEARCH_PROXY)
+                .backToParent().build();
+
+        proxy.createRule(rule);
+
+        driver.get(WIKI_URL);
+
+        Thread.sleep(SLEEP_TIME);
+
+        WebElement search = driver.findElement(BY_SEARCH);
+        search.sendKeys(PROXY_TXT);
+
+        Thread.sleep(SLEEP_TIME);
+
+        List<WebElement> suggestions = driver.findElements(By.className("suggestions-result"));
+
+        assertEquals(0, suggestions.size());
     }
 
     @Test

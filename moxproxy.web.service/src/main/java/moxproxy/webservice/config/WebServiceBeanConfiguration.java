@@ -50,7 +50,7 @@ public class WebServiceBeanConfiguration {
         return new MoxProxyServiceConfigurationImpl(webServiceConfiguration.getProxy().getProxyPort(),
                 webServiceConfiguration.getProxy().getUrlWhiteListForTrafficRecorder(),
                 webServiceConfiguration.getProxy().isSessionIdMatchStrategy(),
-                webServiceConfiguration.getProxy().isRecordBodies(), authority);
+                webServiceConfiguration.getProxy().isRecordContent(), authority);
     }
 
     @Bean
