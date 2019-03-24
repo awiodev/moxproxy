@@ -24,7 +24,8 @@ It supports:
 * [Request/Response modification](#traffic-modification)    
     * [Responding](#responding)
     * [Modifications](#modifications)
-    * [Fields removal](#removal)    
+    * [Fields removal](#removal) 
+* [More examples](#examples)           
 
 
 # <a name="local-proxy"></a>Local proxy
@@ -596,6 +597,10 @@ class ExampleTest {
 }
 ```
 
-Examples can be found in [moxproxy.web.service](https://github.com/lukasz-aw/moxproxy/blob/master/moxproxy.web.service/src/test/java/testing/WebServiceE2ETest.java) end to end test.
+# <a name="examples"></a>More examples
+
+Examples are part of this repository:
+* [local proxy examples](https://github.com/lukasz-aw/moxproxy/tree/master/moxproxy.local.examples/src/test/java/testing/e2e)
+* [web service examples](https://github.com/lukasz-aw/moxproxy/tree/master/moxproxy.web.service/src/test/java/testing)
 
 
