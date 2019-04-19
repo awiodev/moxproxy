@@ -3,6 +3,7 @@ package moxproxy.rules;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
+import io.netty.util.CharsetUtil;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.enums.MoxProxyAction;
 import moxproxy.interfaces.MoxProxyRuleProcessor;
@@ -12,7 +13,6 @@ import moxproxy.model.MoxProxyRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.charset.Charset;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,7 +71,10 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
         }
 
         if(ruleDefinition.getBody() != null){
-            httpRequest = httpRequest.replace(convertContent(ruleDefinition.getBody()));
+            ByteBuf contentBuf = httpRequest.content();
+            ByteBuf byteBuf = Unpooled.copiedBuffer(ruleDefinition.getBody(), CharsetUtil.UTF_8);
+            contentBuf.clear().writeBytes(byteBuf);
+            HttpUtil.setContentLength(httpRequest, ruleDefinition.getBody().length());
             LOG.info("Setting request body: {} for path {} and method {}", ruleDefinition.getBody(),
                     httpRequest.uri(), httpRequest.method());
         }
@@ -94,7 +97,11 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
         }
 
         if(ruleDefinition.getBody() != null && ruleDefinition.getBody().equals(MoxProxyConts.DELETE_BODY_INDICATOR)){
-            httpRequest = httpRequest.replace(convertContent(MoxProxyConts.EMPTY_STRING));
+
+            ByteBuf contentBuf = httpRequest.content();
+            ByteBuf byteBuf = Unpooled.copiedBuffer(MoxProxyConts.EMPTY_STRING, CharsetUtil.UTF_8);
+            contentBuf.clear().writeBytes(byteBuf);
+            HttpUtil.setContentLength(httpRequest, ruleDefinition.getBody().length());
             LOG.info("Removing request body for path {} and method {}", httpRequest.uri(), httpRequest.method());
         }
 
@@ -115,7 +122,11 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
         }
 
         if(ruleDefinition.getBody() != null){
-            response = response.replace(convertContent(ruleDefinition.getBody()));
+
+            ByteBuf contentBuf = response.content();
+            ByteBuf byteBuf = Unpooled.copiedBuffer(ruleDefinition.getBody(), CharsetUtil.UTF_8);
+            contentBuf.clear().writeBytes(byteBuf);
+            HttpUtil.setContentLength(response, ruleDefinition.getBody().length());
         }
 
         return response;
@@ -163,7 +174,11 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
         }
 
         if(ruleDefinition.getBody() != null){
-            response = response.replace(convertContent(ruleDefinition.getBody()));
+
+            ByteBuf contentBuf = response.content();
+            ByteBuf byteBuf = Unpooled.copiedBuffer(ruleDefinition.getBody(), CharsetUtil.UTF_8);
+            contentBuf.clear().writeBytes(byteBuf);
+            HttpUtil.setContentLength(response, ruleDefinition.getBody().length());
             LOG.info("Setting response body: {}", ruleDefinition.getBody());
         }
 
@@ -184,15 +199,15 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
         }
 
         if(ruleDefinition.getBody() != null && ruleDefinition.getBody().equals(MoxProxyConts.DELETE_BODY_INDICATOR)){
-            response = response.replace(convertContent(MoxProxyConts.EMPTY_STRING));
+
+            ByteBuf contentBuf = response.content();
+            ByteBuf byteBuf = Unpooled.copiedBuffer(MoxProxyConts.EMPTY_STRING, CharsetUtil.UTF_8);
+            contentBuf.clear().writeBytes(byteBuf);
+            HttpUtil.setContentLength(response, ruleDefinition.getBody().length());
             LOG.info("Removing response body");
         }
 
         return response;
-    }
-
-    private ByteBuf convertContent(String content){
-        return  Unpooled.copiedBuffer(content.getBytes(Charset.forName(MoxProxyConts.UTF8)));
     }
 
     private List<MoxProxyRule> getResponseRules(List<MoxProxyRule> rules){

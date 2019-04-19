@@ -44,10 +44,6 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
             if(processingResult.getMoxProxyProcessingResultType() == MoxProxyProcessingResultType.RESPOND){
                 return processingResult.getResponse();
             }
-            if(processingResult.getMoxProxyProcessingResultType() == MoxProxyProcessingResultType.PROCESS){
-                httpObject = processingResult.getRequest();
-                super.clientToProxyRequest(httpObject);
-            }
         }
         return null;
     }

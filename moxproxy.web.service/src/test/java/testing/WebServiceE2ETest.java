@@ -88,7 +88,6 @@ class WebServiceE2ETest extends TestBase {
                 .withBody(body)
                 .havingHeaders()
                 .withHeader("content-type", "text/html; charset=utf-8")
-                .withHeader("content-length", body.length())
                 .backToParent()
                 .backToParent().build();
 
@@ -115,9 +114,6 @@ class WebServiceE2ETest extends TestBase {
                 .withStatusCode(200)
                 .withBody(body)
                 .withPathPattern(SEARCH_PROXY)
-                .havingHeaders()
-                .withHeader("content-length", body.length())
-                .backToParent()
                 .backToParent().build();
 
         moxProxyClient.createRule(rule);

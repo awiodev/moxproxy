@@ -20,6 +20,7 @@ public class HttpResponseAdapterImpl extends BaseHttpTrafficAdapter implements H
 
     @Override
     protected ByteBuf getContent() {
+
         return ((FullHttpResponse)getHttpObject()).content();
     }
 

@@ -78,7 +78,7 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
 
     List<MoxProxyHeader> transformToProxyHeaders(HttpHeaders headers) {
 
-        ArrayList<MoxProxyHeader> transformed = new ArrayList<MoxProxyHeader>();
+        ArrayList<MoxProxyHeader> transformed = new ArrayList<>();
         headers.forEach(x -> transformed.add(transformToProxyHeader(x)));
         return transformed;
     }
@@ -93,7 +93,7 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
     }
 
     private String readContent(ByteBuf content) {
-        return content.toString(0, content.readableBytes(), StandardCharsets.UTF_8);
+        return content.toString(StandardCharsets.UTF_8);
     }
 
     void extractSessionId() {
