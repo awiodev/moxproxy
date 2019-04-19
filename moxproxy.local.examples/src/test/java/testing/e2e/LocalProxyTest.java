@@ -77,7 +77,6 @@ class LocalProxyTest extends TestBase {
                     .withBody(body)
                     .havingHeaders()
                         .withHeader("content-type", "text/html; charset=utf-8")
-                        .withHeader("content-length", body.length())
                         .backToParent()
                 .backToParent().build();
 
@@ -103,9 +102,6 @@ class LocalProxyTest extends TestBase {
                     .withStatusCode(200)
                     .withBody(body)
                     .withPathPattern(SEARCH_PROXY)
-                    .havingHeaders()
-                        .withHeader("content-length", body.length())
-                        .backToParent()
                     .backToParent().build();
 
         proxy.createRule(rule);
@@ -137,7 +133,6 @@ class LocalProxyTest extends TestBase {
                 .withDeleteBody()
                 .havingHeaders()
                     .withHeader("content-type", "header-will-be-removed")
-                    .withHeader("content-length", "header-will-be-removed")
                     .backToParent()
                 .withPathPattern(SEARCH_PROXY)
                 .backToParent().build();

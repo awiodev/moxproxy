@@ -437,10 +437,7 @@ class ExampleTest {
                             .withGetMethod()
                             .withStatusCode(200)
                             .withBody(body)
-                            .withPathPattern("search=proxy")
-                            .havingHeaders()
-                                .withHeader("content-length", body.length())
-                                .backToParent()
+                            .withPathPattern("search=proxy")                            
                             .backToParent().build();
         
                 String ruleId = proxy.createRule(rule);
@@ -475,8 +472,7 @@ class ExampleTest {
                     .withStatusCode(500)
                     .withBody(body)
                     .havingHeaders()
-                        .withHeader("content-type", "text/html; charset=utf-8")
-                        .withHeader("content-length", body.length())
+                        .withHeader("content-type", "text/html; charset=utf-8")                        
                         .backToParent()
                 .backToParent().build();
 
@@ -536,10 +532,7 @@ class ExampleTest {
                     .withGetMethod()
                     .withStatusCode(200)
                     .withBody(body)
-                    .withPathPattern(SEARCH_PROXY)
-                    .havingHeaders()
-                        .withHeader("content-length", body.length())
-                        .backToParent()
+                    .withPathPattern(SEARCH_PROXY)                    
                     .backToParent().build();
 
         proxy.createRule(rule);
@@ -577,8 +570,7 @@ class ExampleTest {
                 .withStatusCode(200)
                 .withDeleteBody()
                 .havingHeaders()
-                    .withHeader("content-type", "header-will-be-removed")
-                    .withHeader("content-length", "header-will-be-removed")
+                    .withHeader("content-type", "header-will-be-removed")                    
                     .backToParent()
                 .withPathPattern(SEARCH_PROXY)
                 .backToParent().build();

@@ -65,7 +65,6 @@ class LocalProxySessionMatchTest extends TestBase {
                 .withBody(MY_BODY)
                 .havingHeaders()
                 .withHeader("content-type", "text/html; charset=utf-8")
-                .withHeader("content-length", MY_BODY.length())
                 .backToParent()
                 .backToParent().build();
 
@@ -92,7 +91,6 @@ class LocalProxySessionMatchTest extends TestBase {
                 .withBody(MY_BODY)
                 .havingHeaders()
                 .withHeader("content-type", "text/html; charset=utf-8")
-                .withHeader("content-length", MY_BODY.length())
                 .backToParent()
                 .backToParent().build();
 
@@ -119,7 +117,6 @@ class LocalProxySessionMatchTest extends TestBase {
                 .withBody(MY_BODY)
                 .havingHeaders()
                 .withHeader("content-type", "text/html; charset=utf-8")
-                .withHeader("content-length", MY_BODY.length())
                 .backToParent()
                 .backToParent().build();
 
@@ -146,7 +143,6 @@ class LocalProxySessionMatchTest extends TestBase {
                 .withBody(MY_BODY)
                 .havingHeaders()
                 .withHeader("content-type", "text/html; charset=utf-8")
-                .withHeader("content-length", MY_BODY.length())
                 .backToParent()
                 .backToParent().build();
 
@@ -181,7 +177,6 @@ class LocalProxySessionMatchTest extends TestBase {
                 .withBody(MY_BODY)
                 .havingHeaders()
                 .withHeader("content-type", "text/html; charset=utf-8")
-                .withHeader("content-length", MY_BODY.length())
                 .backToParent()
                 .backToParent().build();
 
@@ -252,7 +247,6 @@ class LocalProxySessionMatchTest extends TestBase {
                 .withBody(MY_BODY)
                 .havingHeaders()
                 .withHeader("content-type", "text/html; charset=utf-8")
-                .withHeader("content-length", MY_BODY.length())
                 .backToParent()
                 .backToParent().build();
 
