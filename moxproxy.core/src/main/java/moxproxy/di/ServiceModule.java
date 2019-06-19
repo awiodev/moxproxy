@@ -30,8 +30,8 @@ public class ServiceModule {
 
     @Provides
     @Singleton
-    MoxProxyRuleProcessor moxProxyRuleProcessor(){
-        return new MoxProxyRuleProcessorImpl();
+    MoxProxyRuleProcessor moxProxyRuleProcessor(MoxProxyDatabase database){
+        return new MoxProxyRuleProcessorImpl(database);
     }
 
     @Provides

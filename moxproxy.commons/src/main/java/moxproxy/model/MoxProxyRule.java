@@ -15,11 +15,12 @@ public class MoxProxyRule {
     private MoxProxyHttpRuleDefinition moxProxyHttpObject;
     private MoxProxyAction moxProxyAction;
     private Date date;
-    //private MoxProxyMatchingStrategy moxProxyMatchingStrategy;
+    private int invokeLimit;
 
     public MoxProxyRule(){
         id = UUID.randomUUID().toString();
         date = new Date();
+        invokeLimit = -1;
     }
 
     public Date getDate() {
@@ -64,5 +65,19 @@ public class MoxProxyRule {
 
     public static MoxProxyRuleBuilder builder(){
         return new MoxProxyRuleBuilder();
+    }
+
+    public int getInvokeLimit() {
+        return invokeLimit;
+    }
+
+    public void setInvokeLimit(int invokeLimit) {
+        this.invokeLimit = invokeLimit;
+    }
+
+    public void handleInvoke(){
+        if(invokeLimit > 0){
+            invokeLimit--;
+        }
     }
 }

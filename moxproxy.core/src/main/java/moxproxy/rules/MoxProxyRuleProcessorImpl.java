@@ -6,6 +6,7 @@ import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.enums.MoxProxyAction;
+import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.interfaces.MoxProxyRuleProcessor;
 import moxproxy.model.MoxProxyHeader;
 import moxproxy.model.MoxProxyHttpRuleDefinition;
@@ -21,6 +22,12 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
 
     private static final Logger LOG = LoggerFactory.getLogger(MoxProxyRuleProcessorImpl.class);
 
+    private MoxProxyDatabase moxProxyDatabase;
+
+    public MoxProxyRuleProcessorImpl(MoxProxyDatabase moxProxyDatabase){
+        this.moxProxyDatabase = moxProxyDatabase;
+    }
+
     @Override
     public MoxProxyRuleProcessingResult processRequest(List<MoxProxyRule> rules, HttpObject request) {
 
@@ -29,8 +36,11 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
         List<MoxProxyRule> respondRules = getResponseRules(rules);
         if(respondRules.size() > 0){
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.RESPOND);
-            ruleProcessingResult.setResponse(createDefaultResponse(getLatestResponse(respondRules)));
+            MoxProxyRule latestResponseRule = getLatestResponseRule(respondRules);
+            ruleProcessingResult.setResponse(createDefaultResponse(latestResponseRule.getMoxProxyHttpObject()));
             LOG.info("Processed request response");
+            latestResponseRule.handleInvoke();
+
             return ruleProcessingResult;
         }
 
@@ -41,6 +51,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
             ruleProcessingResult.setRequest(request);
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
             LOG.info("Processed request modification");
+            rule.handleInvoke();
         }
 
         List<MoxProxyRule> deleteRules = getDeleteRules(rules);
@@ -50,6 +61,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
             ruleProcessingResult.setRequest(request);
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
             LOG.info("Processed request elements removal");
+            rule.handleInvoke();
         }
 
         return ruleProcessingResult;
@@ -145,6 +157,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
             ruleProcessingResult.setResponse(fullHttpResponse);
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
             LOG.info("Processed response modification");
+            rule.handleInvoke();
         }
 
         List<MoxProxyRule> deleteRules = getDeleteRules(rules);
@@ -154,9 +167,20 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
             ruleProcessingResult.setResponse(fullHttpResponse);
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.PROCESS);
             LOG.info("Processed response elements removal");
+            rule.handleInvoke();
         }
 
         return ruleProcessingResult;
+    }
+
+    @Override
+    public void postProcessRules(List<MoxProxyRule> rules) {
+        List<MoxProxyRule> forCleanup = rules.stream().filter(x -> x.getInvokeLimit() == 0).collect(Collectors.toList());
+        forCleanup.forEach(x -> {
+            String ruleId = x.getId();
+            moxProxyDatabase.cleanRule(ruleId);
+            LOG.info("Removed expired rule: {}", ruleId);
+        });
     }
 
     private FullHttpResponse modifyResponse(MoxProxyRule rule, FullHttpResponse response) {
@@ -222,8 +246,8 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
         return rules.stream().filter(x->x.getAction() == MoxProxyAction.DELETE).collect(Collectors.toList());
     }
 
-    private MoxProxyHttpRuleDefinition getLatestResponse(List<MoxProxyRule> rules){
+    private MoxProxyRule getLatestResponseRule(List<MoxProxyRule> rules){
         rules.sort(Comparator.comparing(MoxProxyRule::getDate));
-        return rules.get(rules.size()-1).getMoxProxyHttpObject();
+        return rules.get(rules.size()-1);
     }
 }

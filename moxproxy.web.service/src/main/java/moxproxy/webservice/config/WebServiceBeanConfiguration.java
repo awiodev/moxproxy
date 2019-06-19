@@ -64,8 +64,8 @@ public class WebServiceBeanConfiguration {
     }
 
     @Bean
-    MoxProxyRuleProcessor moxProxyRuleProcessor(){
-        return new MoxProxyRuleProcessorImpl();
+    MoxProxyRuleProcessor moxProxyRuleProcessor(MoxProxyDatabase moxProxyDatabase){
+        return new MoxProxyRuleProcessorImpl(moxProxyDatabase);
     }
 
     @Bean
