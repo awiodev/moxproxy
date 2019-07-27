@@ -95,7 +95,7 @@ public final class MoxProxyImpl extends MoxProxyServiceImpl implements MoxProxy 
             }
 
             private int getBufferSize(){
-                return 10 * 1024 * 1024;
+                return Integer.MAX_VALUE;
             }
         };
     }
