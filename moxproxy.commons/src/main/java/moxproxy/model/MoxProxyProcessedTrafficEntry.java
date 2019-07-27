@@ -15,6 +15,25 @@ public class MoxProxyProcessedTrafficEntry {
     private int statusCode;
     private Date timestamp;
 
+    public MoxProxyProcessedTrafficEntry(String sessionId, String method, String url, String body, List<MoxProxyHeader> headers) {
+        this();
+        this.sessionId = sessionId;
+        this.method = method;
+        this.url = url;
+        this.body = body;
+        this.headers = headers;
+    }
+
+    public MoxProxyProcessedTrafficEntry(String sessionId, String method, String url, String body, List<MoxProxyHeader> headers, int statusCode) {
+        this();
+        this.sessionId = sessionId;
+        this.method = method;
+        this.url = url;
+        this.body = body;
+        this.headers = headers;
+        this.statusCode = statusCode;
+    }
+
     public MoxProxyProcessedTrafficEntry(){
         id = UUID.randomUUID().toString();
         timestamp = new Date();
@@ -28,10 +47,6 @@ public class MoxProxyProcessedTrafficEntry {
         return sessionId;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
     public Date getTimestamp() {
         return timestamp;
     }
@@ -40,39 +55,20 @@ public class MoxProxyProcessedTrafficEntry {
         return method;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
     public String getUrl() {
         return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getBody() {
         return body;
     }
 
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public List<MoxProxyHeader> getHeaders() {
         return headers;
-    }
-
-    public void setHeaders(List<MoxProxyHeader> headers) {
-        this.headers = headers;
     }
 
     public int getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
 }

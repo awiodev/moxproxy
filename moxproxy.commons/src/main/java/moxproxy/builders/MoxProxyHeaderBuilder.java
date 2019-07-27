@@ -31,10 +31,7 @@ public class MoxProxyHeaderBuilder extends BaseBuilder<MoxProxyHttpRuleDefinitio
 
     @Override
     protected MoxProxyHeader performBuild() {
-        MoxProxyHeader header = new MoxProxyHeader();
-        header.setName(name);
-        header.setValue(value);
-        return header;
+        return new MoxProxyHeader(name, value);
     }
 
     @Override

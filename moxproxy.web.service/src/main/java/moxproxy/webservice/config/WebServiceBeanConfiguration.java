@@ -2,7 +2,6 @@ package moxproxy.webservice.config;
 
 import moxproxy.builders.AuthorityBuilder;
 import moxproxy.configuration.MoxProxyServiceConfigurationImpl;
-import moxproxy.converters.EntityConverterImpl;
 import moxproxy.interfaces.*;
 import moxproxy.rules.MoxProxyRuleProcessorImpl;
 import moxproxy.rules.MoxProxyRulesMatcherImpl;
@@ -59,11 +58,6 @@ public class WebServiceBeanConfiguration {
     }
 
     @Bean
-    EntityConverter entityConverter(){
-        return new EntityConverterImpl();
-    }
-
-    @Bean
     MoxProxyRuleProcessor moxProxyRuleProcessor(MoxProxyDatabase moxProxyDatabase){
         return new MoxProxyRuleProcessorImpl(moxProxyDatabase);
     }
@@ -94,9 +88,9 @@ public class WebServiceBeanConfiguration {
     }
 
     @Bean(name = "moxProxyServer")
-    MoxProxy moxProxyServer(MoxProxyServiceConfiguration configuration, MoxProxyTrafficRecorder trafficRecorder, EntityConverter converter,
+    MoxProxy moxProxyServer(MoxProxyServiceConfiguration configuration, MoxProxyTrafficRecorder trafficRecorder,
                             MoxProxyRuleProcessor processor, MoxProxyDatabase database, MoxProxyRulesMatcher matcher){
-        return new MoxProxyImpl(configuration, trafficRecorder, converter, processor, database, matcher);
+        return new MoxProxyImpl(configuration, trafficRecorder, processor, database, matcher);
     }
 
     @Bean

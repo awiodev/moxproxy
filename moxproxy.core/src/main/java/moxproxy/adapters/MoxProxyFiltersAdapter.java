@@ -6,6 +6,7 @@ import io.netty.util.AttributeKey;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.enums.MoxProxyDirection;
 import moxproxy.interfaces.*;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
 import moxproxy.rules.MoxProxyProcessingResultType;
 import moxproxy.rules.MoxProxyRuleProcessingResult;
@@ -19,17 +20,16 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
 
     private MoxProxyRulesMatcher matcher;
     private MoxProxyTrafficRecorder trafficRecorder;
-    private EntityConverter entityConverter;
     private MoxProxyRuleProcessor proxyRuleProcessor;
+    private MoxProxyServiceConfiguration serviceConfiguration;
 
     public MoxProxyFiltersAdapter(HttpRequest originalRequest, ChannelHandlerContext ctx,
-                                  MoxProxyRulesMatcher matcher, MoxProxyTrafficRecorder recorder,
-                                  EntityConverter entityConverter, MoxProxyRuleProcessor proxyRuleProcessor) {
+                                  MoxProxyRulesMatcher matcher, MoxProxyTrafficRecorder recorder, MoxProxyRuleProcessor proxyRuleProcessor, MoxProxyServiceConfiguration serviceConfiguration) {
         super(originalRequest, ctx);
         this.matcher = matcher;
         this.trafficRecorder = recorder;
-        this.entityConverter = entityConverter;
         this.proxyRuleProcessor = proxyRuleProcessor;
+        this.serviceConfiguration = serviceConfiguration;
     }
 
     @Override
@@ -37,9 +37,12 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
         if(httpObject instanceof FullHttpRequest){
             handleConnectRequest();
             String connectedUrl = getConnectedUrl();
-            HttpRequestAdapter requestAdapter = new HttpRequestAdapterImpl(httpObject, originalRequest, connectedUrl, matcher.getSessionIdMatchingStrategy());
-            trafficRecorder.recordRequest(entityConverter.fromRequestAdapter(requestAdapter));
-            List<MoxProxyRule> result = matcher.match(requestAdapter, MoxProxyDirection.REQUEST);
+            HttpTrafficAdapter requestAdapter = new HttpRequestAdapterImpl(httpObject, originalRequest, connectedUrl, matcher.getSessionIdMatchingStrategy(), serviceConfiguration.isRecordBodies());
+
+            MoxProxyProcessedTrafficEntry trafficEntry = requestAdapter.trafficEntry();
+
+            trafficRecorder.recordRequest(trafficEntry);
+            List<MoxProxyRule> result = matcher.match(trafficEntry, MoxProxyDirection.REQUEST);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processRequest(result, httpObject);
             if(processingResult.getMoxProxyProcessingResultType() == MoxProxyProcessingResultType.RESPOND){
                 return processingResult.getResponse();
@@ -53,9 +56,12 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
     public HttpObject proxyToClientResponse(HttpObject httpObject) {
         if(httpObject instanceof FullHttpResponse){
             String connectedUrl = getConnectedUrl();
-            HttpResponseAdapter responseAdapter = new HttpResponseAdapterImpl(httpObject, originalRequest, connectedUrl, matcher.getSessionIdMatchingStrategy());
-            trafficRecorder.recordResponse(entityConverter.fromResponseAdapter(responseAdapter));
-            List<MoxProxyRule> result = matcher.match(responseAdapter, MoxProxyDirection.RESPONSE);
+            HttpTrafficAdapter responseAdapter = new HttpResponseAdapterImpl(httpObject, originalRequest, connectedUrl, matcher.getSessionIdMatchingStrategy(), serviceConfiguration.isRecordBodies());
+
+            MoxProxyProcessedTrafficEntry trafficEntry = responseAdapter.trafficEntry();
+
+            trafficRecorder.recordResponse(trafficEntry);
+            List<MoxProxyRule> result = matcher.match(trafficEntry, MoxProxyDirection.RESPONSE);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processResponse(result, httpObject);
             if(processingResult.getMoxProxyProcessingResultType() == MoxProxyProcessingResultType.PROCESS){
                 return processingResult.getResponse();

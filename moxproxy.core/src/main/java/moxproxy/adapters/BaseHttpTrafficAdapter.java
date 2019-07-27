@@ -5,6 +5,7 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
+import moxproxy.consts.MoxProxyConts;
 import moxproxy.interfaces.HttpTrafficAdapter;
 import moxproxy.model.MoxProxyHeader;
 
@@ -24,17 +25,19 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
     private String method;
     private String url;
     private String sessionId;
+    private boolean isContentRead;
     String connectedUrl;
     HttpRequest originalRequest;
     boolean isSessionIdStrategy;
 
-    BaseHttpTrafficAdapter(HttpObject httpObject, HttpRequest originalRequest, String connectedUrl, boolean isSessionIdStrategy) {
+    BaseHttpTrafficAdapter(HttpObject httpObject, HttpRequest originalRequest, String connectedUrl, boolean isSessionIdStrategy, boolean isContentRead) {
         this.httpObject = httpObject;
         this.originalRequest = originalRequest;
         this.connectedUrl = connectedUrl;
         this.isSessionIdStrategy = isSessionIdStrategy;
+        this.isContentRead = isContentRead;
         headers = transformToProxyHeaders(getHeaders());
-        body = readContent(getContent());
+        body = readContent();
         method = getMethod().name();
         url = getUrl();
         getSessionId();
@@ -51,28 +54,23 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
 
     protected abstract void getSessionId();
 
-    @Override
-    public List<MoxProxyHeader> headers() {
+    List<MoxProxyHeader> headers() {
         return headers;
     }
 
-    @Override
-    public String body() {
+    String body() {
         return body;
     }
 
-    @Override
-    public String method() {
+    String method() {
         return method;
     }
 
-    @Override
-    public String url() {
+    String url() {
         return url;
     }
 
-    @Override
-    public String sessionId() {
+    String sessionId() {
         return sessionId;
     }
 
@@ -84,16 +82,21 @@ public abstract class BaseHttpTrafficAdapter implements HttpTrafficAdapter {
     }
 
     private MoxProxyHeader transformToProxyHeader(Map.Entry<String, String> header){
+        return new MoxProxyHeader(header.getKey(), header.getValue());
+    }
 
-        MoxProxyHeader transformed = new MoxProxyHeader();
-        transformed.setName(header.getKey());
-        transformed.setValue(header.getValue());
-
-        return transformed;
+    private String readContent() {
+        if(isContentRead){
+            return readContent(getContent());
+        }
+        return null;
     }
 
     private String readContent(ByteBuf content) {
-        return content.toString(StandardCharsets.UTF_8);
+        if(null != content){
+            return content.toString(StandardCharsets.UTF_8);
+        }
+        return MoxProxyConts.EMPTY_STRING;
     }
 
     void extractSessionId() {

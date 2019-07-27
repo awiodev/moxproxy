@@ -51,8 +51,7 @@ class WebServiceIntegrationTest {
     void givenRequestTraffic_whenGetAll_ThenTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
-        traffic3.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity(unknown);
 
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
@@ -67,8 +66,7 @@ class WebServiceIntegrationTest {
     void givenResponsesTraffic_whenGetAll_ThenTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
-        traffic3.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity(unknown);
 
         database.addProcessedResponse(traffic1);
         database.addProcessedResponse(traffic2);
@@ -83,8 +81,7 @@ class WebServiceIntegrationTest {
     void givenRequestTraffic_whenBySessionId_ThenTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
-        traffic3.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity(unknown);
 
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
@@ -100,8 +97,7 @@ class WebServiceIntegrationTest {
     void givenResponseTraffic_whenBySessionId_ThenTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
-        traffic3.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity(unknown);
 
         database.addProcessedResponse(traffic1);
         database.addProcessedResponse(traffic2);
@@ -147,12 +143,10 @@ class WebServiceIntegrationTest {
     @Test
     void givenTrafficAnRules_whenClearBySession_thenSessionEntriesCleared(){
         database.addProcessedRequest(createDefaultFullyFilledTrafficEntity());
-        MoxProxyProcessedTrafficEntry request = createDefaultFullyFilledTrafficEntity();
-        request.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry request = createDefaultFullyFilledTrafficEntity(unknown);
         database.addProcessedRequest(request);
         database.addProcessedResponse(createDefaultFullyFilledTrafficEntity());
-        MoxProxyProcessedTrafficEntry response = createDefaultFullyFilledTrafficEntity();
-        response.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry response = createDefaultFullyFilledTrafficEntity(unknown);
         database.addProcessedResponse(response);
         database.addRule(createDefaultFullyFilledRule());
         MoxProxyRule rule = createDefaultFullyFilledRule();
@@ -221,17 +215,13 @@ class WebServiceIntegrationTest {
     }
 
 
+    private MoxProxyProcessedTrafficEntry createDefaultFullyFilledTrafficEntity(String sessionId){
+        String defaultUrl = "https://hello.world.com/api/rest";
+        return new MoxProxyProcessedTrafficEntry(sessionId, defaultMethod, defaultUrl, defaultBody, defaultHeaders(), defaultStatusCode);
+    }
 
     private MoxProxyProcessedTrafficEntry createDefaultFullyFilledTrafficEntity(){
-        MoxProxyProcessedTrafficEntry entity = new MoxProxyProcessedTrafficEntry();
-        entity.setSessionId(defaultId);
-        entity.setStatusCode(defaultStatusCode);
-        entity.setBody(defaultBody);
-        entity.setHeaders(defaultHeaders());
-        entity.setMethod(defaultMethod);
-        String defaultUrl = "https://hello.world.com/api/rest";
-        entity.setUrl(defaultUrl);
-        return entity;
+        return createDefaultFullyFilledTrafficEntity(defaultId);
     }
 
     private MoxProxyRule createDefaultFullyFilledRule(){
@@ -240,26 +230,17 @@ class WebServiceIntegrationTest {
         rule.setHttpDirection(MoxProxyDirection.REQUEST);
         rule.setAction(MoxProxyAction.RESPOND);
 
-        MoxProxyHttpRuleDefinition definition = new MoxProxyHttpRuleDefinition();
-        definition.setBody(defaultBody);
         String defaultPathPattern = "hello\\.world";
-        definition.setPathPattern(defaultPathPattern);
-        definition.setHeaders(defaultHeaders());
-        definition.setMethod(defaultMethod);
-        definition.setStatusCode(defaultStatusCode);
+        MoxProxyHttpRuleDefinition definition = new MoxProxyHttpRuleDefinition(defaultMethod, defaultPathPattern, defaultBody, defaultHeaders(), defaultStatusCode);
 
         rule.setMoxProxyHttpObject(definition);
         return rule;
     }
 
     private List<MoxProxyHeader> defaultHeaders(){
-        ArrayList<MoxProxyHeader> headers = new ArrayList<MoxProxyHeader>();
-        MoxProxyHeader header1 = new MoxProxyHeader();
-        header1.setName("first-header");
-        header1.setValue("firstValue");
-        MoxProxyHeader header2 = new MoxProxyHeader();
-        header2.setName("second header");
-        header2.setValue("second value");
+        ArrayList<MoxProxyHeader> headers = new ArrayList<>();
+        MoxProxyHeader header1 = new MoxProxyHeader("first-header", "firstValue");
+        MoxProxyHeader header2 = new MoxProxyHeader("second header", "second value");
 
         headers.add(header1);
         headers.add(header2);

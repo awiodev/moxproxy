@@ -23,7 +23,7 @@ public final class TrafficController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(TrafficController.class);
 
     @Autowired
-    MoxProxyService moxProxyService;
+    private MoxProxyService moxProxyService;
 
     @RequestMapping(value = MoxProxyRoutes.REQUESTS_ROUTE, method = RequestMethod.GET, produces = ControllerConsts.APPLICATION_JSON)
     public ResponseEntity<?> getAllProcessedRequests(){
@@ -31,7 +31,7 @@ public final class TrafficController extends BaseController {
             List<MoxProxyProcessedTrafficEntry> result = moxProxyService.getAllRequestTraffic();
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            LOG.error("Error during request traffic retrieval", e);
+            LOG.error("Error during request trafficentry retrieval", e);
             return new ResponseEntity<>(createResponseForError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -42,7 +42,7 @@ public final class TrafficController extends BaseController {
             List<MoxProxyProcessedTrafficEntry> result = moxProxyService.getSessionRequestTraffic(sessionId);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            LOG.error("Error during request traffic retrieval for session {}", sessionId, e);
+            LOG.error("Error during request trafficentry retrieval for session {}", sessionId, e);
             return new ResponseEntity<>(createResponseForError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -53,7 +53,7 @@ public final class TrafficController extends BaseController {
             List<MoxProxyProcessedTrafficEntry> result = moxProxyService.getAllResponseTraffic();
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            LOG.error("Error during response traffic retrieval", e);
+            LOG.error("Error during response trafficentry retrieval", e);
             return new ResponseEntity<>(createResponseForError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -64,7 +64,7 @@ public final class TrafficController extends BaseController {
             List<MoxProxyProcessedTrafficEntry> result = moxProxyService.getSessionResponseTraffic(sessionId);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            LOG.error("Error during response traffic retrieval for session {}", sessionId, e);
+            LOG.error("Error during response trafficentry retrieval for session {}", sessionId, e);
             return new ResponseEntity<>(createResponseForError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

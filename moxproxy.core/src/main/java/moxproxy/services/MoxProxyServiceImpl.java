@@ -31,25 +31,25 @@ public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFun
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getSessionRequestTraffic(String sessionId) {
-        LOG.info("Getting requests traffic for session id: {}", sessionId);
+        LOG.info("Getting requests trafficentry for session id: {}", sessionId);
         return database.getProcessedRequestTraffic(sessionId);
     }
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getAllRequestTraffic() {
-        LOG.info("Getting all requests traffic");
+        LOG.info("Getting all requests trafficentry");
         return database.getProcessedRequestTraffic();
     }
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getSessionResponseTraffic(String sessionId) {
-        LOG.info("Getting responses traffic for session id: {}", sessionId);
+        LOG.info("Getting responses trafficentry for session id: {}", sessionId);
         return database.getProcessedResponseTraffic(sessionId);
     }
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getAllResponseTraffic() {
-        LOG.info("Getting all responses traffic");
+        LOG.info("Getting all responses trafficentry");
         return database.getProcessedResponseTraffic();
     }
 
@@ -101,7 +101,7 @@ public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFun
 
     @Override
     public void cleanProcessedTraffic(Date cleanBefore) {
-        LOG.info("Cleaning processed traffic older than: {}", parseDate(cleanBefore));
+        LOG.info("Cleaning processed trafficentry older than: {}", parseDate(cleanBefore));
         database.cleanProcessedTraffic(cleanBefore);
     }
 

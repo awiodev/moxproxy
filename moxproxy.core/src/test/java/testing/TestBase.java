@@ -7,10 +7,12 @@ public class TestBase {
 
     protected static final String UNKNOWN = "UNKNOWN";
 
+    protected MoxProxyProcessedTrafficEntry createDefaultTrafficEntry(String sessionId){
+        return new MoxProxyProcessedTrafficEntry(sessionId, null, null, null, null);
+    }
+
     protected MoxProxyProcessedTrafficEntry createDefaultTrafficEntry(){
-        MoxProxyProcessedTrafficEntry trafficEntry = new MoxProxyProcessedTrafficEntry();
-        trafficEntry.setSessionId("123");
-        return trafficEntry;
+        return createDefaultTrafficEntry("123");
     }
 
     protected MoxProxyRule createDefaultRule(){

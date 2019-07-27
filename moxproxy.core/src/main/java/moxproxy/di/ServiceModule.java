@@ -2,7 +2,6 @@ package moxproxy.di;
 
 import dagger.Module;
 import dagger.Provides;
-import moxproxy.converters.EntityConverterImpl;
 import moxproxy.interfaces.*;
 import moxproxy.rules.MoxProxyRuleProcessorImpl;
 import moxproxy.rules.MoxProxyRulesMatcherImpl;
@@ -36,12 +35,6 @@ public class ServiceModule {
 
     @Provides
     @Singleton
-    EntityConverter entityConverter(){
-        return new EntityConverterImpl();
-    }
-
-    @Provides
-    @Singleton
     MoxProxyRulesMatcher moxProxyRulesMatcher(MoxProxyDatabase moxProxyDatabase){
         return new MoxProxyRulesMatcherImpl(moxProxyDatabase);
     }
@@ -54,10 +47,9 @@ public class ServiceModule {
 
     @Provides
     @Singleton
-    MoxProxy moxProxy(MoxProxyTrafficRecorder recorder,
-                      EntityConverter converter, MoxProxyRuleProcessor processor,
+    MoxProxy moxProxy(MoxProxyTrafficRecorder recorder, MoxProxyRuleProcessor processor,
                       MoxProxyDatabase database, MoxProxyRulesMatcher matcher){
-        return new MoxProxyImpl(moxProxyServiceConfiguration, recorder, converter, processor, database, matcher);
+        return new MoxProxyImpl(moxProxyServiceConfiguration, recorder, processor, database, matcher);
     }
 
     @Provides

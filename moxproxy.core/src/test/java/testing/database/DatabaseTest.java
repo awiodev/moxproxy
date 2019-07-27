@@ -63,8 +63,7 @@ class DatabaseTest extends TestBase {
     void givenTrafficEntries_whenCleanBySessionId_thenEntriesCleared(){
         MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
-        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
-        entry3.setSessionId(UNKNOWN);
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry(UNKNOWN);
         database.addProcessedRequest(entry1);
         database.addProcessedRequest(entry2);
         database.addProcessedRequest(entry3);
@@ -110,8 +109,7 @@ class DatabaseTest extends TestBase {
     void givenRequestTrafficEntries_whenFindBySessionId_thenEntriesFound(){
         MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
-        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
-        entry3.setSessionId(UNKNOWN);
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry(UNKNOWN);
         database.addProcessedRequest(entry1);
         database.addProcessedRequest(entry2);
         database.addProcessedRequest(entry3);
@@ -124,8 +122,7 @@ class DatabaseTest extends TestBase {
     void givenResponseTrafficEntries_whenFindBySessionId_thenEntriesFound(){
         MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
-        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
-        entry3.setSessionId(UNKNOWN);
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry(UNKNOWN);
         database.addProcessedResponse(entry1);
         database.addProcessedResponse(entry2);
         database.addProcessedResponse(entry3);
@@ -138,8 +135,7 @@ class DatabaseTest extends TestBase {
     void givenTrafficEntries_whenCleanAll_thenEntriesCleared(){
         MoxProxyProcessedTrafficEntry entry1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry entry2 = createDefaultTrafficEntry();
-        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry();
-        entry3.setSessionId(UNKNOWN);
+        MoxProxyProcessedTrafficEntry entry3 = createDefaultTrafficEntry(UNKNOWN);
         database.addProcessedRequest(entry1);
         database.addProcessedRequest(entry2);
         database.addProcessedRequest(entry3);

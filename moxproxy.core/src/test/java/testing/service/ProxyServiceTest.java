@@ -71,7 +71,7 @@ class ProxyServiceTest extends TestBase {
         service.clearSessionRules(rule1.getSessionId());
         actual = Lists.newArrayList(database.getAllRules());
         assertEquals(1, actual.size());
-        MoxProxyRule found = actual.stream().findFirst().get();
+        MoxProxyRule found = actual.stream().findFirst().orElseThrow(()-> new AssertionError("Rule not found"));
         assertEquals(rule3.getSessionId(), found.getSessionId());
     }
 
@@ -102,12 +102,9 @@ class ProxyServiceTest extends TestBase {
         rule2.setSessionId(sessionId);
         MoxProxyRule rule3 = createDefaultRule();
         rule3.setSessionId(UNKNOWN);
-        MoxProxyProcessedTrafficEntry traffic1 = createDefaultTrafficEntry();
-        traffic1.setSessionId(sessionId);
-        MoxProxyProcessedTrafficEntry traffic2 = createDefaultTrafficEntry();
-        traffic2.setSessionId(sessionId);
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry();
-        traffic3.setSessionId(UNKNOWN);
+        MoxProxyProcessedTrafficEntry traffic1 = createDefaultTrafficEntry(sessionId);
+        MoxProxyProcessedTrafficEntry traffic2 = createDefaultTrafficEntry(sessionId);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry(UNKNOWN);
         database.addRule(rule1);
         database.addRule(rule2);
         database.addRule(rule3);
@@ -138,8 +135,7 @@ class ProxyServiceTest extends TestBase {
     void givenRequestTraffic_whenGetAllRequestTraffic_thenAllTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultTrafficEntry();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry();
-        traffic3.setSessionId(UNKNOWN);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry(UNKNOWN);
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
         database.addProcessedRequest(traffic3);
@@ -152,8 +148,7 @@ class ProxyServiceTest extends TestBase {
     void givenResponseTraffic_whenGetAllResponseTraffic_thenAllTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultTrafficEntry();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry();
-        traffic3.setSessionId(UNKNOWN);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry(UNKNOWN);
         database.addProcessedResponse(traffic1);
         database.addProcessedResponse(traffic2);
         database.addProcessedResponse(traffic3);
@@ -166,8 +161,7 @@ class ProxyServiceTest extends TestBase {
     void givenRequestTraffic_whenGetSessionRequestTraffic_thenSessionTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultTrafficEntry();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry();
-        traffic3.setSessionId(UNKNOWN);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry(UNKNOWN);
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
         database.addProcessedRequest(traffic3);
@@ -180,8 +174,7 @@ class ProxyServiceTest extends TestBase {
     void givenResponseTraffic_whenGetSessionResponseTraffic_thenSessionTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultTrafficEntry();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultTrafficEntry();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry();
-        traffic3.setSessionId(UNKNOWN);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry(UNKNOWN);
         database.addProcessedResponse(traffic1);
         database.addProcessedResponse(traffic2);
         database.addProcessedResponse(traffic3);
