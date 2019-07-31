@@ -41,8 +41,9 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
 
             MoxProxyProcessedTrafficEntry trafficEntry = requestAdapter.trafficEntry();
 
+            System.out.println("Size before record: " + trafficRecorder.requestSize());
             System.out.println("Recording: " + trafficEntry.getUrl());
-
+            System.out.println("Size after record: " + trafficRecorder.requestSize());
 
             trafficRecorder.recordRequest(trafficEntry);
             List<MoxProxyRule> result = matcher.match(trafficEntry, MoxProxyDirection.REQUEST);

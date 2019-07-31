@@ -6,4 +6,6 @@ public interface MoxProxyTrafficRecorder {
 
     void recordRequest(MoxProxyProcessedTrafficEntry entry);
     void recordResponse(MoxProxyProcessedTrafficEntry entry);
+
+    int requestSize();
 }
