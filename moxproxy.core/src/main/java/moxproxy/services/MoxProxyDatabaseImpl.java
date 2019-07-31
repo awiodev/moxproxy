@@ -105,6 +105,7 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic() {
+        System.out.println("requests size: " + processedRequestDatabase.size());
         List<MoxProxyProcessedTrafficEntry> processed = new ArrayList<>();
         processedRequestDatabase.forEach((x, y) -> processed.add(y));
         return processed;
@@ -118,6 +119,7 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic() {
+        System.out.println("responses size: " + processedRequestDatabase.size());
         List<MoxProxyProcessedTrafficEntry> processed = new ArrayList<>();
         processedResponseDatabase.forEach((x, y) -> processed.add(y));
         return processed;

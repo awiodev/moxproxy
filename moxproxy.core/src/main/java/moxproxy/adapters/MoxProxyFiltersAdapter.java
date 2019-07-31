@@ -43,6 +43,7 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
 
             System.out.println("Recording: " + trafficEntry.getUrl());
 
+
             trafficRecorder.recordRequest(trafficEntry);
             List<MoxProxyRule> result = matcher.match(trafficEntry, MoxProxyDirection.REQUEST);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processRequest(result, httpObject);
