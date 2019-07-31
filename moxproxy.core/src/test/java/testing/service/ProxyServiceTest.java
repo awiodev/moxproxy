@@ -9,6 +9,7 @@ import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.interfaces.MoxProxyService;
 import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,19 +42,19 @@ class ProxyServiceTest extends TestBase {
     @Test
     void givenRule_whenCreate_thenRuleCreated(){
         MoxProxyRule rule = createDefaultRule();
-        service.createRule(rule);
-        MoxProxyRule actual = database.findRuleByById(rule.getId());
-        assertEquals(rule, actual);
+        String ruleId = service.createRule(rule);
+        MoxProxyRule actual = database.findRuleById(ruleId);
+        Assertions.assertThat(actual).isEqualToIgnoringGivenFields(rule, "id", "timestamp");
     }
 
     @Test
     void givenRule_whenCancel_thenRuleRemoved(){
         MoxProxyRule rule = createDefaultRule();
-        service.createRule(rule);
-        MoxProxyRule actual = database.findRuleByById(rule.getId());
-        assertEquals(rule, actual);
-        service.cancelRule(rule.getId());
-        actual = database.findRuleByById(rule.getId());
+        String ruleId = service.createRule(rule);
+        MoxProxyRule actual = database.findRuleById(ruleId);
+        Assertions.assertThat(actual).isEqualToIgnoringGivenFields(rule, "id", "timestamp");
+        service.cancelRule(ruleId);
+        actual = database.findRuleById(ruleId);
         assertNull(actual);
     }
 
@@ -61,8 +62,7 @@ class ProxyServiceTest extends TestBase {
     void givenRules_whenClearSessionRules_thenRulesRemoved(){
         MoxProxyRule rule1 = createDefaultRule();
         MoxProxyRule rule2 = createDefaultRule();
-        MoxProxyRule rule3 = createDefaultRule();
-        rule3.setSessionId(UNKNOWN);
+        MoxProxyRule rule3 = createDefaultRule(UNKNOWN);
         service.createRule(rule1);
         service.createRule(rule2);
         service.createRule(rule3);
@@ -96,12 +96,9 @@ class ProxyServiceTest extends TestBase {
     void givenRulesAndTraffic_whenClearBySession_thenSessionEntriesCleared(){
         String sessionId = "987";
 
-        MoxProxyRule rule1 = createDefaultRule();
-        rule1.setSessionId(sessionId);
-        MoxProxyRule rule2 = createDefaultRule();
-        rule2.setSessionId(sessionId);
-        MoxProxyRule rule3 = createDefaultRule();
-        rule3.setSessionId(UNKNOWN);
+        MoxProxyRule rule1 = createDefaultRule(sessionId);
+        MoxProxyRule rule2 = createDefaultRule(sessionId);
+        MoxProxyRule rule3 = createDefaultRule(UNKNOWN);
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultTrafficEntry(sessionId);
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultTrafficEntry(sessionId);
         MoxProxyProcessedTrafficEntry traffic3 = createDefaultTrafficEntry(UNKNOWN);

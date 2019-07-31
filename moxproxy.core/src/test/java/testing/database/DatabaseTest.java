@@ -7,13 +7,14 @@ import moxproxy.di.ServiceModule;
 import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import testing.TestBase;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,13 +76,12 @@ class DatabaseTest extends TestBase {
 
         List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedRequestTraffic());
         assertEquals(1, found.size());
-        MoxProxyProcessedTrafficEntry first = found.get(0);
-        assertEquals(entry3, first);
+        MoxProxyProcessedTrafficEntry first;
 
         found = Lists.newArrayList(database.getProcessedResponseTraffic());
         assertEquals(1, found.size());
         first = found.get(0);
-        assertEquals(entry3, first);
+        Assertions.assertThat(first).isEqualToIgnoringGivenFields(entry3, FIELDS_TO_IGNORE);
     }
 
     @Test
@@ -93,13 +93,7 @@ class DatabaseTest extends TestBase {
         database.addProcessedRequest(entry2);
         database.addProcessedRequest(entry3);
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.MINUTE, 1);
-
-        Date newDate = cal.getTime();
-
-        database.cleanProcessedTraffic(newDate);
+        database.cleanProcessedTraffic(OffsetDateTime.now(ZoneOffset.UTC).plusMinutes(1));
 
         List<MoxProxyProcessedTrafficEntry> found = Lists.newArrayList(database.getProcessedRequestTraffic());
         assertEquals(0, found.size());
@@ -155,19 +149,19 @@ class DatabaseTest extends TestBase {
     @Test
     void givenRule_whenAddAndFindById_thenRuleFound(){
         MoxProxyRule rule = createDefaultRule();
-        database.addRule(rule);
+        String ruleId = database.addRule(rule);
 
-        MoxProxyRule found = database.findRuleByById(rule.getId());
-        assertEquals(rule, found);
+        MoxProxyRule found = database.findRuleById(ruleId);
+        Assertions.assertThat(found).isEqualToIgnoringGivenFields(rule, FIELDS_TO_IGNORE);
     }
 
     @Test
     void givenRule_whenCleanById_thenRuleNotFound(){
         MoxProxyRule rule = createDefaultRule();
-        database.addRule(rule);
+        String ruleId = database.addRule(rule);
 
-        database.cleanRule(rule.getId());
-        MoxProxyRule found = database.findRuleByById(rule.getId());
+        database.cleanRule(ruleId);
+        MoxProxyRule found = database.findRuleById(ruleId);
         assertNull(found);
     }
 
@@ -175,8 +169,7 @@ class DatabaseTest extends TestBase {
     void givenRules_whenAddAndFindBySessionId_ThenRulesFound(){
         MoxProxyRule rule1 = createDefaultRule();
         MoxProxyRule rule2 = createDefaultRule();
-        MoxProxyRule rule3 = createDefaultRule();
-        rule3.setSessionId(UNKNOWN);
+        MoxProxyRule rule3 = createDefaultRule(UNKNOWN);
 
         database.addRule(rule1);
         database.addRule(rule2);
@@ -190,8 +183,7 @@ class DatabaseTest extends TestBase {
     void givenRules_whenCleanBySessionId_ThenRulesNotFound(){
         MoxProxyRule rule1 = createDefaultRule();
         MoxProxyRule rule2 = createDefaultRule();
-        MoxProxyRule rule3 = createDefaultRule();
-        rule3.setSessionId(UNKNOWN);
+        MoxProxyRule rule3 = createDefaultRule(UNKNOWN);
 
         database.addRule(rule1);
         database.addRule(rule2);
@@ -206,8 +198,7 @@ class DatabaseTest extends TestBase {
     void givenRules_whenCleanByOtherSessionId_ThenRuleFound(){
         MoxProxyRule rule1 = createDefaultRule();
         MoxProxyRule rule2 = createDefaultRule();
-        MoxProxyRule rule3 = createDefaultRule();
-        rule3.setSessionId(UNKNOWN);
+        MoxProxyRule rule3 = createDefaultRule(UNKNOWN);
 
         database.addRule(rule1);
         database.addRule(rule2);
@@ -222,8 +213,7 @@ class DatabaseTest extends TestBase {
     void givenRules_whenAllClean_ThenRulesNotFound(){
         MoxProxyRule rule1 = createDefaultRule();
         MoxProxyRule rule2 = createDefaultRule();
-        MoxProxyRule rule3 = createDefaultRule();
-        rule3.setSessionId(UNKNOWN);
+        MoxProxyRule rule3 = createDefaultRule(UNKNOWN);
 
         database.addRule(rule1);
         database.addRule(rule2);
@@ -240,20 +230,12 @@ class DatabaseTest extends TestBase {
         MoxProxyRule rule2 = createDefaultRule();
         MoxProxyRule rule3 = createDefaultRule();
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.MINUTE, 1);
-
         database.addRule(rule1);
         database.addRule(rule2);
-
-        rule3.getDate().setTime(cal.getTimeInMillis());
         database.addRule(rule3);
 
-        Date cleanDate = cal.getTime();
-
-        database.cleanRules(cleanDate);
+        database.cleanRules(OffsetDateTime.now(ZoneOffset.UTC).plusMinutes(1));
         List found = Lists.newArrayList(database.findRulesBySessionId(rule3.getSessionId()));
-        assertEquals(1, found.size());
+        assertEquals(0, found.size());
     }
 }

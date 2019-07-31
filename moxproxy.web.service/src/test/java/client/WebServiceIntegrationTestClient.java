@@ -1,6 +1,7 @@
 package client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import moxproxy.configuration.MoxProxyClientConfiguration;
 import moxproxy.consts.MoxProxyConts;
 import moxproxy.consts.MoxProxyRoutes;
@@ -23,15 +24,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class WebServiceIntegrationTestClient implements MoxProxyService {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    MoxProxyClientConfiguration configuration;
+    private MoxProxyClientConfiguration configuration;
 
     private final ObjectMapper mapper;
 
     public WebServiceIntegrationTestClient( ){
         mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
     }
 
     @Override

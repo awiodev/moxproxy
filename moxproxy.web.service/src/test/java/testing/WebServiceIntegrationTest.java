@@ -112,11 +112,9 @@ class WebServiceIntegrationTest {
     @Test
     void givenRule_whenCreate_thenRuleCreated(){
         MoxProxyRule rule = createDefaultFullyFilledRule();
-
         client.createRule(rule);
-
         MoxProxyRule created = Lists.newArrayList(database.getAllRules()).get(0);
-        assertThat(created).isEqualToComparingFieldByFieldRecursively(rule);
+        assertThat(created).usingComparatorForFields((x,y)->0, "id", "timestamp").isEqualToComparingFieldByFieldRecursively(rule);
     }
 
     @Test
@@ -149,8 +147,7 @@ class WebServiceIntegrationTest {
         MoxProxyProcessedTrafficEntry response = createDefaultFullyFilledTrafficEntity(unknown);
         database.addProcessedResponse(response);
         database.addRule(createDefaultFullyFilledRule());
-        MoxProxyRule rule = createDefaultFullyFilledRule();
-        rule.setSessionId(unknown);
+        MoxProxyRule rule = createDefaultFullyFilledRule(unknown);
         database.addRule(rule);
 
         client.clearSessionEntries(defaultId);
@@ -171,25 +168,23 @@ class WebServiceIntegrationTest {
     @Test
     void givenRule_whenCancel_thenRuleRemoved(){
         MoxProxyRule rule1 = createDefaultFullyFilledRule();
-        MoxProxyRule rule2 = createDefaultFullyFilledRule();
-        rule2.setSessionId(unknown);
+        MoxProxyRule rule2 = createDefaultFullyFilledRule(unknown);
 
-        database.addRule(rule1);
+        String ruleId = database.addRule(rule1);
         database.addRule(rule2);
 
-        client.cancelRule(rule1.getId());
+        client.cancelRule(ruleId);
 
         ArrayList<MoxProxyRule> rulesList = Lists.newArrayList(database.getAllRules());
         assertEquals(1, rulesList.size(), "Number of rules should be correct");
-        assertThat(rulesList.get(0)).isEqualToComparingFieldByFieldRecursively(rule2);
+        assertThat(rulesList.get(0)).isEqualToIgnoringGivenFields(rule2, "id", "timestamp");
     }
 
     @Test
     void givenRules_whenClearBySessionId_thenRulesRemoved(){
         MoxProxyRule rule1 = createDefaultFullyFilledRule();
         MoxProxyRule rule2 = createDefaultFullyFilledRule();
-        MoxProxyRule rule3 = createDefaultFullyFilledRule();
-        rule3.setSessionId(unknown);
+        MoxProxyRule rule3 = createDefaultFullyFilledRule(unknown);
 
         database.addRule(rule1);
         database.addRule(rule2);
@@ -199,7 +194,7 @@ class WebServiceIntegrationTest {
 
         ArrayList<MoxProxyRule> rulesList = Lists.newArrayList(database.getAllRules());
         assertEquals(1, rulesList.size(), "Number of rules should be correct");
-        assertThat(rulesList.get(0)).isEqualToComparingFieldByFieldRecursively(rule3);
+        assertThat(rulesList.get(0)).isEqualToIgnoringGivenFields(rule3, "id", "timestamp");
     }
 
     @Test
@@ -225,16 +220,13 @@ class WebServiceIntegrationTest {
     }
 
     private MoxProxyRule createDefaultFullyFilledRule(){
-        MoxProxyRule rule = new MoxProxyRule();
-        rule.setSessionId(defaultId);
-        rule.setHttpDirection(MoxProxyDirection.REQUEST);
-        rule.setAction(MoxProxyAction.RESPOND);
+        return createDefaultFullyFilledRule(defaultId);
+    }
 
+    private MoxProxyRule createDefaultFullyFilledRule(String sessionId){
         String defaultPathPattern = "hello\\.world";
         MoxProxyHttpRuleDefinition definition = new MoxProxyHttpRuleDefinition(defaultMethod, defaultPathPattern, defaultBody, defaultHeaders(), defaultStatusCode);
-
-        rule.setMoxProxyHttpObject(definition);
-        return rule;
+        return new MoxProxyRule(sessionId, MoxProxyDirection.REQUEST, definition, MoxProxyAction.RESPOND, -1);
     }
 
     private List<MoxProxyHeader> defaultHeaders(){

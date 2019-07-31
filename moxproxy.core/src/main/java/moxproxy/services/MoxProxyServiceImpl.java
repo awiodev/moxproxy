@@ -7,9 +7,8 @@ import moxproxy.model.MoxProxySessionIdMatchingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFunctionService {
@@ -55,35 +54,35 @@ public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFun
 
     @Override
     public void cancelRule(String ruleId) {
-        LOG.info("Canceling rule: {}", ruleId);
         database.cleanRule(ruleId);
+        LOG.info("Removed rule: {}", ruleId);
     }
 
     @Override
     public void clearSessionRules(String sessionId) {
-        LOG.info("Clearing rules for session id: {}", sessionId);
         database.cleanRules(sessionId);
+        LOG.info("Cleared rules for session id: {}", sessionId);
     }
 
     @Override
     public void clearSessionEntries(String sessionId) {
-        LOG.info("Clearing entries for session id: {}", sessionId);
         database.cleanProcessedTraffic(sessionId);
         database.cleanRules(sessionId);
+        LOG.info("Cleared entries for session id: {}", sessionId);
     }
 
     @Override
     public void clearAllSessionEntries() {
-        LOG.info("Clearing all sessions entries");
         database.cleanAllProcessedTraffic();
         database.cleanAllRules();
+        LOG.info("Cleared all sessions entries");
     }
 
     @Override
     public String createRule(MoxProxyRule moxProxyRule) {
-        LOG.info("Creating rule: {} for session id: {}", moxProxyRule.getId(), moxProxyRule.getSessionId());
-        database.addRule(moxProxyRule);
-        return moxProxyRule.getId();
+        String id = database.addRule(moxProxyRule);
+        LOG.info("Created rule: {} for session id: {}", id, moxProxyRule.getSessionId());
+        return id;
     }
 
     @Override
@@ -100,19 +99,18 @@ public class MoxProxyServiceImpl implements MoxProxyService, MoxProxyScheduleFun
     }
 
     @Override
-    public void cleanProcessedTraffic(Date cleanBefore) {
-        LOG.info("Cleaning processed trafficentry older than: {}", parseDate(cleanBefore));
+    public void cleanProcessedTraffic(OffsetDateTime cleanBefore) {
         database.cleanProcessedTraffic(cleanBefore);
+        LOG.info("Cleared processed traffic entries older than: {}", parseDate(cleanBefore));
     }
 
     @Override
-    public void cleanRules(Date cleanBefore) {
-        LOG.info("Cleaning processed rules older than: {}", parseDate(cleanBefore));
+    public void cleanRules(OffsetDateTime cleanBefore) {
         database.cleanRules(cleanBefore);
+        LOG.info("Cleaning processed rules older than: {}", parseDate(cleanBefore));
     }
 
-    private String parseDate(Date date){
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        return df.format(date);
+    private String parseDate(OffsetDateTime date){
+        return date.format(DateTimeFormatter.ISO_DATE_TIME);
     }
 }

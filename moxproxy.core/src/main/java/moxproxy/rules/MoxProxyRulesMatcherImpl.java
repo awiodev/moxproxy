@@ -44,12 +44,12 @@ public class MoxProxyRulesMatcherImpl implements MoxProxyRulesMatcher {
     private List<MoxProxyRule> getRules(MoxProxyProcessedTrafficEntry trafficEntry, MoxProxyDirection moxProxyDirection){
         ArrayList<MoxProxyRule> result = matchSessionId ? Lists.newArrayList(database.findRulesBySessionId(trafficEntry.getSessionId()))
                 : Lists.newArrayList(database.getAllRules());
-        return result.stream().filter(x -> x.getHttpDirection() == moxProxyDirection).collect(Collectors.toList());
+        return result.stream().filter(x -> x.getDirection() == moxProxyDirection).collect(Collectors.toList());
     }
 
     private boolean match(MoxProxyRule rule, MoxProxyProcessedTrafficEntry trafficEntry){
-        return trafficEntry.getMethod().equalsIgnoreCase(rule.getMoxProxyHttpObject().getMethod())
-                && isPathMatch(rule.getMoxProxyHttpObject().getPathPattern(), trafficEntry.getUrl());
+        return trafficEntry.getMethod().equalsIgnoreCase(rule.getHttpObject().getMethod())
+                && isPathMatch(rule.getHttpObject().getPathPattern(), trafficEntry.getUrl());
     }
 
     private boolean isPathMatch(String pattern, String path){

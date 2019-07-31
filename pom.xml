@@ -56,12 +56,13 @@
         <guava.version>28.0-jre</guava.version>
         <slf4j.version>1.7.26</slf4j.version>
         <assertj.version>3.12.2</assertj.version>
-        <jackson.jaxrs.json.provider.version>2.9.9</jackson.jaxrs.json.provider.version>
+        <jackson.version>2.9.9</jackson.version>
         <rest.assured.version>4.0.0</rest.assured.version>
         <selenium.version>3.14.0</selenium.version>
         <logback.version>1.2.3</logback.version>
         <dagger.version>2.24</dagger.version>
         <netty.version>4.1.38.Final</netty.version>
+        <cache2k.version>1.2.2.Final</cache2k.version>
     </properties>
 
     <distributionManagement>
@@ -188,7 +189,12 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.jaxrs</groupId>
                 <artifactId>jackson-jaxrs-json-provider</artifactId>
-                <version>${jackson.jaxrs.json.provider.version}</version>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cache2k</groupId>
+                <artifactId>cache2k-core</artifactId>
+                <version>${cache2k.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.rest-assured</groupId>

@@ -37,7 +37,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
         if(respondRules.size() > 0){
             ruleProcessingResult.setMoxProxyProcessingResultType(MoxProxyProcessingResultType.RESPOND);
             MoxProxyRule latestResponseRule = getLatestResponseRule(respondRules);
-            ruleProcessingResult.setResponse(createDefaultResponse(latestResponseRule.getMoxProxyHttpObject()));
+            ruleProcessingResult.setResponse(createDefaultResponse(latestResponseRule.getHttpObject()));
             LOG.info("Processed request response");
             latestResponseRule.handleInvoke();
 
@@ -69,7 +69,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
 
     private HttpObject modifyRequest(MoxProxyRule rule, HttpObject request) {
         FullHttpRequest httpRequest = (FullHttpRequest)request;
-        MoxProxyHttpRuleDefinition ruleDefinition = rule.getMoxProxyHttpObject();
+        MoxProxyHttpRuleDefinition ruleDefinition = rule.getHttpObject();
 
         if(ruleDefinition.getHeaders() != null && !ruleDefinition.getHeaders().isEmpty()){
             for(MoxProxyHeader header : ruleDefinition.getHeaders()){
@@ -96,7 +96,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
 
     private HttpObject deleteFromRequest(MoxProxyRule rule, HttpObject request){
         FullHttpRequest httpRequest = (FullHttpRequest)request;
-        MoxProxyHttpRuleDefinition ruleDefinition = rule.getMoxProxyHttpObject();
+        MoxProxyHttpRuleDefinition ruleDefinition = rule.getHttpObject();
 
         if(ruleDefinition.getHeaders() != null && !ruleDefinition.getHeaders().isEmpty()){
             for(MoxProxyHeader header : ruleDefinition.getHeaders()){
@@ -185,7 +185,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
 
     private FullHttpResponse modifyResponse(MoxProxyRule rule, FullHttpResponse response) {
 
-        MoxProxyHttpRuleDefinition ruleDefinition = rule.getMoxProxyHttpObject();
+        MoxProxyHttpRuleDefinition ruleDefinition = rule.getHttpObject();
 
         if(ruleDefinition.getHeaders() != null && !ruleDefinition.getHeaders().isEmpty()){
             for(MoxProxyHeader header : ruleDefinition.getHeaders()){
@@ -211,7 +211,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
 
     private FullHttpResponse deleteFromResponse(MoxProxyRule rule, FullHttpResponse response){
 
-        MoxProxyHttpRuleDefinition ruleDefinition = rule.getMoxProxyHttpObject();
+        MoxProxyHttpRuleDefinition ruleDefinition = rule.getHttpObject();
 
         if(ruleDefinition.getHeaders() != null && !ruleDefinition.getHeaders().isEmpty()){
             for(MoxProxyHeader header : ruleDefinition.getHeaders()){
@@ -247,7 +247,7 @@ public class MoxProxyRuleProcessorImpl implements MoxProxyRuleProcessor {
     }
 
     private MoxProxyRule getLatestResponseRule(List<MoxProxyRule> rules){
-        rules.sort(Comparator.comparing(MoxProxyRule::getDate));
+        rules.sort(Comparator.comparing(MoxProxyRule::getTimestamp));
         return rules.get(rules.size()-1);
     }
 }
