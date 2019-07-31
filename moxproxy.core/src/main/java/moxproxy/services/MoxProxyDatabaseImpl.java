@@ -21,13 +21,9 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public void startDatabase() {
-        rulesDatabase = new ConcurrentHashMap<>(300, 0.9f, 10);
-        processedRequestDatabase = new ConcurrentHashMap<>(300, 0.9f, 10);
-        processedResponseDatabase = new ConcurrentHashMap<>(300, 0.9f, 10);
-
-        /*rulesDatabase = new ConcurrentHashMap<>();
+        rulesDatabase = new ConcurrentHashMap<>();
         processedRequestDatabase = new ConcurrentHashMap<>();
-        processedResponseDatabase = new ConcurrentHashMap<>();*/
+        processedResponseDatabase = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -105,11 +101,7 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic() {
-        System.out.println("requests size: " + processedRequestDatabase.size());
-        List<MoxProxyProcessedTrafficEntry> processed = new ArrayList<>();
-        processedRequestDatabase.forEach((x, y) -> processed.add(y));
-        return processed;
-        //return new ArrayList<>(processedRequestDatabase.values());
+        return new ArrayList<>(processedRequestDatabase.values());
     }
 
     @Override
@@ -119,11 +111,7 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic() {
-        System.out.println("responses size: " + processedRequestDatabase.size());
-        List<MoxProxyProcessedTrafficEntry> processed = new ArrayList<>();
-        processedResponseDatabase.forEach((x, y) -> processed.add(y));
-        return processed;
-        //return new ArrayList<>(processedResponseDatabase.values());
+        return new ArrayList<>(processedResponseDatabase.values());
     }
 
     @Override
