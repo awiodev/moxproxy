@@ -105,10 +105,10 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getProcessedRequestTraffic() {
-        /*List<MoxProxyProcessedTrafficEntry> processed = new ArrayList<>();
+        List<MoxProxyProcessedTrafficEntry> processed = new ArrayList<>();
         processedRequestDatabase.forEach((x, y) -> processed.add(y));
-        return processed;*/
-        return new ArrayList<>(processedRequestDatabase.values());
+        return processed;
+        //return new ArrayList<>(processedRequestDatabase.values());
     }
 
     @Override
@@ -118,7 +118,10 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public List<MoxProxyProcessedTrafficEntry> getProcessedResponseTraffic() {
-        return new ArrayList<>(processedResponseDatabase.values());
+        List<MoxProxyProcessedTrafficEntry> processed = new ArrayList<>();
+        processedResponseDatabase.forEach((x, y) -> processed.add(y));
+        return processed;
+        //return new ArrayList<>(processedResponseDatabase.values());
     }
 
     @Override
