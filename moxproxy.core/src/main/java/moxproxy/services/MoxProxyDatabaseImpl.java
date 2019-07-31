@@ -21,9 +21,9 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
 
     @Override
     public void startDatabase() {
-        rulesDatabase = new ConcurrentHashMap<>(16, 0.9f, 1);
-        processedRequestDatabase = new ConcurrentHashMap<>(16, 0.9f, 1);
-        processedResponseDatabase = new ConcurrentHashMap<>(16, 0.9f, 1);
+        rulesDatabase = new ConcurrentHashMap<>(300, 0.9f, 10);
+        processedRequestDatabase = new ConcurrentHashMap<>(300, 0.9f, 10);
+        processedResponseDatabase = new ConcurrentHashMap<>(300, 0.9f, 10);
 
         /*rulesDatabase = new ConcurrentHashMap<>();
         processedRequestDatabase = new ConcurrentHashMap<>();
