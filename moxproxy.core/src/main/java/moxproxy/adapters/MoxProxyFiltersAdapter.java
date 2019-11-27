@@ -45,9 +45,10 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
             List<MoxProxyRule> result = matcher.match(trafficEntry, MoxProxyDirection.REQUEST);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processRequest(result, httpObject);
             if(processingResult.getMoxProxyProcessingResultType() == MoxProxyProcessingResultType.RESPOND){
-                return processingResult.getResponse();
+                HttpResponse response = processingResult.getResponse();
+                proxyRuleProcessor.postProcessRules(result);
+                return response;
             }
-            proxyRuleProcessor.postProcessRules(result);
         }
         return null;
     }
@@ -64,9 +65,10 @@ public class MoxProxyFiltersAdapter extends HttpFiltersAdapter {
             List<MoxProxyRule> result = matcher.match(trafficEntry, MoxProxyDirection.RESPONSE);
             MoxProxyRuleProcessingResult processingResult = proxyRuleProcessor.processResponse(result, httpObject);
             if(processingResult.getMoxProxyProcessingResultType() == MoxProxyProcessingResultType.PROCESS){
-                return processingResult.getResponse();
+                HttpResponse response = processingResult.getResponse();
+                proxyRuleProcessor.postProcessRules(result);
+                return response;
             }
-            proxyRuleProcessor.postProcessRules(result);
         }
         return httpObject;
     }

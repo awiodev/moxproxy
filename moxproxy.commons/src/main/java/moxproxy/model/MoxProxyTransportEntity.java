@@ -2,7 +2,7 @@ package moxproxy.model;
 
 import java.time.OffsetDateTime;
 
-public abstract class MoxProxyTransportEntity {
+abstract class MoxProxyTransportEntity {
     private String id;
     private OffsetDateTime timestamp;
 
