@@ -176,7 +176,7 @@ class DatabaseTest extends TestBase {
         database.addRule(rule2);
         database.addRule(rule3);
 
-        List found = Lists.newArrayList(database.findRulesBySessionId(rule1.getSessionId()));
+        List<MoxProxyRule> found = Lists.newArrayList(database.findRulesBySessionId(rule1.getSessionId()));
         assertEquals(2, found.size());
     }
 
@@ -191,7 +191,7 @@ class DatabaseTest extends TestBase {
         database.addRule(rule3);
 
         database.cleanRules(rule1.getSessionId());
-        List found = Lists.newArrayList(database.findRulesBySessionId(rule1.getSessionId()));
+        List<MoxProxyRule> found = Lists.newArrayList(database.findRulesBySessionId(rule1.getSessionId()));
         assertTrue(found.isEmpty());
     }
 
@@ -206,7 +206,7 @@ class DatabaseTest extends TestBase {
         database.addRule(rule3);
 
         database.cleanRules(rule1.getSessionId());
-        List found = Lists.newArrayList(database.findRulesBySessionId(rule3.getSessionId()));
+        List<MoxProxyRule> found = Lists.newArrayList(database.findRulesBySessionId(rule3.getSessionId()));
         assertEquals(1, found.size());
     }
 
@@ -221,7 +221,7 @@ class DatabaseTest extends TestBase {
         database.addRule(rule3);
 
         database.cleanAllRules();
-        List found = Lists.newArrayList(database.getAllRules());
+        List<MoxProxyRule> found = Lists.newArrayList(database.getAllRules());
         assertTrue(found.isEmpty());
     }
 
@@ -236,7 +236,7 @@ class DatabaseTest extends TestBase {
         database.addRule(rule3);
 
         database.cleanRules(OffsetDateTime.now(ZoneOffset.UTC).plusMinutes(1));
-        List found = Lists.newArrayList(database.findRulesBySessionId(rule3.getSessionId()));
+        List<MoxProxyRule> found = Lists.newArrayList(database.findRulesBySessionId(rule3.getSessionId()));
         assertEquals(0, found.size());
     }
 }
