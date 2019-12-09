@@ -33,11 +33,6 @@ public class MoxProxyTrafficRecorderImpl implements MoxProxyTrafficRecorder {
         }
     }
 
-    @Override
-    public int requestSize() {
-        return database.getProcessedRequestTraffic().size();
-    }
-
     private boolean shouldBeRecorded(String url){
         List<String> configWhiteList = configuration.getUrlWhiteListForTrafficRecorder();
         if(configWhiteList != null && !configWhiteList.isEmpty()){
