@@ -85,7 +85,7 @@ Standalone proxy is 2 in 1 application which contains proxy server and MoxProxy 
 MoxProxy webservice binary can be downloaded from [releases](https://github.com/lukasz-aw/moxproxy/releases) and run as regular java application.
 
 ```sh
-$ java -jar moxproxy.web.service-1.0.2.jar
+$ java -jar moxproxy.web.service-1.1.0.jar
 ```
 
 ### <a name="standalone-configuration"></a>Configuration
