@@ -3,7 +3,7 @@ package moxproxy.interfaces;
 import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface MoxProxyDatabase {
@@ -14,7 +14,7 @@ public interface MoxProxyDatabase {
 
     void cleanProcessedTraffic(String sessionId);
 
-    void cleanProcessedTraffic(Date olderThan);
+    void cleanProcessedTraffic(OffsetDateTime olderThan);
 
     void cleanRule(String ruleId);
 
@@ -24,7 +24,7 @@ public interface MoxProxyDatabase {
 
     void cleanRules(String sessionId);
 
-    void cleanRules(Date olderThan);
+    void cleanRules(OffsetDateTime olderThan);
 
     String addRule(MoxProxyRule moxProxyRule);
 
@@ -44,5 +44,5 @@ public interface MoxProxyDatabase {
 
     List<MoxProxyRule> getAllRules();
 
-    MoxProxyRule findRuleByById(String id);
+    MoxProxyRule findRuleById(String id);
 }

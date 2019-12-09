@@ -51,8 +51,7 @@ class WebServiceIntegrationTest {
     void givenRequestTraffic_whenGetAll_ThenTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
-        traffic3.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity(unknown);
 
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
@@ -67,8 +66,7 @@ class WebServiceIntegrationTest {
     void givenResponsesTraffic_whenGetAll_ThenTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
-        traffic3.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity(unknown);
 
         database.addProcessedResponse(traffic1);
         database.addProcessedResponse(traffic2);
@@ -83,8 +81,7 @@ class WebServiceIntegrationTest {
     void givenRequestTraffic_whenBySessionId_ThenTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
-        traffic3.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity(unknown);
 
         database.addProcessedRequest(traffic1);
         database.addProcessedRequest(traffic2);
@@ -100,8 +97,7 @@ class WebServiceIntegrationTest {
     void givenResponseTraffic_whenBySessionId_ThenTrafficReturned(){
         MoxProxyProcessedTrafficEntry traffic1 = createDefaultFullyFilledTrafficEntity();
         MoxProxyProcessedTrafficEntry traffic2 = createDefaultFullyFilledTrafficEntity();
-        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity();
-        traffic3.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry traffic3 = createDefaultFullyFilledTrafficEntity(unknown);
 
         database.addProcessedResponse(traffic1);
         database.addProcessedResponse(traffic2);
@@ -116,11 +112,9 @@ class WebServiceIntegrationTest {
     @Test
     void givenRule_whenCreate_thenRuleCreated(){
         MoxProxyRule rule = createDefaultFullyFilledRule();
-
         client.createRule(rule);
-
         MoxProxyRule created = Lists.newArrayList(database.getAllRules()).get(0);
-        assertThat(created).isEqualToComparingFieldByFieldRecursively(rule);
+        assertThat(created).usingComparatorForFields((x,y)->0, "id", "timestamp").isEqualToComparingFieldByFieldRecursively(rule);
     }
 
     @Test
@@ -147,16 +141,13 @@ class WebServiceIntegrationTest {
     @Test
     void givenTrafficAnRules_whenClearBySession_thenSessionEntriesCleared(){
         database.addProcessedRequest(createDefaultFullyFilledTrafficEntity());
-        MoxProxyProcessedTrafficEntry request = createDefaultFullyFilledTrafficEntity();
-        request.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry request = createDefaultFullyFilledTrafficEntity(unknown);
         database.addProcessedRequest(request);
         database.addProcessedResponse(createDefaultFullyFilledTrafficEntity());
-        MoxProxyProcessedTrafficEntry response = createDefaultFullyFilledTrafficEntity();
-        response.setSessionId(unknown);
+        MoxProxyProcessedTrafficEntry response = createDefaultFullyFilledTrafficEntity(unknown);
         database.addProcessedResponse(response);
         database.addRule(createDefaultFullyFilledRule());
-        MoxProxyRule rule = createDefaultFullyFilledRule();
-        rule.setSessionId(unknown);
+        MoxProxyRule rule = createDefaultFullyFilledRule(unknown);
         database.addRule(rule);
 
         client.clearSessionEntries(defaultId);
@@ -177,25 +168,23 @@ class WebServiceIntegrationTest {
     @Test
     void givenRule_whenCancel_thenRuleRemoved(){
         MoxProxyRule rule1 = createDefaultFullyFilledRule();
-        MoxProxyRule rule2 = createDefaultFullyFilledRule();
-        rule2.setSessionId(unknown);
+        MoxProxyRule rule2 = createDefaultFullyFilledRule(unknown);
 
-        database.addRule(rule1);
+        String ruleId = database.addRule(rule1);
         database.addRule(rule2);
 
-        client.cancelRule(rule1.getId());
+        client.cancelRule(ruleId);
 
         ArrayList<MoxProxyRule> rulesList = Lists.newArrayList(database.getAllRules());
         assertEquals(1, rulesList.size(), "Number of rules should be correct");
-        assertThat(rulesList.get(0)).isEqualToComparingFieldByFieldRecursively(rule2);
+        assertThat(rulesList.get(0)).isEqualToIgnoringGivenFields(rule2, "id", "timestamp");
     }
 
     @Test
     void givenRules_whenClearBySessionId_thenRulesRemoved(){
         MoxProxyRule rule1 = createDefaultFullyFilledRule();
         MoxProxyRule rule2 = createDefaultFullyFilledRule();
-        MoxProxyRule rule3 = createDefaultFullyFilledRule();
-        rule3.setSessionId(unknown);
+        MoxProxyRule rule3 = createDefaultFullyFilledRule(unknown);
 
         database.addRule(rule1);
         database.addRule(rule2);
@@ -205,7 +194,7 @@ class WebServiceIntegrationTest {
 
         ArrayList<MoxProxyRule> rulesList = Lists.newArrayList(database.getAllRules());
         assertEquals(1, rulesList.size(), "Number of rules should be correct");
-        assertThat(rulesList.get(0)).isEqualToComparingFieldByFieldRecursively(rule3);
+        assertThat(rulesList.get(0)).isEqualToIgnoringGivenFields(rule3, "id", "timestamp");
     }
 
     @Test
@@ -221,45 +210,29 @@ class WebServiceIntegrationTest {
     }
 
 
+    private MoxProxyProcessedTrafficEntry createDefaultFullyFilledTrafficEntity(String sessionId){
+        String defaultUrl = "https://hello.world.com/api/rest";
+        return new MoxProxyProcessedTrafficEntry(sessionId, defaultMethod, defaultUrl, defaultBody, defaultHeaders(), defaultStatusCode);
+    }
 
     private MoxProxyProcessedTrafficEntry createDefaultFullyFilledTrafficEntity(){
-        MoxProxyProcessedTrafficEntry entity = new MoxProxyProcessedTrafficEntry();
-        entity.setSessionId(defaultId);
-        entity.setStatusCode(defaultStatusCode);
-        entity.setBody(defaultBody);
-        entity.setHeaders(defaultHeaders());
-        entity.setMethod(defaultMethod);
-        String defaultUrl = "https://hello.world.com/api/rest";
-        entity.setUrl(defaultUrl);
-        return entity;
+        return createDefaultFullyFilledTrafficEntity(defaultId);
     }
 
     private MoxProxyRule createDefaultFullyFilledRule(){
-        MoxProxyRule rule = new MoxProxyRule();
-        rule.setSessionId(defaultId);
-        rule.setHttpDirection(MoxProxyDirection.REQUEST);
-        rule.setAction(MoxProxyAction.RESPOND);
+        return createDefaultFullyFilledRule(defaultId);
+    }
 
-        MoxProxyHttpRuleDefinition definition = new MoxProxyHttpRuleDefinition();
-        definition.setBody(defaultBody);
+    private MoxProxyRule createDefaultFullyFilledRule(String sessionId){
         String defaultPathPattern = "hello\\.world";
-        definition.setPathPattern(defaultPathPattern);
-        definition.setHeaders(defaultHeaders());
-        definition.setMethod(defaultMethod);
-        definition.setStatusCode(defaultStatusCode);
-
-        rule.setMoxProxyHttpObject(definition);
-        return rule;
+        MoxProxyHttpRuleDefinition definition = new MoxProxyHttpRuleDefinition(defaultMethod, defaultPathPattern, defaultBody, defaultHeaders(), defaultStatusCode);
+        return new MoxProxyRule(sessionId, MoxProxyDirection.REQUEST, definition, MoxProxyAction.RESPOND, -1);
     }
 
     private List<MoxProxyHeader> defaultHeaders(){
-        ArrayList<MoxProxyHeader> headers = new ArrayList<MoxProxyHeader>();
-        MoxProxyHeader header1 = new MoxProxyHeader();
-        header1.setName("first-header");
-        header1.setValue("firstValue");
-        MoxProxyHeader header2 = new MoxProxyHeader();
-        header2.setName("second header");
-        header2.setValue("second value");
+        ArrayList<MoxProxyHeader> headers = new ArrayList<>();
+        MoxProxyHeader header1 = new MoxProxyHeader("first-header", "firstValue");
+        MoxProxyHeader header2 = new MoxProxyHeader("second header", "second value");
 
         headers.add(header1);
         headers.add(header2);

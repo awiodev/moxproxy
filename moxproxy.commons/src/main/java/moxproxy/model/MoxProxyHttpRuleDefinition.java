@@ -10,43 +10,33 @@ public class MoxProxyHttpRuleDefinition {
     private List<MoxProxyHeader> headers;
     private int statusCode;
 
-    public String getMethod() {
-        return method;
+    public MoxProxyHttpRuleDefinition() { }
+
+    public MoxProxyHttpRuleDefinition(String method, String pathPattern, String body, List<MoxProxyHeader> headers, int statusCode) {
+        this.method = method;
+        this.pathPattern = pathPattern;
+        this.body = body;
+        this.headers = headers;
+        this.statusCode = statusCode;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public String getMethod() {
+        return method;
     }
 
     public String getPathPattern() {
         return pathPattern;
     }
 
-    public void setPathPattern(String pathPattern) {
-        this.pathPattern = pathPattern;
-    }
-
     public String getBody() {
         return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
     }
 
     public List<MoxProxyHeader> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(List<MoxProxyHeader> headers) {
-        this.headers = headers;
-    }
-
     public int getStatusCode() {
         return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
     }
 }

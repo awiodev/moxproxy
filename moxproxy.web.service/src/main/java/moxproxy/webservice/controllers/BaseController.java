@@ -6,27 +6,18 @@ import moxproxy.model.MoxProxyStatusResponse;
 class BaseController {
 
     MoxProxyStatusResponse createResponseForCreatedItem(String entityId){
-        MoxProxyStatusResponse status = new MoxProxyStatusResponse();
-        status.setMessage(MoxProxyStatusMessage.CREATED);
-        status.setEntityId(entityId);
-        return status;
+        return new MoxProxyStatusResponse(entityId, MoxProxyStatusMessage.CREATED);
     }
 
     MoxProxyStatusResponse createResponseForRemovedItem(){
-        MoxProxyStatusResponse status = new MoxProxyStatusResponse();
-        status.setMessage(MoxProxyStatusMessage.DELETED);
-        return status;
+        return new MoxProxyStatusResponse(null, MoxProxyStatusMessage.DELETED);
     }
 
     MoxProxyStatusResponse createResponseForModified(){
-        MoxProxyStatusResponse status = new MoxProxyStatusResponse();
-        status.setMessage(MoxProxyStatusMessage.MODIFIED);
-        return status;
+        return new MoxProxyStatusResponse(null, MoxProxyStatusMessage.MODIFIED);
     }
 
     MoxProxyStatusResponse createResponseForError(String message){
-        MoxProxyStatusResponse status = new MoxProxyStatusResponse();
-        status.setMessage(message);
-        return status;
+        return new MoxProxyStatusResponse(null, message);
     }
 }

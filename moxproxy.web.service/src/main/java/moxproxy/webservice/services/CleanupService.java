@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 @Component
 public class CleanupService {
@@ -17,11 +17,11 @@ public class CleanupService {
 
     @Autowired
     @Qualifier("moxProxyScheduleService")
-    MoxProxyScheduleFunctionService moxProxyCleanupService;
+    private MoxProxyScheduleFunctionService moxProxyCleanupService;
     
     public void performCleanup(){
         LOG.info("Staring cleanup service");
-        Date today = Calendar.getInstance().getTime();
+        OffsetDateTime today = OffsetDateTime.now(ZoneOffset.UTC);
         moxProxyCleanupService.cleanProcessedTraffic(today);
         moxProxyCleanupService.cleanRules(today);
         LOG.info("Cleanup service complete");

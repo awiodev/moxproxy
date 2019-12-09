@@ -15,10 +15,13 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
 
     private MoxProxyHttpRuleDefinitionBuilder httpObjectBuilder;
 
+    private int invokeLimit;
+
 
     public MoxProxyRuleBuilder(){
         super(null, new MoxProxyRuleBuilderValidator());
         httpObjectBuilder = new MoxProxyHttpRuleDefinitionBuilder(this);
+        invokeLimit = -1;
     }
 
     public MoxProxyRuleBuilder withSessionId(String sessionId){
@@ -40,6 +43,11 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
         return this;
     }
 
+    public MoxProxyRuleBuilder withInvokeLimit(int invokeLimit){
+        this.invokeLimit = invokeLimit;
+        return this;
+    }
+
     MoxProxyDirection getDirection() {
         return direction;
     }
@@ -55,12 +63,7 @@ public class MoxProxyRuleBuilder extends BaseBuilder<NullType, MoxProxyRuleBuild
     @Override
     protected MoxProxyRule performBuild() {
         MoxProxyHttpRuleDefinition httpObject = httpObjectBuilder.build();
-        MoxProxyRule rule = new MoxProxyRule();
-        rule.setAction(action);
-        rule.setSessionId(sessionId);
-        rule.setHttpDirection(direction);
-        rule.setMoxProxyHttpObject(httpObject);
-        return rule;
+         return new MoxProxyRule(sessionId, direction, httpObject, action, invokeLimit);
     }
 
     @Override

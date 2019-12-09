@@ -2,9 +2,9 @@ package moxproxy.rules;
 
 import com.google.common.collect.Lists;
 import moxproxy.enums.MoxProxyDirection;
-import moxproxy.interfaces.HttpTrafficAdapter;
 import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.interfaces.MoxProxyRulesMatcher;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
 
 import javax.inject.Inject;
@@ -36,22 +36,20 @@ public class MoxProxyRulesMatcherImpl implements MoxProxyRulesMatcher {
     }
 
     @Override
-    public List<MoxProxyRule> match(HttpTrafficAdapter adapter, MoxProxyDirection moxProxyDirection) {
-        ArrayList<MoxProxyRule> matched = getRules(adapter, moxProxyDirection)
-                .stream().filter(rule -> match(rule, adapter)).collect(Collectors.toCollection(ArrayList::new));
-
-        return matched;
+    public List<MoxProxyRule> match(MoxProxyProcessedTrafficEntry trafficEntry, MoxProxyDirection moxProxyDirection) {
+        return getRules(trafficEntry, moxProxyDirection)
+                .stream().filter(rule -> match(rule, trafficEntry)).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private List<MoxProxyRule> getRules(HttpTrafficAdapter adapter, MoxProxyDirection moxProxyDirection){
-        ArrayList<MoxProxyRule> result = matchSessionId ? Lists.newArrayList(database.findRulesBySessionId(adapter.sessionId()))
+    private List<MoxProxyRule> getRules(MoxProxyProcessedTrafficEntry trafficEntry, MoxProxyDirection moxProxyDirection){
+        ArrayList<MoxProxyRule> result = matchSessionId ? Lists.newArrayList(database.findRulesBySessionId(trafficEntry.getSessionId()))
                 : Lists.newArrayList(database.getAllRules());
-        return result.stream().filter(x -> x.getHttpDirection() == moxProxyDirection).collect(Collectors.toList());
+        return result.stream().filter(x -> x.getDirection() == moxProxyDirection).collect(Collectors.toList());
     }
 
-    private boolean match(MoxProxyRule rule, HttpTrafficAdapter adapter){
-        return adapter.method().equalsIgnoreCase(rule.getMoxProxyHttpObject().getMethod())
-                && isPathMatch(rule.getMoxProxyHttpObject().getPathPattern(), adapter.url());
+    private boolean match(MoxProxyRule rule, MoxProxyProcessedTrafficEntry trafficEntry){
+        return trafficEntry.getMethod().equalsIgnoreCase(rule.getHttpObject().getMethod())
+                && isPathMatch(rule.getHttpObject().getPathPattern(), trafficEntry.getUrl());
     }
 
     private boolean isPathMatch(String pattern, String path){

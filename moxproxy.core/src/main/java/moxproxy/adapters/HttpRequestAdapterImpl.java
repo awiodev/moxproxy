@@ -2,12 +2,17 @@ package moxproxy.adapters;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.*;
-import moxproxy.interfaces.HttpRequestAdapter;
+import moxproxy.interfaces.HttpTrafficAdapter;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class HttpRequestAdapterImpl extends BaseHttpTrafficAdapter implements HttpRequestAdapter {
+public class HttpRequestAdapterImpl extends BaseHttpTrafficAdapter implements HttpTrafficAdapter {
 
-    HttpRequestAdapterImpl(HttpObject request, HttpRequest originalRequest, String connectedUrl, boolean isSessionIdStrategy) {
-        super(request, originalRequest, connectedUrl, isSessionIdStrategy);
+    private static final Logger LOG = LoggerFactory.getLogger(HttpRequestAdapterImpl.class);
+
+    HttpRequestAdapterImpl(HttpObject request, HttpRequest originalRequest, String connectedUrl, boolean isSessionIdStrategy, boolean isContentRead) {
+        super(request, originalRequest, connectedUrl, isSessionIdStrategy, isContentRead);
     }
 
     @Override
@@ -17,7 +22,12 @@ public class HttpRequestAdapterImpl extends BaseHttpTrafficAdapter implements Ht
 
     @Override
     protected ByteBuf getContent() {
-        return ((FullHttpRequest)getHttpObject()).content();
+        try{
+            return ((FullHttpRequest)getHttpObject()).content();
+        }catch (Exception e){
+            LOG.error("Not able to extract http request content", e);
+            return null;
+        }
     }
 
     @Override
@@ -35,5 +45,10 @@ public class HttpRequestAdapterImpl extends BaseHttpTrafficAdapter implements Ht
         if (isSessionIdStrategy) {
             extractSessionId();
         }
+    }
+
+    @Override
+    public MoxProxyProcessedTrafficEntry trafficEntry() {
+        return new MoxProxyProcessedTrafficEntry(sessionId(), method(), url(), body(), headers());
     }
 }

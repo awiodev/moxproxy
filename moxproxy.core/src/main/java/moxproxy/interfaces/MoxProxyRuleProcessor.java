@@ -10,4 +10,5 @@ public interface MoxProxyRuleProcessor {
 
     MoxProxyRuleProcessingResult processRequest(List<MoxProxyRule> rules, HttpObject request);
     MoxProxyRuleProcessingResult processResponse(List<MoxProxyRule> rules, HttpObject response);
+    void postProcessRules(List<MoxProxyRule> rules);
 }

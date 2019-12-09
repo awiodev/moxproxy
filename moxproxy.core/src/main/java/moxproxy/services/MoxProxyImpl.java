@@ -24,17 +24,14 @@ public final class MoxProxyImpl extends MoxProxyServiceImpl implements MoxProxy 
 
     private MoxProxyTrafficRecorder recorder;
 
-    private EntityConverter converter;
-
     private MoxProxyRuleProcessor processor;
 
     @Inject
-    public MoxProxyImpl(MoxProxyServiceConfiguration configuration, MoxProxyTrafficRecorder recorder, EntityConverter converter, MoxProxyRuleProcessor processor,
+    public MoxProxyImpl(MoxProxyServiceConfiguration configuration, MoxProxyTrafficRecorder recorder, MoxProxyRuleProcessor processor,
                         MoxProxyDatabase database, MoxProxyRulesMatcher matcher){
         super(database, matcher, configuration);
         this.configuration = configuration;
         this.recorder = recorder;
-        this.converter = converter;
         this.processor = processor;
     }
 
@@ -81,7 +78,7 @@ public final class MoxProxyImpl extends MoxProxyServiceImpl implements MoxProxy 
 
             @Override
             public HttpFilters filterRequest(HttpRequest httpRequest, ChannelHandlerContext channelHandlerContext) {
-                return new MoxProxyFiltersAdapter(httpRequest, channelHandlerContext, matcher, recorder, converter, processor);
+                return new MoxProxyFiltersAdapter(httpRequest, channelHandlerContext, matcher, recorder, processor, configuration);
             }
 
             @Override
@@ -95,7 +92,7 @@ public final class MoxProxyImpl extends MoxProxyServiceImpl implements MoxProxy 
             }
 
             private int getBufferSize(){
-                return 10 * 1024 * 1024;
+                return Integer.MAX_VALUE;
             }
         };
     }

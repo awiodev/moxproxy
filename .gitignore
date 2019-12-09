@@ -11,3 +11,11 @@ buildNumber.properties
 .idea/
 *.iml
 *.iws
+.classpath
+.factorypath
+.project
+.settings
+.vscode
+*.p12
+*.pem
+*.log

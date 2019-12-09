@@ -4,9 +4,11 @@ import moxproxy.interfaces.MoxProxyDatabase;
 import moxproxy.model.MoxProxyProcessedTrafficEntry;
 import moxproxy.model.MoxProxyRule;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -38,10 +40,10 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
     }
 
     @Override
-    public void cleanProcessedTraffic(Date olderThan) {
+    public void cleanProcessedTraffic(OffsetDateTime olderThan) {
 
-        processedRequestDatabase.entrySet().removeIf(p -> p.getValue().getTimestamp().before(olderThan));
-        processedResponseDatabase.entrySet().removeIf(p -> p.getValue().getTimestamp().before(olderThan));
+        processedRequestDatabase.entrySet().removeIf(p -> p.getValue().getTimestamp().isBefore(olderThan));
+        processedResponseDatabase.entrySet().removeIf(p -> p.getValue().getTimestamp().isBefore(olderThan));
     }
 
     @Override
@@ -66,24 +68,35 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
     }
 
     @Override
-    public void cleanRules(Date olderThan) {
-        rulesDatabase.entrySet().removeIf(p -> p.getValue().getDate().before(olderThan));
+    public void cleanRules(OffsetDateTime olderThan) {
+        rulesDatabase.entrySet().removeIf(p -> p.getValue().getTimestamp().isBefore(olderThan));
     }
 
     @Override
     public String addRule(MoxProxyRule moxProxyRule) {
-        rulesDatabase.put(moxProxyRule.getId(), moxProxyRule);
-        return moxProxyRule.getId();
+        String id = UUID.randomUUID().toString();
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        moxProxyRule.updateEntity(id, timestamp);
+        rulesDatabase.put(id, moxProxyRule);
+        return id;
     }
 
     @Override
     public void addProcessedRequest(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry) {
+        prepareForSave(moxProxyProcessedTrafficEntry);
         processedRequestDatabase.put(moxProxyProcessedTrafficEntry.getId(), moxProxyProcessedTrafficEntry);
     }
 
     @Override
     public void addProcessedResponse(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry) {
+        prepareForSave(moxProxyProcessedTrafficEntry);
         processedResponseDatabase.put(moxProxyProcessedTrafficEntry.getId(), moxProxyProcessedTrafficEntry);
+    }
+
+    private void prepareForSave(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry) {
+        String id = UUID.randomUUID().toString();
+        OffsetDateTime timestamp = OffsetDateTime.now(ZoneOffset.UTC);
+        moxProxyProcessedTrafficEntry.updateEntity(id, timestamp);
     }
 
     @Override
@@ -117,7 +130,7 @@ public class MoxProxyDatabaseImpl implements MoxProxyDatabase {
     }
 
     @Override
-    public MoxProxyRule findRuleByById(String ruleId) {
+    public MoxProxyRule findRuleById(String ruleId) {
         return rulesDatabase.get(ruleId);
     }
 }

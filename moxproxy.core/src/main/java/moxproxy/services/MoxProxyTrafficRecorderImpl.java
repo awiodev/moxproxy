@@ -22,7 +22,6 @@ public class MoxProxyTrafficRecorderImpl implements MoxProxyTrafficRecorder {
     @Override
     public void recordRequest(MoxProxyProcessedTrafficEntry entry) {
         if(shouldBeRecorded(entry.getUrl())){
-            takeBodyRecordDecision(entry);
             database.addProcessedRequest(entry);
         }
     }
@@ -30,7 +29,6 @@ public class MoxProxyTrafficRecorderImpl implements MoxProxyTrafficRecorder {
     @Override
     public void recordResponse(MoxProxyProcessedTrafficEntry entry) {
         if(shouldBeRecorded(entry.getUrl())){
-            takeBodyRecordDecision(entry);
             database.addProcessedResponse(entry);
         }
     }
@@ -41,11 +39,5 @@ public class MoxProxyTrafficRecorderImpl implements MoxProxyTrafficRecorder {
             return configWhiteList.stream().anyMatch(url::contains);
         }
         return true;
-    }
-
-    private void takeBodyRecordDecision(MoxProxyProcessedTrafficEntry moxProxyProcessedTrafficEntry){
-        if(!configuration.isRecordBodies()){
-            moxProxyProcessedTrafficEntry.setBody(null);
-        }
     }
 }

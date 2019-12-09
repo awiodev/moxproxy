@@ -1,7 +1,8 @@
 package moxproxy.interfaces;
 
-import moxproxy.model.MoxProxyRule;
 import moxproxy.enums.MoxProxyDirection;
+import moxproxy.model.MoxProxyProcessedTrafficEntry;
+import moxproxy.model.MoxProxyRule;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ public interface MoxProxyRulesMatcher {
 
     boolean getSessionIdMatchingStrategy();
 
-    List<MoxProxyRule> match(HttpTrafficAdapter adapter, MoxProxyDirection moxProxyDirection);
+    List<MoxProxyRule> match(MoxProxyProcessedTrafficEntry adapter, MoxProxyDirection moxProxyDirection);
 }

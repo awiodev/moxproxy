@@ -28,6 +28,10 @@ class LocalProxyTest extends TestBase {
 
     private static MoxProxy proxy;
 
+    private static final String PROXY_RESPONSE_MODIFICATION = "[\"proxy\",[\"Only MoxProxy!\"],[\"https://moxproxy.com\"]]";
+    private static final String ONLY_MOX_PROXY = "Only MoxProxy!";
+    private static final String ERROR_RBODY = "TEST_ERROR";
+
     @BeforeAll
     static void beforeAll(){
         proxy = LocalMoxProxy.builder()
@@ -65,8 +69,6 @@ class LocalProxyTest extends TestBase {
     @Test
     void whenErrorResponseRule_thenErrorReturned() throws InterruptedException {
 
-        String body = "TEST_ERROR";
-
         MoxProxyRule rule = MoxProxyRule.builder()
                 .withDirection(MoxProxyDirection.REQUEST)
                 .withAction(MoxProxyAction.RESPOND)
@@ -74,7 +76,7 @@ class LocalProxyTest extends TestBase {
                     .withGetMethod()
                 .withPathPattern(WIKIPEDIA_ORG_PATTERN)
                     .withStatusCode(500)
-                    .withBody(body)
+                    .withBody(ERROR_RBODY)
                     .havingHeaders()
                         .withHeader("content-type", "text/html; charset=utf-8")
                         .backToParent()
@@ -86,23 +88,53 @@ class LocalProxyTest extends TestBase {
 
         Thread.sleep(SLEEP_TIME);
 
-        assertThat(driver.getPageSource()).contains(body);
+        assertThat(driver.getPageSource()).contains(ERROR_RBODY);
+    }
+
+    @Test
+    void whenRuleExpired_thenModificationNotApplied() throws InterruptedException {
+
+        MoxProxyRule rule = MoxProxyRule.builder()
+                .withDirection(MoxProxyDirection.REQUEST)
+                .withAction(MoxProxyAction.RESPOND)
+                .withInvokeLimit(1)
+                .withHttpRuleDefinition()
+                .withGetMethod()
+                .withPathPattern(WIKIPEDIA_ORG_PATTERN)
+                .withStatusCode(500)
+                .withBody(ERROR_RBODY)
+                .havingHeaders()
+                .withHeader("content-type", "text/html; charset=utf-8")
+                .backToParent()
+                .backToParent().build();
+
+        proxy.createRule(rule);
+
+        driver.get(WIKI_URL);
+
+        Thread.sleep(SLEEP_TIME);
+
+        assertThat(driver.getPageSource()).contains(ERROR_RBODY);
+
+        driver.get(WIKI_URL);
+
+        Thread.sleep(SLEEP_TIME);
+
+        assertThat(driver.getPageSource()).doesNotContain(ERROR_RBODY);
     }
 
     @Test
     void whenResponseModified_thenModificationApplied() throws InterruptedException {
 
-        String body = "[\"proxy\",[\"Only MoxProxy!\"],[\"https://moxproxy.com\"]]";
-
         MoxProxyRule rule = MoxProxyRule.builder()
                 .withDirection(MoxProxyDirection.RESPONSE)
                 .withAction(MoxProxyAction.MODIFY)
                 .withHttpRuleDefinition()
-                    .withGetMethod()
-                    .withStatusCode(200)
-                    .withBody(body)
-                    .withPathPattern(SEARCH_PROXY)
-                    .backToParent().build();
+                .withGetMethod()
+                .withStatusCode(200)
+                .withBody(PROXY_RESPONSE_MODIFICATION)
+                .withPathPattern(SEARCH_PROXY)
+                .backToParent().build();
 
         proxy.createRule(rule);
 
@@ -118,7 +150,7 @@ class LocalProxyTest extends TestBase {
         WebElement suggestions = driver.findElement(By.className("suggestions-result"));
         String text = suggestions.getText();
 
-        assertEquals("Only MoxProxy!", text);
+        assertEquals(ONLY_MOX_PROXY, text);
     }
 
     @Test

@@ -14,7 +14,8 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.matchesPattern;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MoxProxyRuleBuilderTest {
 
@@ -46,9 +47,6 @@ class MoxProxyRuleBuilderTest {
             .withDirection(MoxProxyDirection.REQUEST)
             .withSessionId(DEFAULT_SESSION_ID)
             .withAction(MoxProxyAction.RESPOND)
-            /*.withMatchingStrategy()
-                .useMethod()
-                .backToParent()*/
             .withHttpRuleDefinition()
                 .withMethod(method)
                 .withPathPattern(path)
@@ -59,20 +57,15 @@ class MoxProxyRuleBuilderTest {
                 .backToParent().backToParent()
             .build();
 
-        assertNotNull(actual.getId());
-        assertNotNull(actual.getDate());
-        /*assertTrue(actual.getMoxProxyMatchingStrategy().isUseMethod());
-        assertFalse(actual.getMoxProxyMatchingStrategy().isUseSessionId());
-        assertFalse(actual.getMoxProxyMatchingStrategy().isUsePath());*/
         assertEquals(DEFAULT_SESSION_ID, actual.getSessionId());
-        assertEquals(MoxProxyDirection.REQUEST, actual.getHttpDirection());
+        assertEquals(MoxProxyDirection.REQUEST, actual.getDirection());
         assertEquals(MoxProxyAction.RESPOND, actual.getAction());
-        assertEquals(method, actual.getMoxProxyHttpObject().getMethod());
-        assertEquals(path, actual.getMoxProxyHttpObject().getPathPattern());
-        assertEquals(statusCode, actual.getMoxProxyHttpObject().getStatusCode());
-        assertEquals(body, actual.getMoxProxyHttpObject().getBody());
-        assertEquals(headerName, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getName());
-        assertEquals(headerValue, actual.getMoxProxyHttpObject().getHeaders().iterator().next().getValue());
+        assertEquals(method, actual.getHttpObject().getMethod());
+        assertEquals(path, actual.getHttpObject().getPathPattern());
+        assertEquals(statusCode, actual.getHttpObject().getStatusCode());
+        assertEquals(body, actual.getHttpObject().getBody());
+        assertEquals(headerName, actual.getHttpObject().getHeaders().iterator().next().getName());
+        assertEquals(headerValue, actual.getHttpObject().getHeaders().iterator().next().getValue());
     }
 
     @Test
@@ -98,7 +91,7 @@ class MoxProxyRuleBuilderTest {
                 .backToParent()
                 .build();
 
-        assertEquals(actual.getMoxProxyHttpObject().getBody(), MoxProxyConts.DELETE_BODY_INDICATOR);
+        assertEquals(actual.getHttpObject().getBody(), MoxProxyConts.DELETE_BODY_INDICATOR);
     }
 
     @DisplayName("Should throw validation exception")
