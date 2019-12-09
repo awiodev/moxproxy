@@ -61,7 +61,7 @@
         <selenium.version>3.14.0</selenium.version>
         <logback.version>1.2.3</logback.version>
         <dagger.version>2.24</dagger.version>
-        <netty.version>4.1.38.Final</netty.version>
+        <netty.version>4.1.42.Final</netty.version>
         <cache2k.version>1.2.2.Final</cache2k.version>
     </properties>
 
@@ -307,7 +307,7 @@
                             <groupId>org.junit.jupiter</groupId>
                             <artifactId>junit-jupiter-engine</artifactId>
                             <version>${junit.engine.version}</version>
-                        </dependency>                                                
+                        </dependency>
                     </dependencies>
                 </plugin>
                 <plugin>
