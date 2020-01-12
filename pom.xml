@@ -63,6 +63,7 @@
         <dagger.version>2.24</dagger.version>
         <netty.version>4.1.42.Final</netty.version>
         <cache2k.version>1.2.2.Final</cache2k.version>
+        <webdriver.extensions.maven.plugin.version>3.2.0</webdriver.extensions.maven.plugin.version>
     </properties>
 
     <distributionManagement>
@@ -323,6 +324,32 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.webdriverextensions</groupId>
+                    <artifactId>webdriverextensions-maven-plugin</artifactId>
+                    <version>${webdriver.extensions.maven.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>install-drivers</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <drivers>
+                            <driver>
+                                <name>geckodriver</name>
+                                <platform>windows</platform>
+                                <bit>32</bit>
+                            </driver>
+                            <driver>
+                                <name>geckodriver</name>
+                                <platform>linux</platform>
+                                <bit>64</bit>
+                            </driver>
+                        </drivers>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
