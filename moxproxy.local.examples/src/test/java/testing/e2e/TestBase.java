@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 class TestBase {
 
     static final int SLEEP_TIME = 2000;
-    static final int PROXY_PORT = 89;
+    static final int PROXY_PORT = 8089;
     static final String WIKI_URL = "https://en.wikipedia.org";
     static final String WIKIPEDIA = "wikipedia";
     static final String WIKIPEDIA_ORG_PATTERN = "wikipedia\\.org";
@@ -28,7 +28,6 @@ class TestBase {
         ((Logger)LoggerFactory.getLogger("org.bouncycastle")).setLevel(Level.OFF);
         ((Logger)LoggerFactory.getLogger("org.openqa.selenium")).setLevel(Level.OFF);
         ((Logger)LoggerFactory.getLogger("addons")).setLevel(Level.OFF);
-        System.setProperty("webdriver.gecko.driver", "D:\\webdriver\\geckodriver.exe");
     }
 
     FirefoxOptions setupFirefox() {

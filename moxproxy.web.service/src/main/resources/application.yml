@@ -11,7 +11,7 @@ logging:
 server:
   port: 8081
 proxy:
-  proxyPort: 89
+  proxyPort: 8089
   sessionIdMatchStrategy: true
   recordContent: false
   urlWhiteListForTrafficRecorder: []

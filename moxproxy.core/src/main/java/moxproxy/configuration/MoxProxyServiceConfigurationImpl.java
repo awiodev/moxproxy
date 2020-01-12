@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MoxProxyServiceConfigurationImpl implements MoxProxyServiceConfiguration {
 
-    private int port = 89;
+    private int port = 8089;
     private List<String> urlWhiteListForTrafficRecorder;
     private boolean matchSessionIdStrategy;
     private boolean recordBodies;
