@@ -1,0 +1,16 @@
+version: "3"
+services:
+  moxproxy:
+    image: wubepe/moxproxy:latest
+    environment:
+      SPRING_APPLICATION_JSON: '{
+            "server.port": 8082,
+            "proxy.proxyPort": 8090,
+            "proxy.sessionIdMatchStrategy": false,
+            "proxy.recordContent": true,
+            "service.basicAuthUserName": "srv-user",
+            "service.basicAuthPassword": "srv-password"
+          }'
+    ports:
+      - 8082:8082
+      - 8090:8090
