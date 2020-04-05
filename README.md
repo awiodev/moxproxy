@@ -1,7 +1,7 @@
 # Moxproxy
 
 Moxproxy is java library written on the top of [LittleProxy](https://github.com/adamfisk/LittleProxy) library to support automated testing by controlling network traffic between http client and server or application components.
- 
+# NEW! Standalone proxy [docker](#docker) container
 
 It supports:
 * http traffic recording
@@ -25,7 +25,8 @@ It supports:
     * [Responding](#responding)
     * [Modifications](#modifications)
     * [Fields removal](#removal) 
-* [More examples](#examples)           
+* [More examples](#examples)
+* [Docker](#docker)
 
 
 # <a name="local-proxy"></a>Local proxy
@@ -590,9 +591,31 @@ class ExampleTest {
 ```
 
 # <a name="examples"></a>More examples
-
+README
 Examples are part of this repository:
 * [local proxy examples](https://github.com/lukasz-aw/moxproxy/tree/master/moxproxy.local.examples/src/test/java/testing/e2e)
 * [web service examples](https://github.com/lukasz-aw/moxproxy/tree/master/moxproxy.web.service/src/test/java/testing)
 
+# <a name="docker"></a>Docker
+Standalone Moxproxy can be deployed as a docker container.
 
+Example docker-compose file:
+
+```yaml
+version: "3"
+services:
+  moxproxy:
+    image: wubepe/moxproxy:latest
+    environment:
+      SPRING_APPLICATION_JSON: '{
+            "server.port": 8082,
+            "proxy.proxyPort": 8090,
+            "proxy.sessionIdMatchStrategy": false,
+            "proxy.recordContent": true,
+            "service.basicAuthUserName": "srv-user",
+            "service.basicAuthPassword": "srv-password"
+          }'
+    ports:
+      - 8082:8082
+      - 8090:8090
+```
