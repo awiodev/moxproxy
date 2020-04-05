@@ -137,7 +137,7 @@ class WebServiceE2ETest extends TestBase {
     void whenRequestModified_thenModificationApplied() throws InterruptedException {
 
         String ipadAgent = "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3";
-        String xpath = "//img[@src='/static/images/mobile/copyright/wikipedia-wordmark-en.png']";
+        String xpath = "//img[@src='/static/images/mobile/copyright/wikipedia-wordmark-en.svg']";
 
         MoxProxyRule rule = MoxProxyRule.builder()
                 .withSessionId(sessionId)

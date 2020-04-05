@@ -16,6 +16,7 @@
         <drivers.location>${project.parent.basedir}/drivers</drivers.location>
         <driver>geckodriver-linux-64bit</driver>
         <webdriver.location>${drivers.location}/${driver}</webdriver.location>
+        <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -146,6 +147,61 @@
                                     </excludes>
                                 </resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <configuration>
+                            <repository>wubepe/moxproxy</repository>
+                            <tag>${project.version}</tag>
+                            <classifier>docker-local</classifier>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tag</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <repository>wubepe/moxproxy</repository>
+                            <tag>latest</tag>
+                            <classifier>docker-local-latest</classifier>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tag-repo-deploy</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <repository>wubepe/moxproxy</repository>
+                            <tag>${project.version}</tag>
+                            <classifier>docker-info-tag</classifier>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>push-version</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <repository>wubepe/moxproxy</repository>
+                            <tag>${project.version}</tag>
+                            <classifier>docker-info</classifier>
                         </configuration>
                     </execution>
                 </executions>
