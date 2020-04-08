@@ -85,6 +85,7 @@
     </dependencies>
 
     <build>
+        <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>com.github.webdriverextensions</groupId>
