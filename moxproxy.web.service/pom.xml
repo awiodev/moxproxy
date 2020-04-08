@@ -97,6 +97,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <finalName>${artifactId}</finalName>
                     <executable>true</executable>
                     <fork>true</fork>
                     <mainClass>moxproxy.webservice.MoxProxyWebService</mainClass>
@@ -144,6 +145,7 @@
                                     <filtering>true</filtering>
                                     <excludes>
                                         <exclude>banner.txt</exclude>
+                                        <exclude>docker-compose.yml</exclude>
                                     </excludes>
                                 </resource>
                             </resources>
@@ -157,54 +159,56 @@
                 <version>${dockerfile-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>build</id>
-                        <phase>package</phase>
+                        <id>build-tag-version</id>
+                        <phase>install</phase>
                         <goals>
                             <goal>build</goal>
-                        </goals>
-                        <configuration>
-                            <repository>wubepe/moxproxy</repository>
-                            <tag>${project.version}</tag>
-                            <classifier>docker-local</classifier>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>tag</id>
-                        <phase>install</phase>
-                        <goals>
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <repository>wubepe/moxproxy</repository>
+                            <tag>${project.version}</tag>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build-tag-latest</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
                             <tag>latest</tag>
-                            <classifier>docker-local-latest</classifier>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>tag-repo-deploy</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>tag</goal>
-                        </goals>
-                        <configuration>
-                            <repository>wubepe/moxproxy</repository>
-                            <tag>${project.version}</tag>
-                            <classifier>docker-info-tag</classifier>
                         </configuration>
                     </execution>
                     <execution>
                         <id>push-version</id>
                         <phase>deploy</phase>
                         <goals>
+                            <goal>tag</goal>
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <repository>wubepe/moxproxy</repository>
                             <tag>${project.version}</tag>
-                            <classifier>docker-info</classifier>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>push-latest</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>tag</goal>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <tag>latest</tag>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <repository>wubepe/moxproxy</repository>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
             </plugin>
         </plugins>
     </build>

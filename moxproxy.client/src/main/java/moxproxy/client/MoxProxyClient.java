@@ -1,7 +1,7 @@
 package moxproxy.client;
 
-import io.restassured.authentication.PreemptiveBasicAuthScheme;
 import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
 import moxproxy.builders.MoxProxyClientBuilder;
 import moxproxy.configuration.MoxProxyClientConfiguration;
 import moxproxy.consts.MoxProxyRoutes;
@@ -10,20 +10,25 @@ import moxproxy.interfaces.MoxProxyService;
 import moxproxy.model.*;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.baseURI;
+import static io.restassured.RestAssured.given;
 
 public class MoxProxyClient implements MoxProxyService {
 
+    private static final String AUTHORIZATION = "Authorization";
+    private final String auth;
+
     public MoxProxyClient(MoxProxyClientConfiguration configuration){
         baseURI = configuration.getBaseUrl();
+        auth = String.format("Basic %s", Base64.getEncoder().encodeToString(
+                String.format("%s:%s", configuration.getUserName(), configuration.getPassword()).getBytes()));
+    }
 
-        PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
-        authScheme.setUserName(configuration.getUserName());
-        authScheme.setPassword(configuration.getPassword());
-        authentication = authScheme;
-
+    private RequestSpecification givenAuth() {
+        return given().header(AUTHORIZATION, auth);
     }
 
     @Override
@@ -31,7 +36,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.REQUESTS_ROUTE_SESSION;
 
         return Arrays.asList(
-                when()
+                givenAuth()
+                .when()
                     .get(route, sessionId)
                 .then()
                     .statusCode(200)
@@ -44,7 +50,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.REQUESTS_ROUTE;
 
         return Arrays.asList(
-                when()
+                givenAuth()
+                .when()
                     .get(route)
                 .then()
                     .statusCode(200)
@@ -57,7 +64,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RESPONSES_ROUTE_SESSION;
 
         return Arrays.asList(
-                when()
+                givenAuth()
+                .when()
                     .get(route, sessionId)
                 .then()
                     .statusCode(200)
@@ -70,7 +78,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RESPONSES_ROUTE;
 
         return Arrays.asList(
-                when()
+                givenAuth()
+                .when()
                     .get(route)
                 .then()
                     .statusCode(200)
@@ -83,7 +92,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RULES_ROUTE_ID;
 
         MoxProxyStatusResponse response =
-                when()
+                givenAuth()
+                .when()
                     .delete(route, ruleId)
                 .then().statusCode(200)
                     .extract()
@@ -97,7 +107,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RULES_SESSION_ID_ROUTE;
 
         MoxProxyStatusResponse response =
-                when()
+                givenAuth()
+                .when()
                     .delete(route, sessionId)
                 .then().statusCode(200)
                     .extract()
@@ -111,7 +122,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ID_ROUTE;
 
         MoxProxyStatusResponse response =
-                when()
+                givenAuth()
+                .when()
                     .delete(route, sessionId)
                 .then().statusCode(200)
                     .extract()
@@ -125,7 +137,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE;
 
         MoxProxyStatusResponse response =
-                when()
+                givenAuth()
+                .when()
                     .delete(route)
                 .then().statusCode(200)
                     .extract()
@@ -139,7 +152,7 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.RULES_ROUTE;
 
         MoxProxyStatusResponse response =
-                given()
+                givenAuth()
                     .contentType(ContentType.JSON)
                     .body(moxProxyRule)
                     .post(route)
@@ -157,7 +170,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_MATCH_STRATEGY;
 
         MoxProxyStatusResponse response =
-                when()
+                givenAuth()
+                .when()
                     .post(route, matchingStrategy)
                 .then()
                     .statusCode(200)
@@ -172,7 +186,8 @@ public class MoxProxyClient implements MoxProxyService {
         String route = MoxProxyRoutes.API_ROUTE + MoxProxyRoutes.SESSION_ROUTE_MATCH_STRATEGY;
 
         return
-            when()
+            givenAuth()
+            .when()
                 .get(route)
             .then()
                 .statusCode(200)
