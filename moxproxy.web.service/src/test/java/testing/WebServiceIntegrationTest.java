@@ -8,13 +8,15 @@ import moxproxy.model.*;
 import moxproxy.webservice.MoxProxyWebService;
 import moxproxy.webservice.config.WebServiceBeanConfiguration;
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -26,7 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = MoxProxyWebService.class)
 @AutoConfigureMockMvc
-@Import({WebServiceIntegrationTestConfiguration.class, WebServiceBeanConfiguration.class})
+@ContextConfiguration(classes = {WebServiceIntegrationTestConfiguration.class, WebServiceBeanConfiguration.class})
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WebServiceIntegrationTest {
 
     @Autowired
@@ -42,9 +45,14 @@ class WebServiceIntegrationTest {
     private static String defaultMethod = "Get";
 
     @AfterEach
-    private void cleanup(){
+    void cleanup(){
         database.cleanAllRules();
         database.cleanAllProcessedTraffic();
+    }
+
+    @AfterAll
+    void afterAll() {
+        client.destroy();
     }
 
     @Test

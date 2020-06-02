@@ -182,6 +182,10 @@ public class WebServiceIntegrationTestClient implements MoxProxyService {
         }
     }
 
+    public void destroy() {
+        mockMvc.getDispatcherServlet().destroy();
+    }
+
     private String authHeaderValue(){
         return "Basic " + encodeAuth();
     }
