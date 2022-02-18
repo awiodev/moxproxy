@@ -36,7 +36,7 @@ To start local MoxProxy service, add **moxproxy.core** dependecy to your pom.xml
 <dependency>
   <groupId>com.moxproxy</groupId>
   <artifactId>moxproxy.core</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 Setup proxy using LocalMoxProxy builder.
@@ -86,7 +86,7 @@ Standalone proxy is 2 in 1 application which contains proxy server and MoxProxy 
 MoxProxy webservice binary can be downloaded from [releases](https://github.com/lukasz-aw/moxproxy/releases) and run as regular java application.
 
 ```sh
-$ java -jar moxproxy.web.service-1.1.0.jar
+$ java -jar moxproxy.web.service-1.1.2.jar
 ```
 
 ### <a name="standalone-configuration"></a>Configuration
@@ -163,7 +163,7 @@ To communicate with webservice add **moxproxy.client** dependency to your pom.xm
 <dependency>
   <groupId>com.moxproxy</groupId>
   <artifactId>moxproxy.client</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 Setup proxy client using MoxProxyClient builder.
