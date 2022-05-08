@@ -59,7 +59,7 @@
         <jackson.version>2.9.9</jackson.version>
         <rest.assured.version>4.0.0</rest.assured.version>
         <selenium.version>3.14.0</selenium.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.9</logback.version>
         <dagger.version>2.24</dagger.version>
         <netty.version>4.1.42.Final</netty.version>
         <cache2k.version>1.2.2.Final</cache2k.version>
